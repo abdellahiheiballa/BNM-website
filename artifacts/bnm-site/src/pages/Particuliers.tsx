@@ -7,6 +7,7 @@ import { Link } from "wouter";
 
 export default function Particuliers() {
   const { data: offres, isLoading } = useListOffres({ categorie: "particuliers" });
+  const offresArray = Array.isArray(offres) ? offres : [];
 
   const heroImage = "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop";
 
@@ -54,9 +55,9 @@ export default function Particuliers() {
                 </Card>
               ))}
             </div>
-          ) : offres && offres.length > 0 ? (
+          ) : offresArray.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {offres.map(offre => (
+              {offresArray.map(offre => (
                 <Card key={offre.id} className="group hover:border-secondary transition-colors duration-300 rounded-none shadow-sm hover:shadow-md flex flex-col h-full">
                   <CardHeader>
                     <div className="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-secondary transition-colors">

@@ -6,8 +6,7 @@ import { ArrowRight, Moon, Landmark, Star, HandCoins } from "lucide-react";
 import { Link } from "wouter";
 
 export default function FinanceIslamique() {
-  const { data: offres, isLoading } = useListOffres({ categorie: "islamique" });
-
+  const { data: offres, isLoading } = useListOffres({ categorie: "islamique" });  const offresArray = Array.isArray(offres) ? offres : [];
   const heroImage = "https://images.unsplash.com/photo-1542839132-92c53300491e?q=80&w=1974&auto=format&fit=crop";
 
   return (
@@ -57,9 +56,9 @@ export default function FinanceIslamique() {
                       </Card>
                     ))}
                   </div>
-                ) : offres && offres.length > 0 ? (
+                ) : offresArray.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {offres.map(offre => (
+                    {offresArray.map(offre => (
                       <Card key={offre.id} className="group hover:border-secondary transition-colors duration-300 rounded-none shadow-sm hover:shadow-md">
                         <CardHeader>
                           <div className="flex items-center gap-3 mb-3">

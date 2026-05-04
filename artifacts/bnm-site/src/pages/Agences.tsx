@@ -10,16 +10,17 @@ export default function Agences() {
   const { data: agences, isLoading } = useListAgences();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState("Toutes");
+  const agencesArray = Array.isArray(agences) ? agences : [];
 
   const cities = useMemo(() => {
-    if (!agences) return ["Toutes"];
-    const uniqueCities = new Set(agences.map(a => a.ville).filter(Boolean));
+    if (agencesArray.length === 0) return ["Toutes"];
+    const uniqueCities = new Set(agencesArray.map(a => a.ville).filter(Boolean));
     return ["Toutes", ...Array.from(uniqueCities)] as string[];
-  }, [agences]);
+  }, [agencesArray]);
 
   const filteredAgences = useMemo(() => {
-    if (!agences) return [];
-    return agences.filter(agence => {
+    if (agencesArray.length === 0) return [];
+    return agencesArray.filter(agence => {
       const matchesCity = selectedCity === "Toutes" || agence.ville === selectedCity;
       const searchLower = searchQuery.toLowerCase();
       const matchesSearch = 

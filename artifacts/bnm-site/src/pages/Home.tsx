@@ -10,7 +10,8 @@ export default function Home() {
   const { data: offres, isLoading: offresLoading } = useListOffres();
   const { data: actualites, isLoading: actualitesLoading } = useListActualites({ limit: 3 });
 
-  const heroImage = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop";
+  const formatNumber = (value?: number | string) => Number(value ?? 0).toLocaleString('fr-FR');
+  const heroImage = "https://www.bnm.mr/back/IMG/logo/slide1aon-4.jpg";
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -52,22 +53,22 @@ export default function Home() {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x border rounded-lg bg-background shadow-sm">
               <div className="p-8 text-center space-y-2">
                 <Users className="w-8 h-8 mx-auto text-secondary mb-4" />
-                <div className="text-4xl font-bold text-primary">{stats.totalClients.toLocaleString('fr-FR')}</div>
+                <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalClients)}</div>
                 <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Clients satisfaits</div>
               </div>
               <div className="p-8 text-center space-y-2">
                 <Building2 className="w-8 h-8 mx-auto text-secondary mb-4" />
-                <div className="text-4xl font-bold text-primary">{stats.totalAgences}</div>
+                <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalAgences)}</div>
                 <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Agences au pays</div>
               </div>
               <div className="p-8 text-center space-y-2">
                 <Calendar className="w-8 h-8 mx-auto text-secondary mb-4" />
-                <div className="text-4xl font-bold text-primary">{stats.anneesExperience}</div>
+                <div className="text-4xl font-bold text-primary">{formatNumber(stats.anneesExperience)}</div>
                 <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Années d'expérience</div>
               </div>
               <div className="p-8 text-center space-y-2">
                 <Newspaper className="w-8 h-8 mx-auto text-secondary mb-4" />
-                <div className="text-4xl font-bold text-primary">{stats.totalActualites}</div>
+                <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalActualites)}</div>
                 <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">Actualités publiées</div>
               </div>
             </div>
