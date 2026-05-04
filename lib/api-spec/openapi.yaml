@@ -3,20 +3,34 @@ info:
   # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: BNM - Banque Nationale de Mauritanie API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: actualites
+    description: News articles
+  - name: offres
+    description: Bank offers
+  - name: contact
+    description: Contact form
+  - name: newsletter
+    description: Newsletter subscription
+  - name: simulate
+    description: Loan simulators
+  - name: agences
+    description: Bank branches
+  - name: stats
+    description: Homepage statistics
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +38,195 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /actualites:
+    get:
+      operationId: listActualites
+      tags: [actualites]
+      summary: List all news articles
+      parameters:
+        - name: categorie
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+            default: 10
+        - name: offset
+          in: query
+          schema:
+            type: integer
+            default: 0
+      responses:
+        "200":
+          description: List of news articles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Actualite"
+                  total:
+                    type: integer
+                required:
+                  - data
+                  - total
+
+  /actualites/{id}:
+    get:
+      operationId: getActualite
+      tags: [actualites]
+      summary: Get a single news article
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: News article
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Actualite"
+        "404":
+          description: Not found
+
+  /offres:
+    get:
+      operationId: listOffres
+      tags: [offres]
+      summary: List offers, optionally filtered by category
+      parameters:
+        - name: categorie
+          in: query
+          schema:
+            type: string
+            enum: [particuliers, professionnels, entreprises, islamique]
+      responses:
+        "200":
+          description: List of offers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Offre"
+
+  /contact:
+    post:
+      operationId: submitContact
+      tags: [contact]
+      summary: Submit a contact form message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactInput"
+      responses:
+        "201":
+          description: Message submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "422":
+          description: Validation error
+
+  /newsletter:
+    post:
+      operationId: subscribeNewsletter
+      tags: [newsletter]
+      summary: Subscribe to newsletter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsletterInput"
+      responses:
+        "201":
+          description: Subscribed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "409":
+          description: Already subscribed
+
+  /simulate/classic:
+    post:
+      operationId: simulateClassic
+      tags: [simulate]
+      summary: Calculate classic loan monthly payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SimulateClassicInput"
+      responses:
+        "200":
+          description: Simulation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SimulationResult"
+
+  /simulate/murabaha:
+    post:
+      operationId: simulateMurabaha
+      tags: [simulate]
+      summary: Calculate Murabaha Islamic finance monthly payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SimulateMurabahaInput"
+      responses:
+        "200":
+          description: Simulation result
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MurabahaResult"
+
+  /agences:
+    get:
+      operationId: listAgences
+      tags: [agences]
+      summary: List all bank branches
+      responses:
+        "200":
+          description: List of branches
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Agence"
+
+  /stats:
+    get:
+      operationId: getStats
+      tags: [stats]
+      summary: Get homepage statistics
+      responses:
+        "200":
+          description: Homepage stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Stats"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +237,235 @@ components:
       required:
         - status
 
+    Actualite:
+      type: object
+      properties:
+        id:
+          type: integer
+        titre:
+          type: string
+        slug:
+          type: string
+        contenu:
+          type: string
+        image:
+          type: string
+          nullable: true
+        categorie:
+          type: string
+          nullable: true
+        datePublication:
+          type: string
+          format: date-time
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - titre
+        - slug
+        - contenu
+        - datePublication
+        - createdAt
+
+    Offre:
+      type: object
+      properties:
+        id:
+          type: integer
+        titre:
+          type: string
+        slug:
+          type: string
+        description:
+          type: string
+          nullable: true
+        icone:
+          type: string
+          nullable: true
+        categorie:
+          type: string
+          enum: [particuliers, professionnels, entreprises, islamique]
+        ordre:
+          type: integer
+      required:
+        - id
+        - titre
+        - slug
+        - categorie
+        - ordre
+
+    ContactInput:
+      type: object
+      properties:
+        nom:
+          type: string
+          minLength: 2
+        email:
+          type: string
+          format: email
+        telephone:
+          type: string
+          nullable: true
+        sujet:
+          type: string
+          nullable: true
+        message:
+          type: string
+          minLength: 10
+      required:
+        - nom
+        - email
+        - message
+
+    NewsletterInput:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+      required:
+        - email
+
+    SimulateClassicInput:
+      type: object
+      properties:
+        montant:
+          type: number
+          minimum: 100000
+          maximum: 50000000
+        dureeAns:
+          type: integer
+          minimum: 1
+          maximum: 25
+        taux:
+          type: number
+          minimum: 0
+          maximum: 100
+          default: 5.5
+      required:
+        - montant
+        - dureeAns
+
+    SimulateMurabahaInput:
+      type: object
+      properties:
+        prixBien:
+          type: number
+          minimum: 0
+        apportPersonnel:
+          type: number
+          minimum: 0
+        marge:
+          type: number
+          minimum: 3
+          maximum: 8
+          default: 5
+        dureeAns:
+          type: integer
+          minimum: 1
+          maximum: 25
+      required:
+        - prixBien
+        - apportPersonnel
+        - dureeAns
+
+    SimulationResult:
+      type: object
+      properties:
+        mensualite:
+          type: number
+        coutTotal:
+          type: number
+        interetsTotal:
+          type: number
+        montant:
+          type: number
+        dureeAns:
+          type: integer
+        taux:
+          type: number
+      required:
+        - mensualite
+        - coutTotal
+        - interetsTotal
+        - montant
+        - dureeAns
+        - taux
+
+    MurabahaResult:
+      type: object
+      properties:
+        mensualite:
+          type: number
+        montantFinance:
+          type: number
+        coutTotal:
+          type: number
+        marge:
+          type: number
+        dureeAns:
+          type: integer
+      required:
+        - mensualite
+        - montantFinance
+        - coutTotal
+        - marge
+        - dureeAns
+
+    Agence:
+      type: object
+      properties:
+        id:
+          type: integer
+        nom:
+          type: string
+        adresse:
+          type: string
+          nullable: true
+        ville:
+          type: string
+          nullable: true
+        telephone:
+          type: string
+          nullable: true
+        latitude:
+          type: number
+          nullable: true
+        longitude:
+          type: number
+          nullable: true
+        horaires:
+          type: string
+          nullable: true
+      required:
+        - id
+        - nom
+
+    Stats:
+      type: object
+      properties:
+        totalClients:
+          type: integer
+        totalAgences:
+          type: integer
+        anneesExperience:
+          type: integer
+        totalActualites:
+          type: integer
+      required:
+        - totalClients
+        - totalAgences
+        - anneesExperience
+        - totalActualites
+
+    SuccessResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+      required:
+        - success
+        - message

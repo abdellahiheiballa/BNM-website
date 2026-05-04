@@ -1,0 +1,370 @@
+MVP Site BNM avec Vue.js 3 + Nuxt 3 + Laravel + PostgreSQL
+Voici un prompt prêt à être copié-collé dans Claude, ChatGPT ou tout autre LLM pour générer un MVP fonctionnel du site de la Banque Nationale de Mauritanie.
+
+📋 PROMPT À COPIER
+text
+Je souhaite créer un MVP fonctionnel pour le site web de la Banque Nationale de Mauritanie (BNM).
+
+## Stack technique à utiliser
+- **Frontend** : Vue.js 3 + Nuxt 3 (mode SPA avec SSR désactivé pour simplicité)
+- **Styling** : Tailwind CSS
+- **Backend** : Laravel 11 (API REST)
+- **Base de données** : PostgreSQL
+- **Serveur local** : XAMPP (Apache + PostgreSQL)
+
+## Architecture du projet
+bnm-project/
+├── frontend/ # Nuxt 3 application
+├── backend/ # Laravel API
+├── database/ # Scripts SQL
+└── README.md # Documentation complète
+
+text
+
+## Pages à créer (frontend)
+1. **Accueil** (`/`) : Hero, offres principales, actualités récentes, témoignages
+2. **Particuliers** (`/particuliers`) : Comptes, cartes, épargne, crédits
+3. **Professionnels** (`/professionnels`) : Solutions pour professionnels
+4. **Entreprises** (`/entreprises`) : Cash management, trade finance
+5. **Finance islamique** (`/finance-islamique`) : Produits Al Watani
+6. **Actualités** (`/actualites`) : Liste des actualités
+7. **Détail actualité** (`/actualites/[id]`) : Article complet
+8. **Contact** (`/contact`) : Formulaire de contact
+9. **À propos** (`/a-propos`) : Histoire de la banque
+10. **Simulateur de crédit** (`/simulateur`) : Calculateur de mensualités
+
+## Composants interactifs à implémenter
+
+### 1. Simulateur de crédit classique (Laravel API + frontend)
+- Champs : Montant (100k - 50M MRU), Durée (1-25 ans), Taux (5.5% par défaut)
+- Calcul : Mensualité = P * (r*(1+r)^n) / ((1+r)^n - 1)
+- Affichage : Mensualité, Coût total du crédit, Intérêts totaux
+
+### 2. Simulateur Murabaha (finance islamique)
+- Principe : Prix d'achat + Marge bénéficiaire (pas d'intérêts)
+- Champs : Prix du bien, Apport personnel, Marge (3-8%), Durée
+- Affichage : Mensualité, Montant financé, Coût total
+
+### 3. Formulaire de contact
+- Champs : Nom, Email, Téléphone, Sujet, Message
+- Validation frontend + envoi API Laravel
+- Stockage en base de données
+- Notification email (configuration .env)
+
+### 4. Newsletter
+- Champs : Email
+- Inscription avec double opt-in simplifié
+- Stockage dans table `newsletter_subscribers`
+
+## API Endpoints (Laravel)
+POST /api/contact - Envoyer message
+POST /api/newsletter - Inscription newsletter
+POST /api/simulate/classic - Calcul crédit classique
+POST /api/simulate/murabaha - Calcul crédit Murabaha
+GET /api/actualites - Liste actualités
+GET /api/actualites/{id} - Détail actualité
+GET /api/offres - Liste offres
+
+text
+
+## Structure des bases de données (PostgreSQL)
+
+```sql
+-- Table: actualites
+id SERIAL PRIMARY KEY,
+titre VARCHAR(200) NOT NULL,
+slug VARCHAR(200) UNIQUE NOT NULL,
+contenu TEXT NOT NULL,
+image VARCHAR(500),
+categorie VARCHAR(100),
+date_publication TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+-- Table: offres
+id SERIAL PRIMARY KEY,
+titre VARCHAR(200) NOT NULL,
+slug VARCHAR(200) UNIQUE NOT NULL,
+description TEXT,
+icone VARCHAR(100),
+categorie VARCHAR(50), -- particuliers, professionnels, entreprises, islamique
+ordre INTEGER DEFAULT 0
+
+-- Table: temoignages
+id SERIAL PRIMARY KEY,
+nom VARCHAR(100) NOT NULL,
+contenu TEXT NOT NULL,
+note INTEGER DEFAULT 5,
+actif BOOLEAN DEFAULT true
+
+-- Table: contacts
+id SERIAL PRIMARY KEY,
+nom VARCHAR(100) NOT NULL,
+email VARCHAR(100) NOT NULL,
+telephone VARCHAR(50),
+sujet VARCHAR(200),
+message TEXT NOT NULL,
+traite BOOLEAN DEFAULT false,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+-- Table: newsletter_subscribers
+id SERIAL PRIMARY KEY,
+email VARCHAR(100) UNIQUE NOT NULL,
+confirme BOOLEAN DEFAULT false,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+-- Table: agences
+id SERIAL PRIMARY KEY,
+nom VARCHAR(200) NOT NULL,
+adresse TEXT,
+ville VARCHAR(100),
+telephone VARCHAR(50),
+latitude DECIMAL(10,8),
+longitude DECIMAL(11,8),
+horaires TEXT
+Configuration XAMPP pour PostgreSQL
+Fournis les instructions complètes pour :
+
+Installer PostgreSQL sur Windows (extension pour XAMPP)
+
+Configurer pgAdmin pour la gestion
+
+Créer la base de données bnm_db
+
+Configurer le fichier .env de Laravel
+
+Configurer Apache pour servir le frontend (port 3000) et backend (port 8000)
+
+Permettre l'accès depuis le réseau local (autres machines sur le même WiFi)
+
+Démarrer tous les services avec un script batch
+
+Contraintes techniques
+Code propre, commenté et structuré
+
+Gestion d'erreurs appropriée
+
+Validation des formulaires (frontend + backend)
+
+CORS configuré pour permettre frontend ↔ backend
+
+Pas de dépendances payantes
+
+Responsive design (mobile first)
+
+Dark mode optionnelle
+
+À fournir dans la réponse
+Structure complète des fichiers (frontend + backend)
+
+Le code source complet des composants clés
+
+Les commandes d'installation détaillées
+
+La procédure de configuration XAMPP + PostgreSQL
+
+Le script de démarrage pour le réseau local
+
+Exemple de fichier .env configuré
+
+Procédure pour partager l'URL (http://IP-DU-SERVEUR:3000) sur le réseau local
+
+Objectif : Obtenir un site fonctionnel que je peux lancer localement sur XAMPP et partager avec mon équipe sur le même réseau WiFi pour validation.
+
+text
+
+---
+
+## 📁 Structure des fichiers attendue
+bnm-project/
+├── frontend/
+│ ├── nuxt.config.ts
+│ ├── package.json
+│ ├── tailwind.config.js
+│ ├── app.vue
+│ ├── layouts/
+│ │ └── default.vue
+│ ├── pages/
+│ │ ├── index.vue
+│ │ ├── particuliers.vue
+│ │ ├── professionnels.vue
+│ │ ├── entreprises.vue
+│ │ ├── finance-islamique.vue
+│ │ ├── actualites/
+│ │ │ ├── index.vue
+│ │ │ └── [id].vue
+│ │ ├── contact.vue
+│ │ ├── a-propos.vue
+│ │ └── simulateur.vue
+│ ├── components/
+│ │ ├── Header.vue
+│ │ ├── Footer.vue
+│ │ ├── SimulateurCredit.vue
+│ │ ├── SimulateurMurabaha.vue
+│ │ ├── FormulaireContact.vue
+│ │ ├── Newsletter.vue
+│ │ └── Temoignages.vue
+│ ├── composables/
+│ │ └── useApi.ts
+│ └── assets/
+│ └── css/
+│ └── main.css
+│
+├── backend/
+│ ├── app/
+│ │ ├── Http/
+│ │ │ ├── Controllers/
+│ │ │ │ ├── ContactController.php
+│ │ │ │ ├── NewsletterController.php
+│ │ │ │ ├── SimulateurController.php
+│ │ │ │ └── ActualiteController.php
+│ │ │ └── Middleware/
+│ │ │ └── Cors.php
+│ │ └── Models/
+│ │ ├── Actualite.php
+│ │ ├── Contact.php
+│ │ ├── Newsletter.php
+│ │ └── Offre.php
+│ ├── database/
+│ │ ├── migrations/
+│ │ └── seeders/
+│ ├── routes/
+│ │ └── api.php
+│ ├── .env.example
+│ └── composer.json
+│
+├── database/
+│ ├── init.sql
+│ └── seed_data.sql
+│
+├── start.bat
+├── install.bat
+└── README.md
+
+text
+
+---
+
+## 🚀 Script de démarrage rapide (`start.bat`)
+
+```batch
+@echo off
+echo ========================================
+echo   BNM - Demarrage du projet
+echo ========================================
+echo.
+
+REM Démarrer PostgreSQL via XAMPP
+echo [1/4] Demarrage de PostgreSQL...
+net start postgresql-x64-15 2>nul
+if %errorlevel% neq 0 (
+    echo ERREUR: PostgreSQL non demarre. Verifiez XAMPP.
+    pause
+    exit /b 1
+)
+
+REM Démarrer Apache
+echo [2/4] Demarrage d'Apache...
+net start apache2.4 2>nul
+
+REM Démarrer backend Laravel
+echo [3/4] Demarrage du backend Laravel...
+cd backend
+start cmd /k "php artisan serve --host=0.0.0.0 --port=8000"
+
+REM Démarrer frontend Nuxt
+echo [4/4] Demarrage du frontend Nuxt...
+cd ../frontend
+start cmd /k "npm run dev -- --host --port=3000"
+
+echo.
+echo ========================================
+echo   Site accessible sur le reseau local:
+echo   Frontend : http://%COMPUTERNAME%.local:3000
+echo   Backend  : http://%COMPUTERNAME%.local:8000
+echo ========================================
+echo.
+echo Appuyez sur une touche pour quitter...
+pause >nul
+📦 Fichier install.bat (installation initiale)
+batch
+@echo off
+echo ========================================
+echo   BNM - Installation complete
+echo ========================================
+echo.
+
+:: Verifier Node.js
+where node >nul 2>nul
+if %errorlevel% neq 0 (
+    echo ERREUR: Node.js n'est pas installe.
+    echo Telechargez-le sur https://nodejs.org/
+    pause
+    exit /b 1
+)
+
+:: Verifier Composer
+where composer >nul 2>nul
+if %errorlevel% neq 0 (
+    echo ERREUR: Composer n'est pas installe.
+    pause
+    exit /b 1
+)
+
+:: Installation backend
+echo [1/3] Installation du backend Laravel...
+cd backend
+composer install
+copy .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan db:seed
+cd ..
+
+:: Installation frontend
+echo [2/3] Installation du frontend Nuxt...
+cd frontend
+npm install
+cd ..
+
+:: Configuration base de donnees
+echo [3/3] Configuration de PostgreSQL...
+echo Veuillez creer la base 'bnm_db' dans pgAdmin
+echo puis executer: database/init.sql
+echo.
+
+echo ========================================
+echo   Installation terminee !
+echo   Lancez start.bat pour demarrer
+echo ========================================
+pause
+📝 Exemple .env backend
+env
+APP_NAME="BNM API"
+APP_ENV=local
+APP_DEBUG=true
+APP_URL=http://localhost:8000
+
+DB_CONNECTION=pgsql
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_DATABASE=bnm_db
+DB_USERNAME=postgres
+DB_PASSWORD=root
+
+MAIL_MAILER=smtp
+MAIL_HOST=smtp.gmail.com
+MAIL_PORT=587
+MAIL_USERNAME=your_email@gmail.com
+MAIL_PASSWORD=your_app_password
+MAIL_ENCRYPTION=tls
+MAIL_FROM_ADDRESS=noreply@bnm.mr
+MAIL_FROM_NAME="BNM Mauritanie"
+
+FRONTEND_URL=http://localhost:3000
+🔧 Problèmes courants et solutions
+Problème	Solution
+PostgreSQL ne démarre pas	Vérifier C:\xampp\pgsql\data\postgresql.conf, décommenter port = 5432
+CORS bloque les requêtes	Ajouter '*' dans config/cors.php pendant le dev
+Les images ne s'affichent pas	Vérifier les chemins, utiliser des URLs absolues
+npm run dev échoue sur réseau	Ajouter --host 0.0.0.0 et désactiver firewall
+Les autres machines n'accèdent pas	Désactiver temporairement le pare-feu Windows
