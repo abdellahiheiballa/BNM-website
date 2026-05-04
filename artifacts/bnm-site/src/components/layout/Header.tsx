@@ -44,9 +44,12 @@ export default function Header() {
       <div className="container mx-auto flex h-20 items-center justify-between px-4">
         <div className="flex items-center gap-8">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-10 w-10 items-center justify-center rounded bg-primary text-secondary font-serif font-bold text-xl">
-              B
-            </div>
+            <img
+              src="https://www.bnm.mr/public/assets/images/logo.png"
+              alt="BNM logo"
+              className="h-10 w-10 rounded bg-white/90 object-contain p-1"
+              loading="eager"
+            />
             <div className="hidden flex-col leading-tight sm:flex">
               <span className="text-base font-bold text-primary tracking-tight">BNM</span>
               <span className="text-[10px] text-muted-foreground uppercase tracking-widest">Banque Nationale</span>
