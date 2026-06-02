@@ -9,7 +9,7 @@ export default function Particuliers() {
   const { data: offres, isLoading } = useListOffres({ categorie: "particuliers" });
   const offresArray = Array.isArray(offres) ? offres : [];
 
-  const heroImage = "https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=2070&auto=format&fit=crop";
+  const heroImage = "/assets/images/particuliers.jpg.jpeg";
 
   return (
     <div className="flex flex-col min-h-screen">

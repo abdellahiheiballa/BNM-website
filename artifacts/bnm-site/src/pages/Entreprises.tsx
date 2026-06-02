@@ -9,7 +9,7 @@ export default function Entreprises() {
   const { data: offres, isLoading } = useListOffres({ categorie: "entreprises" });
   const offresArray = Array.isArray(offres) ? offres : [];
 
-  const heroImage = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop";
+  const heroImage = "/assets/images/Entreprises.jpg.jpeg";
 
   return (
     <div className="flex flex-col min-h-screen">

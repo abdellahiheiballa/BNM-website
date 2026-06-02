@@ -7,7 +7,7 @@ import { Link } from "wouter";
 
 export default function FinanceIslamique() {
   const { data: offres, isLoading } = useListOffres({ categorie: "islamique" });  const offresArray = Array.isArray(offres) ? offres : [];
-  const heroImage = "https://images.unsplash.com/photo-1542839132-92c53300491e?q=80&w=1974&auto=format&fit=crop";
+  const heroImage = "/assets/images/Islamique.jpg.jpeg";
 
   return (
     <div className="flex flex-col min-h-screen">

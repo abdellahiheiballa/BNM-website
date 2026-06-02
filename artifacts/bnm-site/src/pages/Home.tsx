@@ -11,12 +11,12 @@ export default function Home() {
   const { data: actualites, isLoading: actualitesLoading } = useListActualites({ limit: 3 });
 
   const formatNumber = (value?: number | string) => Number(value ?? 0).toLocaleString('fr-FR');
-  const heroImage = "https://www.bnm.mr/back/IMG/logo/slide1aon-4.jpg";
+  const heroImage = "/assets/images/min-h-screen.jpg";
 
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative w-full h-[600px] md:h-[700px] flex items-center">
+      <section className="relative w-full min-h-screen flex items-center">
         <div className="absolute inset-0 bg-primary/80 z-10" />
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"

@@ -7,7 +7,7 @@ import { Link } from "wouter";
 
 export default function Professionnels() {
   const { data: offres, isLoading } = useListOffres({ categorie: "professionnels" });  const offresArray = Array.isArray(offres) ? offres : [];
-  const heroImage = "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop";
+  const heroImage = "/assets/images/Professionnels.jpg.jpeg";
 
   return (
     <div className="flex flex-col min-h-screen">

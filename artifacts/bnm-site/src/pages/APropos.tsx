@@ -2,8 +2,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Target, Eye, Heart, History, TrendingUp, Users } from "lucide-react";
 
 export default function APropos() {
-  const heroImage = "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop";
-  const buildingImage = "https://images.unsplash.com/photo-1577412647305-991150c7d163?q=80&w=2070&auto=format&fit=crop";
+  const heroImage = "/assets/images/AE8I8870%20copie%20-%20Copie.jpg.jpeg";
+  const buildingImage = "/assets/images/Si%C3%A8ge%20de%20la%20BNM.jpg.jpeg";
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
