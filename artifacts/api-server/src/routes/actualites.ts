@@ -1,7 +1,12 @@
 import { Router } from "express";
 import { db, actualitesTable } from "@workspace/db";
 import { eq, desc, count } from "drizzle-orm";
-import { ListActualitesQueryParams, GetActualiteParams } from "@workspace/api-zod";
+import {
+  ListActualitesQueryParams,
+  GetActualiteParams,
+  CreateActualiteInput,
+} from "@workspace/api-zod";
+import { insertActualiteSchema } from "@workspace/db";
 
 const router = Router();
 
@@ -44,7 +49,10 @@ router.get("/actualites/:id", async (req, res) => {
     return res.status(422).json({ error: "Invalid id" });
   }
 
-  const [row] = await db.select().from(actualitesTable).where(eq(actualitesTable.id, parsed.data.id));
+  const [row] = await db
+    .select()
+    .from(actualitesTable)
+    .where(eq(actualitesTable.id, parsed.data.id));
   if (!row) {
     return res.status(404).json({ error: "Not found" });
   }
@@ -61,4 +69,44 @@ router.get("/actualites/:id", async (req, res) => {
   });
 });
 
+router.post("/actualites", async (req, res) => {
+  const parsed = insertActualiteSchema.safeParse(req.body);
+
+
+
+
+  if (!parsed.success) {
+    return res.status(422).json({ error: "Invalid body" });
+  }
+
+  const body = parsed.data;
+
+  // Validate against DB insert schema for additional safety
+  const insertParsed = insertActualiteSchema.safeParse({
+    titre: body.titre,
+    slug: body.slug,
+    contenu: body.contenu,
+    image: body.image ?? null,
+    categorie: body.categorie ?? null,
+    datePublication: body.datePublication ? new Date(body.datePublication) : undefined,
+  });
+
+  if (!insertParsed.success) {
+    return res.status(422).json({ error: "Invalid body" });
+  }
+
+  try {
+    await db.insert(actualitesTable).values(insertParsed.data).execute();
+    return res.status(201).json({ success: true, message: "Actualité créée" });
+  } catch (err: any) {
+    // Best-effort conflict handling (slug unique)
+    if (typeof err?.message === "string" && err.message.toLowerCase().includes("unique")) {
+      return res.status(409).json({ success: false, message: "Slug already exists" });
+    }
+
+    return res.status(500).json({ success: false, message: "Internal error" });
+  }
+});
+
 export default router;
+

@@ -20,6 +20,7 @@ import type {
   Actualite,
   Agence,
   ContactInput,
+  CreateActualiteInput,
   HealthStatus,
   ListActualites200,
   ListActualitesParams,
@@ -211,6 +212,92 @@ export function useListActualites<
 
   return { ...query, queryKey: queryOptions.queryKey };
 }
+
+/**
+ * @summary Create a news article
+ */
+export const getCreateActualiteUrl = () => {
+  return `/api/actualites`;
+};
+
+export const createActualite = async (
+  createActualiteInput: CreateActualiteInput,
+  options?: RequestInit,
+): Promise<SuccessResponse> => {
+  return customFetch<SuccessResponse>(getCreateActualiteUrl(), {
+    ...options,
+    method: "POST",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(createActualiteInput),
+  });
+};
+
+export const getCreateActualiteMutationOptions = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createActualite>>,
+    TError,
+    { data: BodyType<CreateActualiteInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof createActualite>>,
+  TError,
+  { data: BodyType<CreateActualiteInput> },
+  TContext
+> => {
+  const mutationKey = ["createActualite"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof createActualite>>,
+    { data: BodyType<CreateActualiteInput> }
+  > = (props) => {
+    const { data } = props ?? {};
+
+    return createActualite(data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export type CreateActualiteMutationResult = NonNullable<
+  Awaited<ReturnType<typeof createActualite>>
+>;
+export type CreateActualiteMutationBody = BodyType<CreateActualiteInput>;
+export type CreateActualiteMutationError = ErrorType<void>;
+
+/**
+ * @summary Create a news article
+ */
+export const useCreateActualite = <
+  TError = ErrorType<void>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof createActualite>>,
+    TError,
+    { data: BodyType<CreateActualiteInput> },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof createActualite>>,
+  TError,
+  { data: BodyType<CreateActualiteInput> },
+  TContext
+> => {
+  return useMutation(getCreateActualiteMutationOptions(options));
+};
 
 /**
  * @summary Get a single news article

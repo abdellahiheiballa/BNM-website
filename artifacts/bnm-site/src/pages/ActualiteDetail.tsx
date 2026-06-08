@@ -8,7 +8,15 @@ import { Badge } from "@/components/ui/badge";
 export default function ActualiteDetail() {
   const params = useParams();
   const id = parseInt(params.id || "0", 10);
-  const { data: actu, isLoading, error } = useGetActualite(id, { query: { enabled: !!id } });
+  const { data: actu, isLoading, error } = useGetActualite(id, {
+    query: {
+      enabled: !!id,
+      queryKey: ["/api/actualites", id],
+
+    },
+  });
+
+
 
   if (isLoading) {
     return (

@@ -20,6 +20,18 @@ export interface Actualite {
   createdAt: string;
 }
 
+export interface CreateActualiteInput {
+  /** @maxLength 200 */
+  titre: string;
+  /** @maxLength 200 */
+  slug: string;
+  contenu: string;
+  image?: string | null;
+  /** @maxLength 100 */
+  categorie?: string | null;
+  datePublication?: string | null;
+}
+
 export type OffreCategorie =
   (typeof OffreCategorie)[keyof typeof OffreCategorie];
 

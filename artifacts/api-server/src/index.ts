@@ -3,13 +3,16 @@ import { logger } from "./lib/logger";
 
 const rawPort = process.env["PORT"];
 
-if (!rawPort) {
+// Default port for local/dev usage.
+// Allows running the server without explicitly setting PORT.
+const port = rawPort ? Number(rawPort) : 3000;
+
+if (!port || Number.isNaN(port) || port <= 0) {
   throw new Error(
-    "PORT environment variable is required but was not provided.",
+    `Invalid PORT value: "${rawPort ?? "(missing)"}". Expected a positive number.`,
   );
 }
 
-const port = Number(rawPort);
 
 if (Number.isNaN(port) || port <= 0) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);

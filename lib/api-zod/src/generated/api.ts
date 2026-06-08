@@ -43,6 +43,24 @@ export const ListActualitesResponse = zod.object({
 });
 
 /**
+ * @summary Create a news article
+ */
+export const createActualiteBodyTitreMax = 200;
+
+export const createActualiteBodySlugMax = 200;
+
+export const createActualiteBodyCategorieMax = 100;
+
+export const CreateActualiteBody = zod.object({
+  titre: zod.string().max(createActualiteBodyTitreMax),
+  slug: zod.string().max(createActualiteBodySlugMax),
+  contenu: zod.string(),
+  image: zod.string().nullish(),
+  categorie: zod.string().max(createActualiteBodyCategorieMax).nullish(),
+  datePublication: zod.coerce.date().nullish(),
+});
+
+/**
  * @summary Get a single news article
  */
 export const GetActualiteParams = zod.object({

@@ -9,6 +9,7 @@
 export * from "./actualite";
 export * from "./agence";
 export * from "./contactInput";
+export * from "./createActualiteInput";
 export * from "./healthStatus";
 export * from "./listActualites200";
 export * from "./listActualitesParams";

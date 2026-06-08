@@ -30,22 +30,33 @@ export default function Actualites() {
       <section className="py-12 flex-1">
         <div className="container mx-auto px-4">
           {/* Category Filter */}
-          <div className="flex flex-wrap gap-2 mb-10 pb-4 border-b">
-            {CATEGORIES.map(cat => (
-              <Button
-                key={cat}
-                variant={selectedCategory === cat ? "default" : "outline"}
-                className={`rounded-none ${
-                  selectedCategory === cat 
-                    ? "bg-secondary text-primary hover:bg-secondary/90" 
-                    : "text-primary border-primary/20 hover:bg-primary/5 hover:text-primary"
-                }`}
-                onClick={() => setSelectedCategory(cat)}
-              >
-                {cat}
-              </Button>
-            ))}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+            <div className="flex flex-wrap gap-2 pb-0 sm:pb-4 border-b sm:border-b-0 sm:mb-0">
+              {CATEGORIES.map((cat) => (
+                <Button
+                  key={cat}
+                  variant={selectedCategory === cat ? "default" : "outline"}
+                  className={`rounded-none ${
+                    selectedCategory === cat
+                      ? "bg-secondary text-primary hover:bg-secondary/90"
+                      : "text-primary border-primary/20 hover:bg-primary/5 hover:text-primary"
+                  }`}
+                  onClick={() => setSelectedCategory(cat)}
+                >
+                  {cat}
+                </Button>
+              ))}
+            </div>
+
+            <div className="flex items-center justify-start sm:justify-end">
+              <Link href="/actualites/new">
+                <Button className="rounded-none bg-primary text-primary-foreground hover:bg-primary/90">
+                  Ajouter une Actualité
+                </Button>
+              </Link>
+            </div>
           </div>
+
 
           {isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

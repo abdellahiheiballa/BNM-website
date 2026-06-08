@@ -17,6 +17,7 @@ import Contact from "./pages/Contact";
 import APropos from "./pages/APropos";
 import Simulateur from "./pages/Simulateur";
 import Agences from "./pages/Agences";
+import ActualiteNew from "./pages/ActualiteNew";
 
 const queryClient = new QueryClient();
 
@@ -30,6 +31,7 @@ function Router() {
         <Route path="/entreprises" component={Entreprises} />
         <Route path="/finance-islamique" component={FinanceIslamique} />
         <Route path="/actualites" component={Actualites} />
+        <Route path="/actualites/new" component={ActualiteNew} />
         <Route path="/actualites/:id" component={ActualiteDetail} />
         <Route path="/contact" component={Contact} />
         <Route path="/a-propos" component={APropos} />

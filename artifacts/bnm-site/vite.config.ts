@@ -5,7 +5,10 @@ import path from "path";
 
 const port = Number(process.env.PORT ?? 5173);
 const basePath = process.env.BASE_PATH ?? "/";
-const apiPort = Number(process.env.API_PORT ?? 8080);
+// The API server listens on PORT (defaulted to 3000 in the server).
+// For local dev, keep the front-end proxy aligned with that default.
+const apiPort = Number(process.env.API_PORT ?? 3000);
+
 
 export default defineConfig({
   base: basePath,

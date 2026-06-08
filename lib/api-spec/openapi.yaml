@@ -77,6 +77,30 @@ paths:
                   - data
                   - total
 
+    post:
+      operationId: createActualite
+      tags: [actualites]
+      summary: Create a news article
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateActualiteInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "422":
+          description: Validation error
+
+        "409":
+          description: Conflict (e.g. slug already exists)
+
+
   /actualites/{id}:
     get:
       operationId: getActualite
@@ -267,6 +291,34 @@ components:
         - contenu
         - datePublication
         - createdAt
+
+    CreateActualiteInput:
+      type: object
+      properties:
+        titre:
+          type: string
+          maxLength: 200
+        slug:
+          type: string
+          maxLength: 200
+        contenu:
+          type: string
+        image:
+          type: string
+          nullable: true
+        categorie:
+          type: string
+          maxLength: 100
+          nullable: true
+        datePublication:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - titre
+        - slug
+        - contenu
+
 
     Offre:
       type: object
