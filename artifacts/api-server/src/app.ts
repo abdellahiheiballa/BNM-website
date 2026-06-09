@@ -31,4 +31,21 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", router);
 
+// Global error handler (ensures we always log the root cause)
+app.use((err: unknown, req: express.Request, res: express.Response, _next: express.NextFunction) => {
+  logger.error({ err, req: { method: req.method, url: req.url } }, "Unhandled error");
+
+  if (res.headersSent) {
+    return;
+  }
+
+  // Avoid leaking internals.
+  res.status(500).json({
+    error: "Internal Server Error",
+    message:
+      err instanceof Error ? err.message : "An unexpected error occurred",
+  });
+});
+
 export default app;
+

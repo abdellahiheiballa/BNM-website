@@ -2,7 +2,8 @@ import { pgTable, serial, varchar, text, decimal } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
-export const agencesTable = pgTable("agences", {
+export const agencesTable = pgTable("agences" , {
+
   id: serial("id").primaryKey(),
   nom: varchar("nom", { length: 200 }).notNull(),
   adresse: text("adresse"),

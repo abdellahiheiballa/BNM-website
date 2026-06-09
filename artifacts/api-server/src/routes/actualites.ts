@@ -4,9 +4,9 @@ import { eq, desc, count } from "drizzle-orm";
 import {
   ListActualitesQueryParams,
   GetActualiteParams,
-  CreateActualiteInput,
+  CreateActualiteBody,
 } from "@workspace/api-zod";
-import { insertActualiteSchema } from "@workspace/db";
+
 
 const router = Router();
 
@@ -70,43 +70,51 @@ router.get("/actualites/:id", async (req, res) => {
 });
 
 router.post("/actualites", async (req, res) => {
-  const parsed = insertActualiteSchema.safeParse(req.body);
-
-
-
+  const parsed = CreateActualiteBody.safeParse(req.body);
 
   if (!parsed.success) {
-    return res.status(422).json({ error: "Invalid body" });
+    return res.status(422).json({
+      error: "Invalid body",
+      details: parsed.error.issues,
+    });
   }
 
   const body = parsed.data;
 
-  // Validate against DB insert schema for additional safety
-  const insertParsed = insertActualiteSchema.safeParse({
-    titre: body.titre,
-    slug: body.slug,
-    contenu: body.contenu,
-    image: body.image ?? null,
-    categorie: body.categorie ?? null,
-    datePublication: body.datePublication ? new Date(body.datePublication) : undefined,
-  });
-
-  if (!insertParsed.success) {
-    return res.status(422).json({ error: "Invalid body" });
-  }
-
   try {
-    await db.insert(actualitesTable).values(insertParsed.data).execute();
+    await db
+      .insert(actualitesTable)
+      .values({
+        titre: body.titre,
+        slug: body.slug,
+        contenu: body.contenu,
+        image: body.image ?? null,
+        categorie: body.categorie ?? null,
+        // CreateActualiteBody coerces to Date, but keep a defensive conversion.
+        datePublication:
+          body.datePublication instanceof Date
+            ? body.datePublication
+            : new Date(body.datePublication ?? new Date()),
+
+      })
+      .execute();
+
     return res.status(201).json({ success: true, message: "Actualité créée" });
   } catch (err: any) {
     // Best-effort conflict handling (slug unique)
-    if (typeof err?.message === "string" && err.message.toLowerCase().includes("unique")) {
-      return res.status(409).json({ success: false, message: "Slug already exists" });
+    if (
+      typeof err?.message === "string" &&
+      err.message.toLowerCase().includes("unique")
+    ) {
+      return res
+        .status(409)
+        .json({ success: false, message: "Slug already exists" });
     }
 
     return res.status(500).json({ success: false, message: "Internal error" });
   }
 });
+
 
 export default router;
 

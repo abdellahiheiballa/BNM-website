@@ -2,7 +2,8 @@ import { pgTable, serial, varchar, text, integer } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
-export const offresTable = pgTable("offres", {
+export const offresTable = pgTable("offres" , {
+
   id: serial("id").primaryKey(),
   titre: varchar("titre", { length: 200 }).notNull(),
   slug: varchar("slug", { length: 200 }).unique().notNull(),
