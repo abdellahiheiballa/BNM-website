@@ -47,14 +47,6 @@ export default function Actualites() {
                 </Button>
               ))}
             </div>
-
-            <div className="flex items-center justify-start sm:justify-end">
-              <Link href="/actualites/new">
-                <Button className="rounded-none bg-primary text-primary-foreground hover:bg-primary/90">
-                  Ajouter une Actualité
-                </Button>
-              </Link>
-            </div>
           </div>
 
 

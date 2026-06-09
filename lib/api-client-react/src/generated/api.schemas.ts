@@ -141,6 +141,20 @@ export interface SuccessResponse {
   message: string;
 }
 
+export interface AdminLoginInput {
+  username: string;
+  password: string;
+}
+
+export interface UpdateActualiteInput {
+  titre?: string;
+  slug?: string;
+  contenu?: string;
+  image?: string | null;
+  categorie?: string | null;
+  datePublication?: string | null;
+}
+
 export type ListActualitesParams = {
   categorie?: string;
   limit?: number;

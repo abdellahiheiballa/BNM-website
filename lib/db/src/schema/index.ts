@@ -1,3 +1,4 @@
+export * from "./admins";
 export * from "./actualites";
 export * from "./offres";
 export * from "./contacts";

@@ -24,6 +24,8 @@ tags:
     description: Bank branches
   - name: stats
     description: Homepage statistics
+  - name: admin
+    description: Admin operations
 
 paths:
   /healthz:
@@ -250,6 +252,138 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Stats"
+
+  /admin/login:
+    post:
+      operationId: adminLogin
+      tags: [admin]
+      summary: Admin login
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AdminLoginInput"
+      responses:
+        "200":
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Bad request
+        "401":
+          description: Invalid credentials
+
+  /admin/logout:
+    post:
+      operationId: adminLogout
+      tags: [admin]
+      summary: Admin logout
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+
+  /admin/actualites:
+    get:
+      operationId: adminListActualites
+      tags: [admin]
+      summary: List all actualites (admin only)
+      responses:
+        "200":
+          description: List of actualites
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Actualite"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+    post:
+      operationId: adminCreateActualite
+      tags: [admin]
+      summary: Create actualite (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateActualiteInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "422":
+          description: Validation error
+
+  /admin/actualites/{id}:
+    put:
+      operationId: adminUpdateActualite
+      tags: [admin]
+      summary: Update actualite (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateActualiteInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+    delete:
+      operationId: adminDeleteActualite
+      tags: [admin]
+      summary: Delete actualite (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
 
 components:
   schemas:
@@ -510,6 +644,44 @@ components:
         - totalAgences
         - anneesExperience
         - totalActualites
+
+    AdminLoginInput:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+
+    UpdateActualiteInput:
+      type: object
+      properties:
+        titre:
+          type: string
+          maxLength: 200
+        slug:
+          type: string
+          maxLength: 200
+        contenu:
+          type: string
+        image:
+          type: string
+          nullable: true
+        categorie:
+          type: string
+          maxLength: 100
+          nullable: true
+        datePublication:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - titre
+        - slug
+        - contenu
 
     SuccessResponse:
       type: object

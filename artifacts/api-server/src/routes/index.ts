@@ -7,6 +7,7 @@ import newsletterRouter from "./newsletter";
 import simulateRouter from "./simulate";
 import agencesRouter from "./agences";
 import statsRouter from "./stats";
+import adminRouter from "./admin";
 
 const router: IRouter = Router();
 
@@ -18,5 +19,6 @@ router.use(newsletterRouter);
 router.use(simulateRouter);
 router.use(agencesRouter);
 router.use(statsRouter);
+router.use("/admin", adminRouter);
 
 export default router;

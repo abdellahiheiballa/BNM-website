@@ -28,7 +28,7 @@ async function assertExpectedTables() {
   // Only run in dev/local contexts where PORT is commonly used.
   if (process.env.NODE_ENV === "production") return;
 
-  const expected = ["actualites", "offres", "agences"];
+  const expected = ["actualites", "offres", "agences", "admins"];
 
   // DEBUG: confirm which DB/host is used by the API at runtime.
   // (Safe: no credentials.)
@@ -62,7 +62,7 @@ async function assertExpectedTables() {
       `select 1 as ok from information_schema.tables where table_schema = 'public' and table_name = any($1) limit 1`,
       [expected],
     )
-    .then((r) => r.rowCount > 0)
+    .then((r) => (r.rowCount ?? 0) > 0)
     .catch(() => false);
 
 
