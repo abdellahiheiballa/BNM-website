@@ -332,6 +332,29 @@ paths:
           description: Validation error
 
   /admin/actualites/{id}:
+    get:
+      operationId: adminGetActualite
+      tags: [admin]
+      summary: Get single actualite (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Actualite
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Actualite"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
     put:
       operationId: adminUpdateActualite
       tags: [admin]

@@ -60,6 +60,20 @@ router.post("/logout", (_req, res) => {
 
 router.use(requireAdmin());
 
+router.get("/actualites/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  if (!id) {
+    return res.status(400).json({ error: "Invalid id" });
+  }
+
+  const [row] = await db.select().from(actualitesTable).where(eq(actualitesTable.id, id));
+  if (!row) {
+    return res.status(404).json({ error: "Not found" });
+  }
+
+  return res.json(row);
+});
+
 router.get("/actualites", async (_req, res) => {
   const rows = await db.select().from(actualitesTable);
   return res.json(rows);

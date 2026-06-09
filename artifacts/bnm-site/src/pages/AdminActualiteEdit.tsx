@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { Alert } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, Calendar, Image as ImageIcon, AlertCircle } from "lucide-react";
 
 const CATEGORIES = ["Banque", "Economie", "Evènements", "Communiqués"] as const;
@@ -57,7 +58,7 @@ export default function AdminActualiteEdit() {
   const { toast } = useToast();
   const [location, navigate] = useLocation();
 
-  const { data: existingActu } = useAdminGetActualite(id!, { query: { enabled: isEdit && !!user, queryKey: [`/api/admin/actualites/${id}`] } });
+  const { data: existingActu, isLoading: isLoadingActu } = useAdminGetActualite(id!, { query: { enabled: isEdit && !!user, queryKey: [`/api/admin/actualites/${id}`] } });
   const createMutation = useAdminCreateActualite({
     mutation: {
       onSuccess: () => {
@@ -145,6 +146,60 @@ export default function AdminActualiteEdit() {
   };
 
   if (!user) return null;
+
+  if (isEdit && isLoadingActu) {
+    return (
+      <div className="min-h-screen bg-muted/20">
+        <section className="bg-primary py-10 text-white">
+          <div className="container mx-auto px-4">
+            <Link href="/admin" className="inline-flex items-center gap-2 text-white/90 hover:text-white mb-4">
+              <ArrowLeft className="w-4 h-4" /> Retour au tableau de bord
+            </Link>
+            <h1 className="text-3xl font-serif font-bold">Modifier l'actualité</h1>
+          </div>
+        </section>
+        <section className="py-8">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <Card className="rounded-none border-none shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-2xl text-primary">Chargement...</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-10 w-full" />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-16" />
+                      <Skeleton className="h-10 w-full" />
+                    </div>
+                    <div className="space-y-2">
+                      <Skeleton className="h-4 w-20" />
+                      <Skeleton className="h-10 w-full" />
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-24" />
+                    <Skeleton className="h-32 w-full" />
+                  </div>
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-32" />
+                    <Skeleton className="h-10 w-full" />
+                  </div>
+                  <div className="space-y-2">
+                    <Skeleton className="h-4 w-40" />
+                    <Skeleton className="h-10 w-full" />
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-muted/20">
