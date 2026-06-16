@@ -32,6 +32,9 @@ export default defineConfig({
       "/api": {
         target: `http://localhost:${apiPort}`,
         changeOrigin: true,
+        headers: {
+          "Accept-Charset": "utf-8",
+        },
       },
     },
   },
