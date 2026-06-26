@@ -1,29 +1,40 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation, useParams } from "wouter";
-import { useAdminCreateActualite, useAdminGetActualite, useAdminUpdateActualite } from "@workspace/api-client-react";
+import {
+  useAdminCreateOffre,
+  useAdminGetOffre,
+  useAdminUpdateOffre,
+  OffreCategorie,
+  type CreateOffreInput,
+  type Offre,
+} from "@workspace/api-client-react";
+import type { UpdateOffreInput } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { Alert } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, Calendar, AlertCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 import ImageUploadField from "@/components/admin/ImageUploadField";
-
-const CATEGORIES = ["Banque", "Economie", "Evènements", "Communiqués"] as const;
 
 type FormState = {
   titre: string;
   slug: string;
-  categorie: (typeof CATEGORIES)[number] | "";
-  contenu: string;
+  categorie: (typeof OffreCategorie)[keyof typeof OffreCategorie];
+  description: string;
   image: string;
-  datePublication: string;
+  icone: string;
+  clickByBnm: boolean;
+  ordre: string;
 };
+
+const categories = Object.values(OffreCategorie);
 
 function slugify(value: string) {
   return value
@@ -35,14 +46,11 @@ function slugify(value: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-function isValidDateInput(v: string) {
-  if (!v) return true;
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(v)) return false;
-  const d = new Date(v + "T00:00:00.000Z");
-  return !Number.isNaN(d.getTime());
+function defaultClickByBnm(titre: string, slug: string) {
+  return /compte\s*courant\s*particulier/i.test(`${titre} ${slug}`);
 }
 
-export default function AdminActualiteEdit() {
+export default function AdminOffreEdit() {
   const params = useParams();
   const id = params.id ? Number(params.id) : null;
   const isEdit = !!id;
@@ -50,20 +58,25 @@ export default function AdminActualiteEdit() {
   const [form, setForm] = useState<FormState>({
     titre: "",
     slug: "",
-    categorie: "",
-    contenu: "",
+    categorie: "particuliers",
+    description: "",
     image: "",
-    datePublication: "",
+    icone: "",
+    clickByBnm: false,
+    ordre: "0",
   });
   const [clientError, setClientError] = useState<string | null>(null);
   const { toast } = useToast();
-  const [location, navigate] = useLocation();
+  const [, navigate] = useLocation();
 
-  const { data: existingActu, isLoading: isLoadingActu } = useAdminGetActualite(id!, { query: { enabled: isEdit && !!user, queryKey: [`/api/admin/actualites/${id}`] } });
-  const createMutation = useAdminCreateActualite({
+  const { data: existingOffre, isLoading: isLoadingOffre } = useAdminGetOffre(id!, {
+    query: { enabled: isEdit && !!user, queryKey: [`/api/admin/offres/${id}`] },
+  });
+
+  const createMutation = useAdminCreateOffre({
     mutation: {
       onSuccess: () => {
-        toast({ title: "Actualité créée" });
+        toast({ title: "Offre créée" });
         navigate("/admin");
       },
       onError: (err: any) => {
@@ -72,10 +85,10 @@ export default function AdminActualiteEdit() {
     },
   });
 
-  const updateMutation = useAdminUpdateActualite({
+  const updateMutation = useAdminUpdateOffre({
     mutation: {
       onSuccess: () => {
-        toast({ title: "Actualité mise à jour" });
+        toast({ title: "Offre mise à jour" });
         navigate("/admin");
       },
       onError: (err: any) => {
@@ -85,29 +98,27 @@ export default function AdminActualiteEdit() {
   });
 
   useEffect(() => {
-    if (isEdit && existingActu) {
+    if (isEdit && existingOffre) {
       setForm({
-        titre: existingActu.titre,
-        slug: existingActu.slug,
-        categorie: (existingActu.categorie as (typeof CATEGORIES)[number]) || "",
-        contenu: existingActu.contenu,
-        image: existingActu.image || "",
-        datePublication: existingActu.datePublication ? existingActu.datePublication.split("T")[0] : "",
+        titre: existingOffre.titre,
+        slug: existingOffre.slug,
+        categorie: existingOffre.categorie,
+        description: existingOffre.description || "",
+        image: existingOffre.image || "",
+        icone: existingOffre.icone || "",
+        clickByBnm: existingOffre.clickByBnm,
+        ordre: String(existingOffre.ordre),
       });
     }
-  }, [isEdit, existingActu]);
+  }, [isEdit, existingOffre]);
 
   const validate = () => {
-    const titre = form.titre.trim();
-    const slug = form.slug.trim();
-    const contenu = form.contenu.trim();
-
-    if (!titre) return "Le titre est obligatoire.";
-    if (!slug) return "Le slug est obligatoire.";
-    if (!contenu) return "Le contenu est obligatoire.";
-    if (contenu.length < 20) return "Le contenu semble trop court (min. ~20 caractères).";
-    if (!isValidDateInput(form.datePublication)) return "La date doit être au format AAAA-MM-JJ.";
-
+    if (!form.titre.trim()) return "Le titre est obligatoire.";
+    if (!form.slug.trim()) return "Le slug est obligatoire.";
+    if (!categories.includes(form.categorie)) return "La catégorie est invalide.";
+    if (!form.description.trim()) return "La description est obligatoire.";
+    if (form.description.trim().length < 20) return "La description semble trop courte.";
+    if (!/^\d+$/.test(form.ordre)) return "L'ordre doit être un nombre entier.";
     return null;
   };
 
@@ -122,27 +133,27 @@ export default function AdminActualiteEdit() {
       return;
     }
 
-    const payload = {
+    const payload: UpdateOffreInput = {
       titre: form.titre.trim(),
       slug: form.slug.trim(),
-      contenu: form.contenu.trim(),
+      description: form.description.trim(),
       image: form.image.trim() ? form.image.trim() : null,
-      categorie: form.categorie ? form.categorie : null,
-      datePublication: form.datePublication
-        ? new Date(form.datePublication + "T00:00:00.000Z").toISOString()
-        : null,
+      icone: form.icone.trim() ? form.icone.trim() : null,
+      clickByBnm: form.clickByBnm,
+      categorie: form.categorie,
+      ordre: Number(form.ordre),
     };
 
     if (isEdit && id) {
       await updateMutation.mutateAsync({ id, data: payload });
     } else {
-      await createMutation.mutateAsync({ data: payload });
+      await createMutation.mutateAsync({ data: payload as CreateOffreInput });
     }
   };
 
   if (!user) return null;
 
-  if (isEdit && isLoadingActu) {
+  if (isEdit && isLoadingOffre) {
     return (
       <div className="min-h-screen bg-muted/20">
         <section className="bg-primary py-10 text-white">
@@ -150,44 +161,17 @@ export default function AdminActualiteEdit() {
             <Link href="/admin" className="inline-flex items-center gap-2 text-white/90 hover:text-white mb-4">
               <ArrowLeft className="w-4 h-4" /> Retour au tableau de bord
             </Link>
-            <h1 className="text-3xl font-serif font-bold">Modifier l'actualité</h1>
+            <h1 className="text-3xl font-serif font-bold">Chargement...</h1>
           </div>
         </section>
         <section className="py-8">
           <div className="container mx-auto px-4 max-w-4xl">
             <Card className="rounded-none border-none shadow-sm">
-              <CardHeader>
-                <CardTitle className="text-2xl text-primary">Chargement...</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-24" />
-                    <Skeleton className="h-10 w-full" />
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div className="space-y-2">
-                      <Skeleton className="h-4 w-16" />
-                      <Skeleton className="h-10 w-full" />
-                    </div>
-                    <div className="space-y-2">
-                      <Skeleton className="h-4 w-20" />
-                      <Skeleton className="h-10 w-full" />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-24" />
-                    <Skeleton className="h-32 w-full" />
-                  </div>
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-32" />
-                    <Skeleton className="h-10 w-full" />
-                  </div>
-                  <div className="space-y-2">
-                    <Skeleton className="h-4 w-40" />
-                    <Skeleton className="h-10 w-full" />
-                  </div>
-                </div>
+              <CardContent className="space-y-6">
+                <Skeleton className="h-10 w-full" />
+                <Skeleton className="h-10 w-full" />
+                <Skeleton className="h-32 w-full" />
+                <Skeleton className="h-10 w-40" />
               </CardContent>
             </Card>
           </div>
@@ -204,7 +188,7 @@ export default function AdminActualiteEdit() {
             <ArrowLeft className="w-4 h-4" /> Retour au tableau de bord
           </Link>
           <h1 className="text-3xl font-serif font-bold">
-            {isEdit ? "Modifier l'actualité" : "Nouvelle actualité"}
+            {isEdit ? "Modifier l'offre" : "Nouvelle offre"}
           </h1>
         </div>
       </section>
@@ -214,13 +198,12 @@ export default function AdminActualiteEdit() {
           <Card className="rounded-none border-none shadow-sm">
             <CardHeader>
               <CardTitle className="text-2xl text-primary">
-                {isEdit ? "Modifier" : "Créer"} un article
+                {isEdit ? "Modifier" : "Créer"} une offre
               </CardTitle>
             </CardHeader>
             <CardContent>
               {clientError && (
                 <Alert variant="destructive" className="mb-6 rounded-none">
-                  <AlertCircle className="w-4 h-4" />
                   {clientError}
                 </Alert>
               )}
@@ -236,7 +219,8 @@ export default function AdminActualiteEdit() {
                       setForm((s) => ({
                         ...s,
                         titre,
-                        slug: s.slug.trim() === "" || s.slug === slugify(s.titre) ? slugify(titre) : s.slug,
+                        slug: s.slug.trim() === "" || s.slug === slugify(s.titre) || defaultClickByBnm(s.titre, s.slug) ? slugify(titre) : s.slug,
+                        clickByBnm: defaultClickByBnm(titre, s.slug) || s.clickByBnm,
                       }));
                     }}
                     required
@@ -256,60 +240,78 @@ export default function AdminActualiteEdit() {
                 <div>
                   <Label className="font-semibold">Catégorie</Label>
                   <Select
-                    value={form.categorie || ""}
-                    onValueChange={(v) => setForm((s) => ({ ...s, categorie: v === "" ? "" : (v as FormState["categorie"]) }))}
+                    value={form.categorie}
+                    onValueChange={(v) => setForm((s) => ({ ...s, categorie: v as FormState["categorie"] }))}
                   >
                     <SelectTrigger className="rounded-none mt-2">
-                      <SelectValue placeholder="Choisir" />
+                      <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="none">Aucune</SelectItem>
-                      {CATEGORIES.map((c) => (
-                        <SelectItem key={c} value={c}>
-                          {c}
+                      {categories.map((categorie) => (
+                        <SelectItem key={categorie} value={categorie}>
+                          {categorie}
                         </SelectItem>
                       ))}
                     </SelectContent>
                   </Select>
                 </div>
 
-                <div className="md:col-span-2">
-                  <Label className="font-semibold">Contenu</Label>
-                  <Textarea
+                <div>
+                  <Label className="font-semibold">Ordre d'affichage</Label>
+                  <Input
+                    type="number"
                     className="rounded-none mt-2"
-                    value={form.contenu}
-                    onChange={(e) => setForm((s) => ({ ...s, contenu: e.target.value }))}
+                    value={form.ordre}
+                    onChange={(e) => setForm((s) => ({ ...s, ordre: e.target.value }))}
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-semibold">Icône / identifiant court</Label>
+                  <Input
+                    className="rounded-none mt-2"
+                    value={form.icone}
+                    onChange={(e) => setForm((s) => ({ ...s, icone: e.target.value }))}
+                    placeholder="ex: compte-courant"
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <Label className="font-semibold">Description</Label>
+                  <Textarea
+                    className="rounded-none mt-2 min-h-32"
+                    value={form.description}
+                    onChange={(e) => setForm((s) => ({ ...s, description: e.target.value }))}
                     required
-                    placeholder="Écrivez le contenu..."
                   />
                 </div>
 
                 <div className="md:col-span-2">
                   <ImageUploadField
+                    label="Image / document de l'offre"
                     value={form.image}
                     onChange={(image) => setForm((s) => ({ ...s, image }))}
-                    placeholder="https://... ou téléverser un fichier"
+                    placeholder="URL ou téléverser un fichier"
                   />
                 </div>
 
-                <div className="md:col-span-2">
-                  <Label className="font-semibold inline-flex items-center gap-2">
-                    <Calendar className="w-4 h-4" /> Date de publication
-                  </Label>
-                  <Input
-                    type="date"
-                    className="rounded-none mt-2"
-                    value={form.datePublication}
-                    onChange={(e) => setForm((s) => ({ ...s, datePublication: e.target.value }))}
+                <div className="md:col-span-2 flex items-center gap-3 rounded-none border p-4">
+                  <Checkbox
+                    id="clickByBnm"
+                    checked={form.clickByBnm}
+                    onCheckedChange={(checked) => setForm((s) => ({ ...s, clickByBnm: checked === true }))}
                   />
+                  <Label htmlFor="clickByBnm" className="cursor-pointer">
+                    Liaison automatique avec Click by BNM (portefeuille mobile)
+                  </Label>
                 </div>
 
                 <div className="md:col-span-2 flex flex-col sm:flex-row gap-3 sm:justify-end">
                   <Button type="button" variant="outline" className="rounded-none" onClick={() => navigate("/admin")}>
                     Annuler
                   </Button>
-                  <Button type="submit" className="rounded-none">
-                    {isEdit ? "Mettre à jour" : "Créer"}
+                  <Button type="submit" className="rounded-none" disabled={createMutation.isPending || updateMutation.isPending}>
+                    {isEdit ? "Mettre à jour" : "Créer"} <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </div>
               </form>

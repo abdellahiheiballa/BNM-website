@@ -7,9 +7,14 @@
  */
 
 export * from "./actualite";
+export * from "./adminLoginInput";
+export * from "./adminUploadFile200";
 export * from "./agence";
 export * from "./contactInput";
 export * from "./createActualiteInput";
+export * from "./createOffreInput";
+export * from "./createOffreInputCategorie";
+export * from "./devenirClientInput";
 export * from "./healthStatus";
 export * from "./listActualites200";
 export * from "./listActualitesParams";
@@ -24,3 +29,7 @@ export * from "./simulateMurabahaInput";
 export * from "./simulationResult";
 export * from "./stats";
 export * from "./successResponse";
+export * from "./updateActualiteInput";
+export * from "./updateOffreInput";
+export * from "./updateOffreInputCategorie";
+export * from "./uploadedFileUrl";

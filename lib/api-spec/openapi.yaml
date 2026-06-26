@@ -145,6 +145,23 @@ paths:
                 items:
                   $ref: "#/components/schemas/Offre"
 
+  /devenir-client:
+    post:
+      operationId: submitDevenirClient
+      tags: [contact]
+      summary: Submit a new client onboarding request
+      responses:
+        "201":
+          description: Onboarding request submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "400":
+          description: Invalid request
+        "422":
+          description: Validation error
+
   /contact:
     post:
       operationId: submitContact
@@ -289,6 +306,30 @@ paths:
               schema:
                 $ref: "#/components/schemas/SuccessResponse"
 
+  /admin/upload:
+    post:
+      operationId: adminUploadFile
+      tags: [admin]
+      summary: Upload an image or document (admin only)
+      responses:
+        "200":
+          description: Uploaded file URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  url:
+                    type: string
+                required:
+                  - url
+        "400":
+          description: Invalid file
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+
   /admin/actualites:
     get:
       operationId: adminListActualites
@@ -408,6 +449,125 @@ paths:
         "404":
           description: Not found
 
+  /admin/offres:
+    get:
+      operationId: adminListOffres
+      tags: [admin]
+      summary: List all offres (admin only)
+      responses:
+        "200":
+          description: List of offres
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Offre"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+    post:
+      operationId: adminCreateOffre
+      tags: [admin]
+      summary: Create offre (admin only)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateOffreInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "422":
+          description: Validation error
+
+  /admin/offres/{id}:
+    get:
+      operationId: adminGetOffre
+      tags: [admin]
+      summary: Get single offre (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Offre
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Offre"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+    put:
+      operationId: adminUpdateOffre
+      tags: [admin]
+      summary: Update offre (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateOffreInput"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+    delete:
+      operationId: adminDeleteOffre
+      tags: [admin]
+      summary: Delete offre (admin only)
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/SuccessResponse"
+        "401":
+          description: Unauthorized
+        "403":
+          description: Forbidden
+        "404":
+          description: Not found
+
 components:
   schemas:
     HealthStatus:
@@ -489,9 +649,15 @@ components:
         description:
           type: string
           nullable: true
+        image:
+          type: string
+          nullable: true
         icone:
           type: string
           nullable: true
+        clickByBnm:
+          type: boolean
+          default: false
         categorie:
           type: string
           enum: [particuliers, professionnels, entreprises, islamique]
@@ -503,6 +669,106 @@ components:
         - slug
         - categorie
         - ordre
+        - clickByBnm
+
+    CreateOffreInput:
+      type: object
+      properties:
+        titre:
+          type: string
+          maxLength: 200
+        slug:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+          nullable: true
+        image:
+          type: string
+          nullable: true
+        icone:
+          type: string
+          maxLength: 100
+          nullable: true
+        clickByBnm:
+          type: boolean
+          default: false
+        categorie:
+          type: string
+          enum: [particuliers, professionnels, entreprises, islamique]
+        ordre:
+          type: integer
+          default: 0
+      required:
+        - titre
+        - slug
+        - categorie
+
+    UpdateOffreInput:
+      type: object
+      properties:
+        titre:
+          type: string
+          maxLength: 200
+        slug:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+          nullable: true
+        image:
+          type: string
+          nullable: true
+        icone:
+          type: string
+          maxLength: 100
+          nullable: true
+        clickByBnm:
+          type: boolean
+        categorie:
+          type: string
+          enum: [particuliers, professionnels, entreprises, islamique]
+        ordre:
+          type: integer
+
+    UploadedFileUrl:
+      type: object
+      properties:
+        url:
+          type: string
+      required:
+        - url
+
+    DevenirClientInput:
+      type: object
+      properties:
+        nomComplet:
+          type: string
+          minLength: 2
+        cinPasseport:
+          type: string
+          minLength: 3
+        telephone:
+          type: string
+          minLength: 8
+        adresse:
+          type: string
+          minLength: 10
+        secteurActivite:
+          type: string
+          minLength: 2
+        cinPasseportFile:
+          type: string
+        justificatifFile:
+          type: string
+      required:
+        - nomComplet
+        - cinPasseport
+        - telephone
+        - adresse
+        - secteurActivite
+        - cinPasseportFile
+        - justificatifFile
 
     ContactInput:
       type: object

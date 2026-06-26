@@ -12,7 +12,9 @@ export interface Offre {
   titre: string;
   slug: string;
   description?: string | null;
+  image?: string | null;
   icone?: string | null;
+  clickByBnm: boolean;
   categorie: OffreCategorie;
   ordre: number;
 }

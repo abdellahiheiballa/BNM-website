@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Link } from "wouter";
 import { useCreateActualite } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
 import { Alert } from "@/components/ui/alert";
-import { ArrowLeft, Calendar, Image as ImageIcon } from "lucide-react";
+import { ArrowLeft, Calendar } from "lucide-react";
+import ImageUploadField from "@/components/admin/ImageUploadField";
 
 const CATEGORIES = ["Banque", "Economie", "Evènements", "Communiqués"] as const;
 
@@ -79,12 +80,6 @@ export default function ActualiteNew() {
   });
 
   const isSubmitting = createMutation.isPending;
-
-  const imagePreview = useMemo(() => {
-    const v = form.image.trim();
-    if (!v) return null;
-    return v;
-  }, [form.image]);
 
   const validate = () => {
     const titre = form.titre.trim();
@@ -241,31 +236,11 @@ export default function ActualiteNew() {
                 </div>
 
                 <div className="md:col-span-2">
-                  <Label className="font-semibold inline-flex items-center gap-2">
-                    <ImageIcon className="w-4 h-4" /> Image (URL / chemin)
-                  </Label>
-                  <Input
-                    className="rounded-none mt-2"
+                  <ImageUploadField
                     value={form.image}
-                    onChange={(e) =>
-                      setForm((s) => ({ ...s, image: e.target.value }))
-                    }
-                    placeholder="https://... ou /assets/..."
+                    onChange={(image) => setForm((s) => ({ ...s, image }))}
+                    placeholder="https://... ou téléverser un fichier"
                   />
-                  {imagePreview && (
-                    <div className="mt-4">
-                      <div className="text-xs font-medium text-muted-foreground mb-2">
-                        Aperçu
-                      </div>
-                      <div className="w-full aspect-[21/9] bg-muted relative">
-                        <img
-                          src={imagePreview}
-                          alt="Aperçu image"
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 <div className="md:col-span-2">

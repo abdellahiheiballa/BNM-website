@@ -87,12 +87,16 @@ export const ListOffresQueryParams = zod.object({
     .optional(),
 });
 
+export const listOffresResponseClickByBnmDefault = false;
+
 export const ListOffresResponseItem = zod.object({
   id: zod.number(),
   titre: zod.string(),
   slug: zod.string(),
   description: zod.string().nullish(),
+  image: zod.string().nullish(),
   icone: zod.string().nullish(),
+  clickByBnm: zod.boolean().default(listOffresResponseClickByBnmDefault),
   categorie: zod.enum([
     "particuliers",
     "professionnels",
@@ -214,4 +218,244 @@ export const GetStatsResponse = zod.object({
   totalAgences: zod.number(),
   anneesExperience: zod.number(),
   totalActualites: zod.number(),
+});
+
+/**
+ * @summary Admin login
+ */
+export const AdminLoginBody = zod.object({
+  username: zod.string(),
+  password: zod.string(),
+});
+
+export const AdminLoginResponse = zod.object({
+  success: zod.boolean(),
+  message: zod.string(),
+});
+
+/**
+ * @summary Admin logout
+ */
+export const AdminLogoutResponse = zod.object({
+  success: zod.boolean(),
+  message: zod.string(),
+});
+
+/**
+ * @summary Upload an image or document (admin only)
+ */
+export const AdminUploadFileResponse = zod.object({
+  url: zod.string(),
+});
+
+/**
+ * @summary List all actualites (admin only)
+ */
+export const AdminListActualitesResponseItem = zod.object({
+  id: zod.number(),
+  titre: zod.string(),
+  slug: zod.string(),
+  contenu: zod.string(),
+  image: zod.string().nullish(),
+  categorie: zod.string().nullish(),
+  datePublication: zod.coerce.date(),
+  createdAt: zod.coerce.date(),
+});
+export const AdminListActualitesResponse = zod.array(
+  AdminListActualitesResponseItem,
+);
+
+/**
+ * @summary Create actualite (admin only)
+ */
+export const adminCreateActualiteBodyTitreMax = 200;
+
+export const adminCreateActualiteBodySlugMax = 200;
+
+export const adminCreateActualiteBodyCategorieMax = 100;
+
+export const AdminCreateActualiteBody = zod.object({
+  titre: zod.string().max(adminCreateActualiteBodyTitreMax),
+  slug: zod.string().max(adminCreateActualiteBodySlugMax),
+  contenu: zod.string(),
+  image: zod.string().nullish(),
+  categorie: zod.string().max(adminCreateActualiteBodyCategorieMax).nullish(),
+  datePublication: zod.coerce.date().nullish(),
+});
+
+/**
+ * @summary Get single actualite (admin only)
+ */
+export const AdminGetActualiteParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const AdminGetActualiteResponse = zod.object({
+  id: zod.number(),
+  titre: zod.string(),
+  slug: zod.string(),
+  contenu: zod.string(),
+  image: zod.string().nullish(),
+  categorie: zod.string().nullish(),
+  datePublication: zod.coerce.date(),
+  createdAt: zod.coerce.date(),
+});
+
+/**
+ * @summary Update actualite (admin only)
+ */
+export const AdminUpdateActualiteParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const adminUpdateActualiteBodyTitreMax = 200;
+
+export const adminUpdateActualiteBodySlugMax = 200;
+
+export const adminUpdateActualiteBodyCategorieMax = 100;
+
+export const AdminUpdateActualiteBody = zod.object({
+  titre: zod.string().max(adminUpdateActualiteBodyTitreMax),
+  slug: zod.string().max(adminUpdateActualiteBodySlugMax),
+  contenu: zod.string(),
+  image: zod.string().nullish(),
+  categorie: zod.string().max(adminUpdateActualiteBodyCategorieMax).nullish(),
+  datePublication: zod.coerce.date().nullish(),
+});
+
+export const AdminUpdateActualiteResponse = zod.object({
+  success: zod.boolean(),
+  message: zod.string(),
+});
+
+/**
+ * @summary Delete actualite (admin only)
+ */
+export const AdminDeleteActualiteParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const AdminDeleteActualiteResponse = zod.object({
+  success: zod.boolean(),
+  message: zod.string(),
+});
+
+/**
+ * @summary List all offres (admin only)
+ */
+export const adminListOffresResponseClickByBnmDefault = false;
+
+export const AdminListOffresResponseItem = zod.object({
+  id: zod.number(),
+  titre: zod.string(),
+  slug: zod.string(),
+  description: zod.string().nullish(),
+  image: zod.string().nullish(),
+  icone: zod.string().nullish(),
+  clickByBnm: zod.boolean().default(adminListOffresResponseClickByBnmDefault),
+  categorie: zod.enum([
+    "particuliers",
+    "professionnels",
+    "entreprises",
+    "islamique",
+  ]),
+  ordre: zod.number(),
+});
+export const AdminListOffresResponse = zod.array(AdminListOffresResponseItem);
+
+/**
+ * @summary Create offre (admin only)
+ */
+export const adminCreateOffreBodyTitreMax = 200;
+
+export const adminCreateOffreBodySlugMax = 200;
+
+export const adminCreateOffreBodyIconeMax = 100;
+
+export const adminCreateOffreBodyClickByBnmDefault = false;
+export const adminCreateOffreBodyOrdreDefault = 0;
+
+export const AdminCreateOffreBody = zod.object({
+  titre: zod.string().max(adminCreateOffreBodyTitreMax),
+  slug: zod.string().max(adminCreateOffreBodySlugMax),
+  description: zod.string().nullish(),
+  image: zod.string().nullish(),
+  icone: zod.string().max(adminCreateOffreBodyIconeMax).nullish(),
+  clickByBnm: zod.boolean().default(adminCreateOffreBodyClickByBnmDefault),
+  categorie: zod.enum([
+    "particuliers",
+    "professionnels",
+    "entreprises",
+    "islamique",
+  ]),
+  ordre: zod.number().default(adminCreateOffreBodyOrdreDefault),
+});
+
+/**
+ * @summary Get single offre (admin only)
+ */
+export const AdminGetOffreParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const adminGetOffreResponseClickByBnmDefault = false;
+
+export const AdminGetOffreResponse = zod.object({
+  id: zod.number(),
+  titre: zod.string(),
+  slug: zod.string(),
+  description: zod.string().nullish(),
+  image: zod.string().nullish(),
+  icone: zod.string().nullish(),
+  clickByBnm: zod.boolean().default(adminGetOffreResponseClickByBnmDefault),
+  categorie: zod.enum([
+    "particuliers",
+    "professionnels",
+    "entreprises",
+    "islamique",
+  ]),
+  ordre: zod.number(),
+});
+
+/**
+ * @summary Update offre (admin only)
+ */
+export const AdminUpdateOffreParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const adminUpdateOffreBodyTitreMax = 200;
+
+export const adminUpdateOffreBodySlugMax = 200;
+
+export const adminUpdateOffreBodyIconeMax = 100;
+
+export const AdminUpdateOffreBody = zod.object({
+  titre: zod.string().max(adminUpdateOffreBodyTitreMax).optional(),
+  slug: zod.string().max(adminUpdateOffreBodySlugMax).optional(),
+  description: zod.string().nullish(),
+  image: zod.string().nullish(),
+  icone: zod.string().max(adminUpdateOffreBodyIconeMax).nullish(),
+  clickByBnm: zod.boolean().optional(),
+  categorie: zod
+    .enum(["particuliers", "professionnels", "entreprises", "islamique"])
+    .optional(),
+  ordre: zod.number().optional(),
+});
+
+export const AdminUpdateOffreResponse = zod.object({
+  success: zod.boolean(),
+  message: zod.string(),
+});
+
+/**
+ * @summary Delete offre (admin only)
+ */
+export const AdminDeleteOffreParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const AdminDeleteOffreResponse = zod.object({
+  success: zod.boolean(),
+  message: zod.string(),
 });

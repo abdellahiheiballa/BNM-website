@@ -2,7 +2,7 @@ import { useGetStats, useListOffres, useListActualites } from "@workspace/api-cl
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
-import { ArrowRight, Building2, Users, Calendar, Newspaper, Landmark, Briefcase, ChevronRight } from "lucide-react";
+import { ArrowRight, Building2, Users, Calendar, Newspaper, Landmark, Briefcase, ChevronRight, ExternalLink, Wallet } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function Home() {
@@ -31,12 +31,16 @@ export default function Home() {
               Depuis des décennies, la Banque Nationale de Mauritanie accompagne le développement économique du pays. Nous offrons des solutions financières modernes, sécurisées et adaptées à vos ambitions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button size="lg" className="bg-secondary text-primary hover:bg-secondary/90 font-bold px-8 rounded-none">
-                Devenir client
-              </Button>
-              <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10 rounded-none bg-transparent">
-                Découvrir nos offres
-              </Button>
+              <Link href="/devenir-client">
+                <Button size="lg" className="bg-secondary text-primary hover:bg-secondary/90 font-bold px-8 rounded-none">
+                  Devenir client
+                </Button>
+              </Link>
+              <Link href="/particuliers">
+                <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10 rounded-none bg-transparent">
+                  Découvrir nos offres
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -137,6 +141,52 @@ export default function Home() {
                 </Link>
               </CardContent>
             </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Click by BNM Section */}
+      <section className="py-20 bg-muted/30">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
+            <div className="space-y-6">
+              <div className="inline-flex items-center gap-2 px-3 py-1 bg-secondary text-primary font-semibold text-sm rounded-full w-fit">
+                <Wallet className="w-4 h-4" />
+                Click by BNM
+              </div>
+              <h2 className="text-3xl md:text-5xl font-serif font-bold text-primary">
+                Votre Banque Digitale en un CLICK
+              </h2>
+              <p className="text-muted-foreground text-lg leading-relaxed">
+                CLICK est une solution de Mobile Money développée par la Banque Nationale de Mauritanie qui met à votre disposition des services financiers et transactionnels via mobile, tablette ou web et ce sans avoir de compte bancaire. Grâce à CLICK, transférez et envoyez de l’argent partout en Mauritanie, payez vos factures et taxes sans avoir à vous déplacer et bien plus encore.
+              </p>
+              <p className="text-primary font-semibold text-lg">
+                N’attendez plus, téléchargez l’application !
+              </p>
+              <a href="https://www.click.mr/" target="_blank" rel="noreferrer" className="inline-flex items-center">
+                <Button size="lg" className="bg-primary text-white hover:bg-primary/90 rounded-none">
+                  Accéder à Click.mr <ExternalLink className="ml-2 w-4 h-4" />
+                </Button>
+              </a>
+            </div>
+            <div className="relative min-h-[460px] rounded-none overflow-hidden shadow-lg bg-primary">
+              <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_20%,rgba(255,255,255,0.24),transparent_35%),linear-gradient(135deg,rgba(2,132,199,0.95),rgba(15,23,42,0.95))]"></div>
+              <div className="absolute inset-6 border-2 border-white/20 rounded-none"></div>
+              <img
+                src="/assets/images/screen shot click.png"
+                alt="Application Click"
+                className="absolute right-6 top-6 z-20 h-[416px] w-[212px] rounded-[2rem] border-4 border-white/80 object-cover shadow-2xl"
+              />
+              <div className="absolute left-8 right-[260px] top-14 space-y-4 z-10">
+                <div className="h-16 rounded-none bg-white/15 border border-white/20"></div>
+                <div className="h-16 rounded-none bg-white/15 border border-white/20"></div>
+                <div className="h-16 rounded-none bg-white/15 border border-white/20"></div>
+              </div>
+              <div className="absolute bottom-8 left-8 right-[260px] z-10 rounded-none bg-white/95 text-primary p-6 shadow-2xl">
+                <p className="text-sm font-semibold uppercase tracking-wider text-secondary">Paiements & transferts</p>
+                <p className="text-2xl font-serif font-bold mt-2">Simple, rapide, sécurisé.</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

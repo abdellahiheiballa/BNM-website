@@ -58,7 +58,12 @@ export default function Particuliers() {
           ) : offresArray.length > 0 ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {offresArray.map(offre => (
-                <Card key={offre.id} className="group hover:border-secondary transition-colors duration-300 rounded-none shadow-sm hover:shadow-md flex flex-col h-full">
+                <Card key={offre.id} className="group hover:border-secondary transition-colors duration-300 rounded-none shadow-sm hover:shadow-md flex flex-col h-full overflow-hidden">
+                  {offre.image && (
+                    <div className="h-44 bg-muted overflow-hidden">
+                      <img src={offre.image} alt={offre.titre} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    </div>
+                  )}
                   <CardHeader>
                     <div className="w-12 h-12 bg-primary/5 rounded-full flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-secondary transition-colors">
                       {offre.titre.toLowerCase().includes('carte') ? <CreditCard className="w-6 h-6" /> : 
@@ -75,6 +80,11 @@ export default function Particuliers() {
                     <CardDescription className="text-base mb-6 text-foreground/80 line-clamp-3">
                       {offre.description || "Découvrez notre solution adaptée à vos besoins spécifiques."}
                     </CardDescription>
+                    {(offre.clickByBnm || /compte\s*courant\s*particulier/i.test(offre.titre)) && (
+                      <div className="mb-6 rounded-none border border-secondary/30 bg-secondary/10 p-3 text-sm font-medium text-primary">
+                        Liaison automatique avec Click by BNM (portefeuille mobile)
+                      </div>
+                    )}
                     <Button variant="outline" className="w-full justify-between group-hover:bg-primary group-hover:text-white group-hover:border-primary transition-all rounded-none mt-auto">
                       En savoir plus <ArrowRight className="w-4 h-4" />
                     </Button>

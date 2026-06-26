@@ -1,15 +1,35 @@
-import { useListAgences } from "@workspace/api-client-react";
+import "leaflet/dist/leaflet.css";
+import { useEffect, useMemo, useState } from "react";
+import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
+import { useListAgences, type Agence } from "@workspace/api-client-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { MapPin, Phone, Clock, Search, Map } from "lucide-react";
-import { useState, useMemo } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { MapPin, Phone, Clock, Search, MapIcon } from "lucide-react";
+
+type AgenceWithCoords = Agence & {
+  latitude: number;
+  longitude: number;
+};
+
+function MapController({ agence }: { agence: AgenceWithCoords | null }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!agence) return;
+    map.flyTo([agence.latitude, agence.longitude], 13, { duration: 0.8 });
+  }, [agence, map]);
+
+  return null;
+}
 
 export default function Agences() {
   const { data: agences, isLoading } = useListAgences();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState("Toutes");
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const agencesArray = Array.isArray(agences) ? agences : [];
 
   const cities = useMemo(() => {
@@ -23,22 +43,155 @@ export default function Agences() {
     return agencesArray.filter(agence => {
       const matchesCity = selectedCity === "Toutes" || agence.ville === selectedCity;
       const searchLower = searchQuery.toLowerCase();
-      const matchesSearch = 
-        agence.nom.toLowerCase().includes(searchLower) || 
+      const matchesSearch =
+        agence.nom.toLowerCase().includes(searchLower) ||
         (agence.ville && agence.ville.toLowerCase().includes(searchLower)) ||
         (agence.adresse && agence.adresse.toLowerCase().includes(searchLower));
-      
+
       return matchesCity && matchesSearch;
     });
   }, [agences, searchQuery, selectedCity]);
 
+  const selectedAgence = useMemo(
+    () => agencesArray.find(a => a.id === selectedId) ?? filteredAgences[0] ?? null,
+    [agencesArray, filteredAgences, selectedId],
+  );
+
+  const selectedAgenceWithCoords: AgenceWithCoords | null = selectedAgence && selectedAgence.latitude && selectedAgence.longitude
+    ? { ...selectedAgence, latitude: selectedAgence.latitude, longitude: selectedAgence.longitude }
+    : null;
+
+  const mapPanel = (
+    <Card className="h-[620px] rounded-none overflow-hidden shadow-md sticky top-24">
+      <div className="h-full w-full">
+        {isLoading ? (
+          <div className="h-full flex items-center justify-center bg-muted">
+            <Skeleton className="h-12 w-12 rounded-full" />
+          </div>
+        ) : selectedAgenceWithCoords ? (
+          <MapContainer
+            center={[selectedAgenceWithCoords.latitude, selectedAgenceWithCoords.longitude]}
+            zoom={13}
+            className="h-full w-full"
+          >
+            <MapController agence={selectedAgenceWithCoords} />
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            {filteredAgences
+              .filter((a): a is AgenceWithCoords => Boolean(a.latitude && a.longitude))
+              .map((agence) => (
+                <Marker
+                  key={agence.id}
+                  position={[agence.latitude, agence.longitude]}
+                  eventHandlers={{
+                    click: () => setSelectedId(agence.id),
+                  }}
+                />
+              ))}
+          </MapContainer>
+        ) : (
+          <div className="h-full flex flex-col items-center justify-center bg-muted text-center p-8">
+            <MapIcon className="w-14 h-14 text-muted-foreground mb-4" />
+            <h3 className="text-xl font-semibold text-primary mb-2">Carte indisponible</h3>
+            <p className="text-muted-foreground">Aucune coordonnée n'est disponible pour les agences affichées.</p>
+          </div>
+        )}
+      </div>
+    </Card>
+  );
+
+  const listPanel = (
+    <div className="space-y-4">
+      {isLoading ? (
+        <div className="grid grid-cols-1 gap-6">
+          {[1, 2, 3, 4, 5, 6].map(i => (
+            <Card key={i} className="rounded-none">
+              <CardContent className="p-6">
+                <Skeleton className="h-6 w-3/4 mb-4" />
+                <Skeleton className="h-4 w-full mb-2" />
+                <Skeleton className="h-4 w-1/2 mb-6" />
+                <Skeleton className="h-4 w-2/3 mb-2" />
+                <Skeleton className="h-4 w-3/4" />
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : filteredAgences.length > 0 ? (
+        filteredAgences.map(agence => (
+          <Card
+            key={agence.id}
+            className={`group rounded-none border-t-4 transition-all shadow-sm hover:shadow-md cursor-pointer ${
+              selectedId === agence.id
+                ? "border-t-secondary bg-secondary/10"
+                : "border-t-transparent hover:border-t-secondary"
+            }`}
+            onClick={() => setSelectedId(agence.id)}
+          >
+            <CardContent className="p-6 space-y-4">
+              <h3 className="text-xl font-bold text-primary group-hover:text-secondary transition-colors">
+                {agence.nom}
+              </h3>
+
+              <div className="space-y-3 pt-2 text-muted-foreground">
+                {agence.adresse && (
+                  <div className="flex items-start">
+                    <MapPin className="w-5 h-5 mr-3 mt-0.5 text-primary/40 shrink-0" />
+                    <span className="text-sm leading-tight">{agence.adresse}<br/>{agence.ville}</span>
+                  </div>
+                )}
+
+                {agence.telephone && (
+                  <div className="flex items-center">
+                    <Phone className="w-5 h-5 mr-3 text-primary/40 shrink-0" />
+                    <span className="text-sm font-medium text-foreground">{agence.telephone}</span>
+                  </div>
+                )}
+
+                {agence.horaires && (
+                  <div className="flex items-start">
+                    <Clock className="w-5 h-5 mr-3 mt-0.5 text-primary/40 shrink-0" />
+                    <span className="text-sm">{agence.horaires}</span>
+                  </div>
+                )}
+              </div>
+
+              <div className="pt-4 border-t mt-4">
+                <Button variant="ghost" className="w-full text-primary hover:text-secondary hover:bg-secondary/10 rounded-none justify-between">
+                  Voir sur la carte <MapPin className="w-4 h-4 ml-2" />
+                </Button>
+              </div>
+            </CardContent>
+          </Card>
+        ))
+      ) : (
+        <div className="text-center py-20 bg-background border rounded-none">
+          <MapPin className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
+          <h3 className="text-xl font-medium text-primary mb-2">Aucune agence trouvée</h3>
+          <p className="text-muted-foreground">Modifiez vos critères de recherche pour trouver une agence.</p>
+          <Button
+            variant="outline"
+            className="mt-6 rounded-none text-primary"
+            onClick={() => {
+              setSearchQuery("");
+              setSelectedCity("Toutes");
+              setSelectedId(null);
+            }}
+          >
+            Réinitialiser la recherche
+          </Button>
+        </div>
+      )}
+    </div>
+  );
+
   return (
     <div className="flex flex-col min-h-screen bg-muted/10">
-      {/* Header */}
       <section className="bg-primary py-16 text-white relative">
         <div className="container mx-auto px-4 text-center relative z-20">
           <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Map className="w-8 h-8 text-secondary" />
+            <MapIcon className="w-8 h-8 text-secondary" />
           </div>
           <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">Nos Agences</h1>
           <p className="text-lg text-white/80 max-w-2xl mx-auto">
@@ -47,18 +200,15 @@ export default function Agences() {
         </div>
       </section>
 
-      {/* Main Content */}
       <section className="py-12 flex-1">
         <div className="container mx-auto px-4">
-          
-          {/* Filters */}
           <Card className="mb-10 rounded-none border-none shadow-md">
             <CardContent className="p-6">
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
-                  <Input 
-                    placeholder="Rechercher une agence, une adresse, une ville..." 
+                  <Input
+                    placeholder="Rechercher une agence, une adresse, une ville..."
                     className="pl-10 h-12 rounded-none bg-muted/50 border-transparent focus-visible:ring-primary"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -70,8 +220,8 @@ export default function Agences() {
                       key={city}
                       variant={selectedCity === city ? "default" : "outline"}
                       className={`rounded-none shrink-0 ${
-                        selectedCity === city 
-                          ? "bg-secondary text-primary hover:bg-secondary/90" 
+                        selectedCity === city
+                          ? "bg-secondary text-primary hover:bg-secondary/90"
                           : "text-primary border-primary/20 hover:bg-primary/5"
                       }`}
                       onClick={() => setSelectedCity(city)}
@@ -84,85 +234,25 @@ export default function Agences() {
             </CardContent>
           </Card>
 
-          {/* Results */}
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-2xl font-serif font-bold text-primary">
               {isLoading ? "Recherche en cours..." : `${filteredAgences.length} agence${filteredAgences.length !== 1 ? 's' : ''} trouvée${filteredAgences.length !== 1 ? 's' : ''}`}
             </h2>
           </div>
 
-          {isLoading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {[1, 2, 3, 4, 5, 6].map(i => (
-                <Card key={i} className="rounded-none">
-                  <CardContent className="p-6">
-                    <Skeleton className="h-6 w-3/4 mb-4" />
-                    <Skeleton className="h-4 w-full mb-2" />
-                    <Skeleton className="h-4 w-1/2 mb-6" />
-                    <Skeleton className="h-4 w-2/3 mb-2" />
-                    <Skeleton className="h-4 w-3/4" />
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : filteredAgences.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredAgences.map(agence => (
-                <Card key={agence.id} className="group rounded-none border-t-4 border-t-transparent hover:border-t-secondary transition-all shadow-sm hover:shadow-md">
-                  <CardContent className="p-6 space-y-4">
-                    <h3 className="text-xl font-bold text-primary group-hover:text-secondary transition-colors">
-                      {agence.nom}
-                    </h3>
-                    
-                    <div className="space-y-3 pt-2 text-muted-foreground">
-                      {agence.adresse && (
-                        <div className="flex items-start">
-                          <MapPin className="w-5 h-5 mr-3 mt-0.5 text-primary/40 shrink-0" />
-                          <span className="text-sm leading-tight">{agence.adresse}<br/>{agence.ville}</span>
-                        </div>
-                      )}
-                      
-                      {agence.telephone && (
-                        <div className="flex items-center">
-                          <Phone className="w-5 h-5 mr-3 text-primary/40 shrink-0" />
-                          <span className="text-sm font-medium text-foreground">{agence.telephone}</span>
-                        </div>
-                      )}
-                      
-                      {agence.horaires && (
-                        <div className="flex items-start">
-                          <Clock className="w-5 h-5 mr-3 mt-0.5 text-primary/40 shrink-0" />
-                          <span className="text-sm">{agence.horaires}</span>
-                        </div>
-                      )}
-                    </div>
-                    
-                    <div className="pt-4 border-t mt-4">
-                       <Button variant="ghost" className="w-full text-primary hover:text-secondary hover:bg-secondary/10 rounded-none justify-between">
-                         Voir sur la carte <MapPin className="w-4 h-4 ml-2" />
-                       </Button>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-20 bg-background border rounded-none">
-              <MapPin className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-              <h3 className="text-xl font-medium text-primary mb-2">Aucune agence trouvée</h3>
-              <p className="text-muted-foreground">Modifiez vos critères de recherche pour trouver une agence.</p>
-              <Button 
-                variant="outline" 
-                className="mt-6 rounded-none text-primary"
-                onClick={() => {
-                  setSearchQuery("");
-                  setSelectedCity("Toutes");
-                }}
-              >
-                Réinitialiser la recherche
-              </Button>
-            </div>
-          )}
+          <Tabs defaultValue="list" className="lg:hidden">
+            <TabsList className="grid w-full grid-cols-2 rounded-none">
+              <TabsTrigger value="list">Liste</TabsTrigger>
+              <TabsTrigger value="map">Carte</TabsTrigger>
+            </TabsList>
+            <TabsContent value="list" className="mt-4">{listPanel}</TabsContent>
+            <TabsContent value="map" className="mt-4">{mapPanel}</TabsContent>
+          </Tabs>
+
+          <div className="hidden lg:grid grid-cols-[0.9fr_1.1fr] gap-6 items-start">
+            {listPanel}
+            {mapPanel}
+          </div>
         </div>
       </section>
     </div>

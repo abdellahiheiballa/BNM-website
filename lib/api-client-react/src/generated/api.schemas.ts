@@ -47,9 +47,78 @@ export interface Offre {
   titre: string;
   slug: string;
   description?: string | null;
+  image?: string | null;
   icone?: string | null;
+  clickByBnm: boolean;
   categorie: OffreCategorie;
   ordre: number;
+}
+
+export type CreateOffreInputCategorie =
+  (typeof CreateOffreInputCategorie)[keyof typeof CreateOffreInputCategorie];
+
+export const CreateOffreInputCategorie = {
+  particuliers: "particuliers",
+  professionnels: "professionnels",
+  entreprises: "entreprises",
+  islamique: "islamique",
+} as const;
+
+export interface CreateOffreInput {
+  /** @maxLength 200 */
+  titre: string;
+  /** @maxLength 200 */
+  slug: string;
+  description?: string | null;
+  image?: string | null;
+  /** @maxLength 100 */
+  icone?: string | null;
+  clickByBnm?: boolean;
+  categorie: CreateOffreInputCategorie;
+  ordre?: number;
+}
+
+export type UpdateOffreInputCategorie =
+  (typeof UpdateOffreInputCategorie)[keyof typeof UpdateOffreInputCategorie];
+
+export const UpdateOffreInputCategorie = {
+  particuliers: "particuliers",
+  professionnels: "professionnels",
+  entreprises: "entreprises",
+  islamique: "islamique",
+} as const;
+
+export interface UpdateOffreInput {
+  /** @maxLength 200 */
+  titre?: string;
+  /** @maxLength 200 */
+  slug?: string;
+  description?: string | null;
+  image?: string | null;
+  /** @maxLength 100 */
+  icone?: string | null;
+  clickByBnm?: boolean;
+  categorie?: UpdateOffreInputCategorie;
+  ordre?: number;
+}
+
+export interface UploadedFileUrl {
+  url: string;
+}
+
+export interface DevenirClientInput {
+  /** @minLength 2 */
+  nomComplet: string;
+  /** @minLength 3 */
+  cinPasseport: string;
+  /** @minLength 8 */
+  telephone: string;
+  /** @minLength 10 */
+  adresse: string;
+  /** @minLength 2 */
+  secteurActivite: string;
+  cinPasseportFile: string;
+  justificatifFile: string;
 }
 
 export interface ContactInput {
@@ -136,23 +205,26 @@ export interface Stats {
   totalActualites: number;
 }
 
-export interface SuccessResponse {
-  success: boolean;
-  message: string;
-}
-
 export interface AdminLoginInput {
   username: string;
   password: string;
 }
 
 export interface UpdateActualiteInput {
-  titre?: string;
-  slug?: string;
-  contenu?: string;
+  /** @maxLength 200 */
+  titre: string;
+  /** @maxLength 200 */
+  slug: string;
+  contenu: string;
   image?: string | null;
+  /** @maxLength 100 */
   categorie?: string | null;
   datePublication?: string | null;
+}
+
+export interface SuccessResponse {
+  success: boolean;
+  message: string;
 }
 
 export type ListActualitesParams = {
@@ -179,3 +251,7 @@ export const ListOffresCategorie = {
   entreprises: "entreprises",
   islamique: "islamique",
 } as const;
+
+export type AdminUploadFile200 = {
+  url: string;
+};

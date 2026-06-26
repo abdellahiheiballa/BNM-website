@@ -1,9 +1,9 @@
 import { Link } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Plus, Edit, Trash2, Newspaper, ArrowLeft } from "lucide-react";
+import { Plus, Edit, Trash2, Newspaper, ArrowLeft, CreditCard } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
-import { useGetStats, useAdminListActualites, useAdminDeleteActualite } from "@workspace/api-client-react";
+import { useGetStats, useAdminListActualites, useAdminDeleteActualite, useAdminListOffres, useAdminDeleteOffre, getAdminListActualitesQueryKey, getAdminListOffresQueryKey } from "@workspace/api-client-react";
 import { useToast } from "@/hooks/use-toast";
 import {
   Table,
@@ -18,7 +18,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
   const { data: stats } = useGetStats();
-  const { data: actualites, refetch } = useAdminListActualites({ query: { enabled: !!user } });
+  const { data: actualites, refetch } = useAdminListActualites({ query: { enabled: !!user, queryKey: getAdminListActualitesQueryKey() } });
+  const { data: offres } = useAdminListOffres({ query: { enabled: !!user, queryKey: getAdminListOffresQueryKey() } });
   const { toast } = useToast();
   const deleteMutation = useAdminDeleteActualite({
     mutation: {
@@ -28,10 +29,23 @@ export default function AdminDashboard() {
       },
     },
   });
+  const deleteOffreMutation = useAdminDeleteOffre({
+    mutation: {
+      onSuccess: () => {
+        toast({ title: "Offre supprimée" });
+      },
+    },
+  });
 
   const handleDelete = (id: number) => {
     if (confirm("Êtes-vous sûr de vouloir supprimer cette actualité ?")) {
       deleteMutation.mutate({ id });
+    }
+  };
+
+  const handleDeleteOffre = (id: number) => {
+    if (confirm("Êtes-vous sûr de vouloir supprimer cette offre ?")) {
+      deleteOffreMutation.mutate({ id });
     }
   };
 
@@ -50,7 +64,7 @@ export default function AdminDashboard() {
 
       <section className="py-8">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-4 mb-8">
             <Card className="rounded-none">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-primary">{stats?.totalClients?.toLocaleString('fr-FR') ?? '850 000'}</div>
@@ -71,6 +85,12 @@ export default function AdminDashboard() {
             </Card>
             <Card className="rounded-none">
               <CardContent className="p-6 text-center">
+                <div className="text-3xl font-bold text-primary">{offres?.length ?? 0}</div>
+                <div className="text-sm text-muted-foreground">Offres</div>
+              </CardContent>
+            </Card>
+            <Card className="rounded-none">
+              <CardContent className="p-6 text-center">
                 <Button
                   variant="outline"
                   className="rounded-none"
@@ -84,7 +104,7 @@ export default function AdminDashboard() {
 
           <Card className="rounded-none mb-8">
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-xl font-serif">Gestion des Actualités</CardTitle>
+              <CardTitle className="text-xl font-serif flex items-center gap-2"><Newspaper className="w-5 h-5" /> Gestion des Actualités</CardTitle>
               <Link href="/admin/actualites/new">
                 <Button className="rounded-none">
                   <Plus className="w-4 h-4 mr-2" />
@@ -131,6 +151,66 @@ export default function AdminDashboard() {
                               size="icon"
                               className="rounded-none text-destructive"
                               onClick={() => handleDelete(actu.id)}
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="rounded-none">
+            <CardHeader className="flex flex-row items-center justify-between">
+              <CardTitle className="text-xl font-serif flex items-center gap-2"><CreditCard className="w-5 h-5" /> Gestion des Offres</CardTitle>
+              <Link href="/admin/offres/new">
+                <Button className="rounded-none">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Nouvelle offre
+                </Button>
+              </Link>
+            </CardHeader>
+            <CardContent>
+              {!offres ? (
+                <div className="space-y-4">
+                  {[1, 2, 3].map(i => (
+                    <Skeleton key={i} className="h-12 w-full" />
+                  ))}
+                </div>
+              ) : offres.length === 0 ? (
+                <p className="text-muted-foreground py-8 text-center">Aucune offre</p>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Titre</TableHead>
+                      <TableHead>Catégorie</TableHead>
+                      <TableHead>Click</TableHead>
+                      <TableHead>Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {offres.map(offre => (
+                      <TableRow key={offre.id}>
+                        <TableCell>{offre.titre}</TableCell>
+                        <TableCell>{offre.categorie}</TableCell>
+                        <TableCell>{offre.clickByBnm ? "Oui" : "Non"}</TableCell>
+                        <TableCell>
+                          <div className="flex gap-2">
+                            <Link href={`/admin/offres/edit/${offre.id}`}>
+                              <Button variant="ghost" size="icon" className="rounded-none">
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                            </Link>
+                            <Button
+                              variant="ghost"
+                              size="icon"
+                              className="rounded-none text-destructive"
+                              onClick={() => handleDeleteOffre(offre.id)}
                             >
                               <Trash2 className="w-4 h-4" />
                             </Button>

@@ -23,7 +23,9 @@ router.get("/offres", async (req, res) => {
     titre: r.titre,
     slug: r.slug,
     description: r.description ?? null,
+    image: r.image ?? null,
     icone: r.icone ?? null,
+    clickByBnm: r.clickByBnm,
     categorie: r.categorie as "particuliers" | "professionnels" | "entreprises" | "islamique",
     ordre: r.ordre,
   })));

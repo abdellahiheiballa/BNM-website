@@ -20,6 +20,7 @@ export default function Header() {
     { href: "/agences", label: "Nos Agences" },
     { href: "/simulateur", label: "Simulateurs" },
     { href: "/contact", label: "Contact" },
+    { href: "/devenir-client", label: "Devenir client" },
   ];
 
   return (
