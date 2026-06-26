@@ -76,48 +76,65 @@
   --elevate-1: rgba(0,0,0, .03);
   --elevate-2: rgba(0,0,0, .08);
 
-  --background: 210 20% 98%;
-  --foreground: 220 50% 15%;
-  --border: 214 32% 91%;
+  /* Blanc ivoire */
+  --background: 45 17% 94%;
+  /* Vert foncé profond — foreground text */
+  --foreground: 158 76% 16%;
+  /* Beige sable — border */
+  --border: 35 41% 82%;
+  /* Blanc pur */
   --card: 0 0% 100%;
-  --card-foreground: 220 50% 15%;
-  --card-border: 214 32% 91%;
-  
+  /* Vert foncé profond */
+  --card-foreground: 158 76% 16%;
+  --card-border: 35 41% 82%;
+
   --sidebar: 0 0% 100%;
-  --sidebar-foreground: 220 50% 15%;
-  --sidebar-border: 214 32% 91%;
-  --sidebar-primary: 220 50% 15%;
-  --sidebar-primary-foreground: 0 0% 100%;
-  --sidebar-accent: 210 20% 96%;
-  --sidebar-accent-foreground: 220 50% 15%;
-  --sidebar-ring: 220 50% 15%;
+  --sidebar-foreground: 158 76% 16%;
+  --sidebar-border: 35 41% 82%;
+  --sidebar-primary: 160 78% 24%;
+  --sidebar-primary-foreground: 45 17% 94%;
+  --sidebar-accent: 35 41% 92%;
+  --sidebar-accent-foreground: 158 76% 16%;
+  --sidebar-ring: 160 78% 24%;
 
   --popover: 0 0% 100%;
-  --popover-foreground: 220 50% 15%;
-  --popover-border: 214 32% 91%;
+  --popover-foreground: 158 76% 16%;
+  --popover-border: 35 41% 82%;
 
-  --primary: 220 50% 15%;
-  --primary-foreground: 0 0% 100%;
-  
-  --secondary: 45 80% 55%;
-  --secondary-foreground: 220 50% 15%;
+  /* Vert institutionnel */
+  --primary: 160 78% 24%;
+  /* Blanc ivoire */
+  --primary-foreground: 45 17% 94%;
 
-  --muted: 210 20% 96%;
-  --muted-foreground: 215 16% 47%;
+  /* Beige sable */
+  --secondary: 35 41% 74%;
+  /* Vert foncé profond */
+  --secondary-foreground: 158 76% 16%;
 
-  --accent: 45 80% 55%;
-  --accent-foreground: 220 50% 15%;
+  /* Blanc ivoire légèrement plus clair */
+  --muted: 40 20% 96%;
+  /* Gris pierre */
+  --muted-foreground: 55 5% 46%;
 
-  --destructive: 0 84% 60%;
+  /* Or mat */
+  --accent: 36 44% 54%;
+  /* Vert foncé profond */
+  --accent-foreground: 158 76% 16%;
+
+  --destructive: 0 60% 48%;
   --destructive-foreground: 0 0% 100%;
 
-  --input: 214 32% 91%;
-  --ring: 220 50% 15%;
-  --chart-1: 220 50% 15%;
-  --chart-2: 45 80% 55%;
-  --chart-3: 197 37% 24%;
-  --chart-4: 43 74% 66%;
-  --chart-5: 27 87% 67%;
+  /* Beige sable un peu plus clair */
+  --input: 35 41% 86%;
+  /* Vert institutionnel */
+  --ring: 160 78% 24%;
+
+  /* Chart colors — brand palette */
+  --chart-1: 160 78% 24%;
+  --chart-2: 36 44% 54%;
+  --chart-3: 111 14% 55%;
+  --chart-4: 35 41% 74%;
+  --chart-5: 158 76% 16%;
 
   --app-font-sans: 'Inter', sans-serif;
   --app-font-serif: Georgia, serif;
@@ -134,48 +151,53 @@
   --elevate-1: rgba(255,255,255, .04);
   --elevate-2: rgba(255,255,255, .09);
 
-  --background: 220 50% 10%;
-  --foreground: 210 20% 98%;
-  --border: 215 28% 17%;
-  --card: 220 50% 13%;
-  --card-foreground: 210 20% 98%;
-  --card-border: 215 28% 17%;
+  /* Vert foncé profond */
+  --background: 158 76% 9%;
+  --foreground: 45 17% 94%;
+  /* Vert foncé profond plus clair */
+  --border: 160 33% 22%;
+  --card: 160 78% 14%;
+  --card-foreground: 45 17% 94%;
+  --card-border: 160 33% 22%;
 
-  --sidebar: 220 50% 13%;
-  --sidebar-foreground: 210 20% 98%;
-  --sidebar-border: 215 28% 17%;
-  --sidebar-primary: 45 80% 55%;
-  --sidebar-primary-foreground: 220 50% 15%;
-  --sidebar-accent: 215 28% 17%;
-  --sidebar-accent-foreground: 210 20% 98%;
-  --sidebar-ring: 45 80% 55%;
+  --sidebar: 160 78% 14%;
+  --sidebar-foreground: 45 17% 94%;
+  --sidebar-border: 160 33% 22%;
+  --sidebar-primary: 36 44% 54%;
+  --sidebar-primary-foreground: 158 76% 9%;
+  --sidebar-accent: 111 14% 55%;
+  --sidebar-accent-foreground: 45 17% 94%;
+  --sidebar-ring: 36 44% 54%;
 
-  --popover: 220 50% 13%;
-  --popover-foreground: 210 20% 98%;
-  --popover-border: 215 28% 17%;
+  --popover: 160 78% 14%;
+  --popover-foreground: 45 17% 94%;
+  --popover-border: 160 33% 22%;
 
-  --primary: 45 80% 55%;
-  --primary-foreground: 220 50% 15%;
+  /* Or mat */
+  --primary: 36 44% 54%;
+  --primary-foreground: 158 76% 9%;
 
-  --secondary: 215 28% 17%;
-  --secondary-foreground: 210 20% 98%;
+  /* Vert institutionnel plus foncé */
+  --secondary: 160 50% 18%;
+  --secondary-foreground: 45 17% 94%;
 
-  --muted: 215 28% 17%;
-  --muted-foreground: 215 20% 65%;
+  --muted: 160 50% 18%;
+  --muted-foreground: 55 3% 78%;
 
-  --accent: 45 80% 55%;
-  --accent-foreground: 220 50% 15%;
+  /* Vert sauge */
+  --accent: 111 14% 55%;
+  --accent-foreground: 45 17% 94%;
 
-  --destructive: 0 62% 30%;
-  --destructive-foreground: 210 20% 98%;
+  --destructive: 0 54% 31%;
+  --destructive-foreground: 45 17% 94%;
 
-  --input: 215 28% 17%;
-  --ring: 45 80% 55%;
-  --chart-1: 45 80% 55%;
-  --chart-2: 220 50% 15%;
-  --chart-3: 197 37% 24%;
-  --chart-4: 43 74% 66%;
-  --chart-5: 27 87% 67%;
+  --input: 160 33% 22%;
+  --ring: 36 44% 54%;
+  --chart-1: 36 44% 54%;
+  --chart-2: 160 78% 14%;
+  --chart-3: 111 14% 55%;
+  --chart-4: 35 41% 72%;
+  --chart-5: 158 76% 16%;
 }
 
 @layer base {

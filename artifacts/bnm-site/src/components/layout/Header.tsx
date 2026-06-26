@@ -83,10 +83,20 @@ export default function Header() {
             <span className="sr-only">Rechercher</span>
           </Button>
           
-          <Button className="hidden sm:flex bg-primary text-primary-foreground hover:bg-primary/90 rounded-none shadow-sm h-10 px-6 font-semibold">
-            <User className="mr-2 h-4 w-4" />
-            E-Banking
-          </Button>
+          <a
+            href="https://www.click.mr/"
+            target="_blank"
+            rel="noreferrer"
+            className="hidden sm:flex items-center gap-2 rounded-none shadow-sm h-10 px-4 font-semibold"
+            style={{ backgroundColor: "#EEEef1", color: "#131311" }}
+          >
+            <img
+              src="/assets/images/logoclick.png"
+              alt="Click"
+              className="h-6 w-6 object-contain"
+            />
+            <span>Click</span>
+          </a>
 
           <Button
             variant="ghost"
@@ -127,10 +137,20 @@ export default function Header() {
               </Link>
             ))}
           </nav>
-          <Button className="w-full mt-4 bg-primary text-primary-foreground font-semibold h-12">
-            <User className="mr-2 h-5 w-5" />
-            E-Banking
-          </Button>
+          <a
+            href="https://www.click.mr/"
+            target="_blank"
+            rel="noreferrer"
+            className="w-full mt-4 flex items-center justify-center gap-2 font-semibold h-12 rounded-none"
+            style={{ backgroundColor: "#EEEef1", color: "#131311" }}
+          >
+            <img
+              src="/assets/images/logoclick.png"
+              alt="Click"
+              className="h-6 w-6 object-contain"
+            />
+            <span>Click</span>
+          </a>
         </div>
       )}
     </header>
