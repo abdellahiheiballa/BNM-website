@@ -2,18 +2,12 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Target, Eye, Heart, History, TrendingUp, Users } from "lucide-react";
 
 export default function APropos() {
-  const heroImage = "/assets/images/AE8I8870%20copie%20-%20Copie.jpg.jpeg";
   const buildingImage = "/assets/images/Si%C3%A8ge%20de%20la%20BNM.jpg.jpeg";
 
   return (
     <div className="flex flex-col min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="relative w-full h-[500px] flex items-center">
-        <div className="absolute inset-0 bg-primary/90 z-10" />
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-50 grayscale"
-          style={{ backgroundImage: `url(${heroImage})` }}
-        />
+      <section className="relative w-full h-[500px] flex items-center bg-primary">
         <div className="container relative z-20 mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-1000">
             <h1 className="text-4xl md:text-6xl font-serif font-bold text-white leading-tight">

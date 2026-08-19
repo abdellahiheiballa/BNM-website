@@ -7,20 +7,21 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { MapPin, Phone, Clock, Search, MapIcon } from "lucide-react";
+import { MapPin, Phone, Clock, Search, MapIcon, Mail } from "lucide-react";
 
 type AgenceWithCoords = Agence & {
   latitude: number;
   longitude: number;
 };
 
-function MapController({ agence }: { agence: AgenceWithCoords | null }) {
+function MapController({ agence, onCenterChange }: { agence: AgenceWithCoords | null; onCenterChange: (center: [number, number], zoom: number) => void }) {
   const map = useMap();
 
   useEffect(() => {
     if (!agence) return;
     map.flyTo([agence.latitude, agence.longitude], 13, { duration: 0.8 });
-  }, [agence, map]);
+    onCenterChange([agence.latitude, agence.longitude], 13);
+  }, [agence, map, onCenterChange]);
 
   return null;
 }
@@ -30,6 +31,8 @@ export default function Agences() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState("Toutes");
   const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [mapCenter, setMapCenter] = useState<[number, number]>([18.086, -15.975]);
+  const [mapZoom, setMapZoom] = useState(12);
   const agencesArray = Array.isArray(agences) ? agences : [];
 
   const cities = useMemo(() => {
@@ -57,6 +60,12 @@ export default function Agences() {
     [agencesArray, filteredAgences, selectedId],
   );
 
+  useEffect(() => {
+    if (isLoading || selectedId !== null || agencesArray.length === 0) return;
+    const nouakchott = agencesArray.find(a => a.ville === "Nouakchott");
+    if (nouakchott) setSelectedId(nouakchott.id);
+  }, [isLoading, selectedId, agencesArray]);
+
   const selectedAgenceWithCoords: AgenceWithCoords | null = selectedAgence && selectedAgence.latitude && selectedAgence.longitude
     ? { ...selectedAgence, latitude: selectedAgence.latitude, longitude: selectedAgence.longitude }
     : null;
@@ -70,11 +79,11 @@ export default function Agences() {
           </div>
         ) : selectedAgenceWithCoords ? (
           <MapContainer
-            center={[selectedAgenceWithCoords.latitude, selectedAgenceWithCoords.longitude]}
-            zoom={13}
+            center={mapCenter}
+            zoom={mapZoom}
             className="h-full w-full"
           >
-            <MapController agence={selectedAgenceWithCoords} />
+            <MapController agence={selectedAgenceWithCoords} onCenterChange={setMapCenter} />
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -142,14 +151,21 @@ export default function Agences() {
                   </div>
                 )}
 
-                {agence.telephone && (
-                  <div className="flex items-center">
-                    <Phone className="w-5 h-5 mr-3 text-primary/40 shrink-0" />
-                    <span className="text-sm font-medium text-foreground">{agence.telephone}</span>
-                  </div>
-                )}
+                 {agence.telephone && (
+                   <div className="flex items-center">
+                     <Phone className="w-5 h-5 mr-3 text-primary/40 shrink-0" />
+                     <span className="text-sm font-medium text-foreground">{agence.telephone}</span>
+                   </div>
+                 )}
 
-                {agence.horaires && (
+                 {agence.email && (
+                   <div className="flex items-center">
+                     <Mail className="w-5 h-5 mr-3 text-primary/40 shrink-0" />
+                     <span className="text-sm font-medium text-foreground">{agence.email}</span>
+                   </div>
+                 )}
+
+                 {agence.horaires && (
                   <div className="flex items-start">
                     <Clock className="w-5 h-5 mr-3 mt-0.5 text-primary/40 shrink-0" />
                     <span className="text-sm">{agence.horaires}</span>
@@ -229,6 +245,54 @@ export default function Agences() {
                       {city}
                     </Button>
                   ))}
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-2xl font-serif font-bold text-primary">
+              {isLoading ? "Recherche en cours..." : `${filteredAgences.length} agence${filteredAgences.length !== 1 ? 's' : ''} trouvée${filteredAgences.length !== 1 ? 's' : ''}`}
+            </h2>
+            <div className="text-sm text-muted-foreground">
+              {!isLoading && `${agencesArray.length} agence${agencesArray.length !== 1 ? 's' : ''} au total`}
+            </div>
+          </div>
+
+          <Card className="mb-10 rounded-none border-none shadow-sm">
+            <CardContent className="p-6 md:p-8">
+              <h3 className="text-xl font-bold text-primary mb-4">Réseau d'agences BNM</h3>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-sm">
+                <div>
+                  <span className="block text-muted-foreground">Produit</span>
+                  <span className="font-medium text-foreground">Agences</span>
+                </div>
+                <div>
+                  <span className="block text-muted-foreground">Langue</span>
+                  <span className="font-medium text-foreground">Français</span>
+                </div>
+                <div>
+                  <span className="block text-muted-foreground">Statut</span>
+                  <span className="font-medium text-foreground">Actif</span>
+                </div>
+                <div>
+                  <span className="block text-muted-foreground">Mots-clés</span>
+                  <span className="font-medium text-foreground">agences, réseau, adresses, téléphone, e-mail, localisation, gps, Nouakchott, Nouadhibou, Zouerate</span>
+                </div>
+              </div>
+              <div className="space-y-6">
+                <div>
+                  <h4 className="font-bold text-primary mb-2">Combien d'agences compte le réseau BNM ?</h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    Le réseau de la BNM compte 35 agences réparties sur le territoire mauritanien (Nouakchott, Nouadhibou, Zouerate, et plusieurs villes de l'intérieur).
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-bold text-primary mb-2">Quelles sont les agences de la BNM et leurs coordonnées ?</h4>
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    Pour chaque agence sont indiqués, lorsqu'ils sont disponibles, le numéro de téléphone, l'adresse e-mail et les coordonnées GPS.
+                    Utilisez la liste ci-dessous ou la carte pour localiser l'agence la plus proche de chez vous.
+                  </p>
                 </div>
               </div>
             </CardContent>

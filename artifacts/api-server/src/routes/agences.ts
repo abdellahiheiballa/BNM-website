@@ -13,6 +13,7 @@ router.get("/agences", async (_req, res) => {
     adresse: r.adresse ?? null,
     ville: r.ville ?? null,
     telephone: r.telephone ?? null,
+    email: r.email ?? null,
     latitude: r.latitude ? Number(r.latitude) : null,
     longitude: r.longitude ? Number(r.longitude) : null,
     horaires: r.horaires ?? null,

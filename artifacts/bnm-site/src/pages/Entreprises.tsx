@@ -61,26 +61,84 @@ const sections = [
     color: "from-[#0A4A36] to-[#0E6B4B]",
     subOffres: [
       {
-        id: "facilite-caisse",
-        title: "Facilité de caisse",
-        description: "La Banque Nationale de Mauritanie vous accompagne avec des solutions adaptées à vos besoins.",
+        id: "decouvert-bancaire",
+        title: "Découvert bancaire",
+        description: "Couverture des décalages temporaires de trésorerie. Réponse aux besoins récurrents de financement à court terme.",
         cta: "Contactez un conseiller clientèle",
         avantages: [
-          "Grâce aux facilités de caisse, bénéficiez de l'expertise et de l'accompagnement personnalisé de nos équipes afin de vous permettre de gérer la tension sur vos flux en toute sérénité sous forme de crédit utilisables sur de courtes durées.",
-          "Chez la Banque Nationale de Mauritanie, nous aidons les entreprises à faire face aux risques de trésorerie. À cet effet, la BNM met à la disposition de sa clientèle son expertise pour faciliter la gestion des flux afin que les règlements de fournisseurs et de salaires ou les dépenses de collaborateurs ne soient plus un souci."
+          "Gérez vos flux sans interruption grâce à un découvert flexible",
+          "Répondez aux besoins de financement à court terme de votre entreprise",
+          "Conservez votre capacité d'achat même lorsque la trésorerie est tendue"
+        ],
+        documents: [
+          "Faites une demande auprès de votre conseiller clientèle."
+        ]
+      },
+      {
+        id: "facilite-caisse",
+        title: "Facilité de caisse",
+        description: "Financement ponctuel des besoins de trésorerie. Utilisée dans l'attente d'un encaissement ou d'un virement.",
+        cta: "Contactez un conseiller clientèle",
+        avantages: [
+          "Une solution rapide pour couvrir vos besoins de trésorerie immédiats",
+          "Utilisée pour faire face à des délais de paiement temporaires",
+          "Permet de maintenir l'activité en attendant un encaissement"
         ],
         documents: [
           "Vous souhaitez bénéficiez d'une facilité de caisse, faites une demande auprès de votre conseiller clientèle."
         ]
       },
       {
-        id: "depot-terme",
-        title: "Dépôt à terme",
-        description: "La Banque Nationale de Mauritanie vous accompagne avec des solutions adaptées à vos besoins.",
+        id: "escompte-commercial",
+        title: "Escompte commercial",
+        description: "Mobilisation anticipée des créances commerciales. Permet d'obtenir le règlement des factures avant leur échéance.",
         cta: "Contactez un conseiller clientèle",
         avantages: [
-          "Grâce au DAT, placer votre argent en toute sécurité sur une durée adaptée à votre besoin, fructifiez votre capital en parfaite sécurité et flexibilité.",
-          "Afin de financer des investissements futurs, la Banque Nationale de Mauritanie propose un dépôt à terme rémunéré en fonction de la durée de souscription. Il permet de placer l'excédent de trésorerie sur un compte nominatif et sur une durée déterminée à l'avance avec possibilité de reconduction."
+          "Améliorez votre trésorerie en obtenant le paiement anticipé de vos factures",
+          "Réduisez le délai de conversion de vos créances clients en liquidités",
+          "Concentrez-vous sur votre activité pendant que la banque prend en charge le recouvrement"
+        ],
+        documents: [
+          "Faites une demande auprès de votre conseiller clientèle."
+        ]
+      },
+      {
+        id: "factoring",
+        title: "Factoring (Affacturage)",
+        description: "Cession des créances clients à la banque. Amélioration de la trésorerie et réduction des délais d'encaissement.",
+        cta: "Contactez un conseiller clientèle",
+        avantages: [
+          "Mobilisez vos créances clients de manière anticipée",
+          "Améliorez votre trésorerie sans attendre la date d'échéance des factures",
+          "Réduisez les délais d'encaissement et sécurisez votre cycle d'exploitation"
+        ],
+        documents: [
+          "Faites une demande auprès de votre conseiller clientèle."
+        ]
+      },
+      {
+        id: "mourabaha",
+        title: "Mourabaha (Finance islamique)",
+        description: "Financement conforme aux principes de la Charia. Destiné à l'acquisition de biens d'équipement, de véhicules ou d'autres actifs professionnels.",
+        cta: "Contactez un conseiller clientèle",
+        avantages: [
+          "Une solution conforme aux principes islamiques",
+          "Acquisition de biens d'équipement, véhicules et actifs professionnels",
+          "Un financement structuré pour les entreprises souhaitant respecter la Charia"
+        ],
+        documents: [
+          "Faites une demande auprès de votre conseiller clientèle."
+        ]
+      },
+      {
+        id: "depot-terme",
+        title: "Produits de trésorerie et placements",
+        description: "Dépôts à terme (DAT). Solutions de gestion de trésorerie destinées aux entreprises.",
+        cta: "Contactez un conseiller clientèle",
+        avantages: [
+          "Placez vos excédents de trésorerie en toute sécurité",
+          "Bénéficiez de solutions de gestion de trésorerie adaptées à votre entreprise",
+          "Optimisez votre rendement tout en conservant une structure financière saine"
         ],
         documents: [
           "Vous souhaitez bénéficier d'un DAT, faites une demande à votre conseiller clientèle."
@@ -96,42 +154,31 @@ const sections = [
     color: "from-[#B68C4A] to-[#0E6B4B]",
     subOffres: [
       {
+        id: "financement-investissement",
+        title: "Financement d'investissement",
+        description: "Financement destiné à l'acquisition d'équipements, de matériels, de véhicules, à la réalisation de projets d'extension ou à tout investissement productif.",
+        cta: "Contactez un conseiller clientèle",
+        avantages: [
+          "Acquérir des équipements et matériels pour renforcer votre activité",
+          "Financer vos projets productifs et d'extension",
+          "Une solution conçue pour les investissements à moyen et long terme"
+        ],
+        documents: [
+          "Faites une demande auprès de votre conseiller clientèle."
+        ]
+      },
+      {
         id: "cautions",
-        title: "Les cautions",
-        description: "La Banque Nationale de Mauritanie vous accompagne à travers des financements souples.",
+        title: "Cautions bancaires",
+        description: "Caution de soumission. Caution de bonne exécution. Caution de restitution d'avance. Cautions douanières et administratives.",
         cta: "Contactez un conseiller clientèle",
         avantages: [
-          "La caution bancaire est une opération par laquelle la banque prend l'engagement de se substituer à son client en cas de défaillance de celui-ci et garantit ainsi, l'exécution d'une obligation de payer.",
-          "La Banque Nationale de Mauritanie vous propose un soulagement de votre trésorerie en permettant de différer, voire d'éviter un décaissement, ou en permettant d'accélérer une rentrée de fonds."
+          "Caution de soumission pour garantir vos offres commerciales",
+          "Caution de bonne exécution pour rassurer vos partenaires",
+          "Cautions douanières et administratives pour faciliter vos opérations"
         ],
         documents: [
-          "Vous souhaitez obtenir une caution, faites une demande auprès votre conseiller clientèle."
-        ]
-      },
-      {
-        id: "credits-equipements",
-        title: "Les crédits d'équipements",
-        description: "La Banque Nationale de Mauritanie vous accompagne à travers des financements souples.",
-        cta: "Contactez un conseiller clientèle",
-        avantages: [
-          "Grâce aux crédits d'équipements, développez votre activité pour le bon fonctionnement de votre entreprise.",
-          "Chez la Banque Nationale de Mauritanie, nous savons qu'acquérir un équipement demande souvent de l'effort et beaucoup de ressources. C'est ainsi que nous sommes là pour accompagner notre clientèle Entreprise à chaque étape."
-        ],
-        documents: [
-          "En vue d'obtenir un crédit d'équipement, vous devrez émettre une demande à votre conseiller clientèle."
-        ]
-      },
-      {
-        id: "credits-amenagements",
-        title: "Les crédits d'aménagements",
-        description: "La Banque Nationale de Mauritanie vous accompagne à travers des financements souples.",
-        cta: "Contactez un conseiller clientèle",
-        avantages: [
-          "Grâce au crédit d'aménagement, nos experts vous accompagnent dans la réalisation de vos projets.",
-          "Chez La Banque Nationale de Mauritanie, nous savons que vos projets d'aménagements constituent un moment crucial. C'est ainsi que nous proposons à notre clientèle Entreprise un accompagnement dès ses premiers pas afin de les accompagner vers une croissance sereine."
-        ],
-        documents: [
-          "Vous souhaitez obtenir un crédit d'aménagement, faites une demande à votre conseiller clientèle."
+          "Vous souhaitez obtenir une caution, faites une demande auprès de votre conseiller clientèle."
         ]
       }
     ]
@@ -156,12 +203,14 @@ const sections = [
         ]
       },
       {
-        id: "credit-documentaire",
-        title: "Crédit documentaire et remise documentaire",
+         id: "credit-documentaire",
+         title: "Crédit documentaire (CREDOC)",
         description: "La Banque Nationale de Mauritanie vous fait bénéficier de son savoir-faire à l'international.",
         cta: "Contactez un conseiller clientèle",
         avantages: [
-          "Vous faites de l'import-export, bénéficiez des avantages des Credoc et Remdoc pour vous faciliter vos échanges commerciaux avec vos partenaires à l'international en toute sécurité."
+          "Vous faites de l'import-export, bénéficiez des avantages d'un crédit documentaire pour sécuriser vos échanges commerciaux internationaux.",
+          "Réduction des risques entre acheteurs et fournisseurs",
+          "Facilitez vos opérations commerciales avec une solution bancaire structurée"
         ],
         documents: [
           "Pour accéder à ses services, vous devrez émettre une demande à votre conseiller clientèle."

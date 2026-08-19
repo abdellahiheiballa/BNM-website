@@ -11,12 +11,14 @@ import { Calculator, Plus, Minus, ArrowRight } from "lucide-react";
 export default function Simulateur() {
   const [tab, setTab] = useState("classic");
 
-  // Classic Form State
-  const [classicMontant, setClassicMontant] = useState(1000000);
-  const [classicDuree, setClassicDuree] = useState(5);
-  const [classicTaux, setClassicTaux] = useState(5.5);
+  const [classicMontant, setClassicMontant] = useState(3672000);
+  const [classicDureeAns, setClassicDureeAns] = useState(12);
+  const [classicDureeMois, setClassicDureeMois] = useState(145);
+  const [classicTaux, setClassicTaux] = useState(6);
+  const [classicTax, setClassicTax] = useState(0.16);
+  const [classicFirstDueDate, setClassicFirstDueDate] = useState("2026-07-22");
+  const [classicLoanStartDate, setClassicLoanStartDate] = useState("2026-06-22");
 
-  // Murabaha Form State
   const [murabahaPrix, setMurabahaPrix] = useState(2000000);
   const [murabahaApport, setMurabahaApport] = useState(400000);
   const [murabahaDuree, setMurabahaDuree] = useState(10);
@@ -29,8 +31,12 @@ export default function Simulateur() {
     simulateClassic.mutate({
       data: {
         montant: classicMontant,
-        dureeAns: classicDuree,
-        taux: classicTaux
+        dureeAns: classicDureeAns,
+        dureeMois: classicDureeMois,
+        taux: classicTaux,
+        tax: classicTax,
+        firstDueDate: classicFirstDueDate,
+        loanStartDate: classicLoanStartDate,
       }
     });
   };
@@ -122,17 +128,34 @@ export default function Simulateur() {
                       <div className="flex justify-between items-end">
                         <Label className="text-base font-semibold text-primary">Durée (années)</Label>
                         <div className="flex items-center gap-4">
-                          <Button variant="outline" size="icon" className="h-8 w-8 rounded-none" onClick={() => setClassicDuree(Math.max(1, classicDuree - 1))}><Minus className="w-4 h-4" /></Button>
-                          <div className="text-xl font-bold text-primary w-12 text-center">{classicDuree} ans</div>
-                          <Button variant="outline" size="icon" className="h-8 w-8 rounded-none" onClick={() => setClassicDuree(Math.min(25, classicDuree + 1))}><Plus className="w-4 h-4" /></Button>
+                          <Button variant="outline" size="icon" className="h-8 w-8 rounded-none" onClick={() => setClassicDureeAns(Math.max(1, classicDureeAns - 1))}><Minus className="w-4 h-4" /></Button>
+                          <div className="text-xl font-bold text-primary w-12 text-center">{classicDureeAns} ans</div>
+                          <Button variant="outline" size="icon" className="h-8 w-8 rounded-none" onClick={() => setClassicDureeAns(Math.min(25, classicDureeAns + 1))}><Plus className="w-4 h-4" /></Button>
                         </div>
                       </div>
                       <Slider 
                         min={1} max={25} step={1}
-                        value={[classicDuree]} 
-                        onValueChange={(v) => setClassicDuree(v[0])}
+                        value={[classicDureeAns]} 
+                        onValueChange={(v) => setClassicDureeAns(v[0])}
                         className="py-4"
                       />
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-end">
+                        <Label className="text-base font-semibold text-primary">Durée (mois)</Label>
+                        <div className="w-32">
+                          <Input 
+                            type="number" 
+                            min={1}
+                            max={300}
+                            value={classicDureeMois}
+                            onChange={(e) => setClassicDureeMois(parseInt(e.target.value) || 1)}
+                            className="text-right font-bold rounded-none"
+                          />
+                        </div>
+                      </div>
+                      <p className="text-xs text-muted-foreground">Si renseigné, ce champ prime sur la durée en années.</p>
                     </div>
 
                     <div className="space-y-4">
@@ -148,6 +171,51 @@ export default function Simulateur() {
                           />
                         </div>
                       </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-end">
+                        <Label className="text-base font-semibold text-primary">Taxe TPS (%)</Label>
+                        <div className="w-24">
+                          <Input 
+                            type="number" 
+                            step="0.01"
+                            value={classicTax * 100}
+                            onChange={(e) => setClassicTax((parseFloat(e.target.value) || 0) / 100)}
+                            className="text-right font-bold rounded-none"
+                          />
+                        </div>
+                      </div>
+                      <p className="text-xs text-muted-foreground">La taxe est calculée sur la part d'intérêt de chaque mensualité.</p>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-end">
+                        <Label className="text-base font-semibold text-primary">Date de première échéance</Label>
+                        <div className="w-40">
+                          <Input 
+                            type="date"
+                            value={classicFirstDueDate}
+                            onChange={(e) => setClassicFirstDueDate(e.target.value)}
+                            className="text-right font-bold rounded-none"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <div className="flex justify-between items-end">
+                        <Label className="text-base font-semibold text-primary">Date de début du prêt</Label>
+                        <div className="w-40">
+                          <Input 
+                            type="date"
+                            value={classicLoanStartDate}
+                            onChange={(e) => setClassicLoanStartDate(e.target.value)}
+                            className="text-right font-bold rounded-none"
+                          />
+                        </div>
+                      </div>
+                      <p className="text-xs text-muted-foreground">Utilisée pour calculer les intérêts de la première période.</p>
                     </div>
 
                     <Button 
@@ -169,8 +237,8 @@ export default function Simulateur() {
                     {simulateClassic.data ? (
                       <div className="animate-in fade-in duration-500">
                         <div className="text-center mb-8">
-                          <div className="text-sm text-white/70 mb-2 uppercase tracking-wider">Mensualité estimée</div>
-                          <div className="text-4xl font-bold text-secondary">{formatMRU(simulateClassic.data.mensualite)}</div>
+                          <div className="text-sm text-white/70 mb-2 uppercase tracking-wider">Mensualité TTC</div>
+                          <div className="text-4xl font-bold text-secondary">{formatMRU(simulateClassic.data.mensualiteTTC)}</div>
                           <div className="text-sm text-white/50 mt-1">/ mois</div>
                         </div>
                         
@@ -181,15 +249,23 @@ export default function Simulateur() {
                           </div>
                           <div className="flex justify-between items-center">
                             <span className="text-white/70">Durée</span>
-                            <span className="font-semibold">{simulateClassic.data.dureeAns} mois</span>
+                            <span className="font-semibold">{simulateClassic.data.dureeMois} mois</span>
                           </div>
                           <div className="flex justify-between items-center">
                             <span className="text-white/70">Taux</span>
                             <span className="font-semibold">{simulateClassic.data.taux}%</span>
                           </div>
+                          <div className="flex justify-between items-center">
+                            <span className="text-white/70">Taxe TPS</span>
+                            <span className="font-semibold">{(simulateClassic.data.taxRate * 100).toFixed(0)}%</span>
+                          </div>
                           <div className="flex justify-between items-center text-secondary">
                             <span>Coût total du crédit</span>
                             <span className="font-bold">{formatMRU(simulateClassic.data.interetsTotal)}</span>
+                          </div>
+                          <div className="flex justify-between items-center text-secondary">
+                            <span>Total taxes</span>
+                            <span className="font-bold">{formatMRU(simulateClassic.data.taxTotal || 0)}</span>
                           </div>
                           <div className="flex justify-between items-center font-bold text-lg pt-2 border-t border-white/10">
                             <span>Total à rembourser</span>

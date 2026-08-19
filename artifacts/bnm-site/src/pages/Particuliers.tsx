@@ -72,27 +72,103 @@ const sections: Section[] = [
         ]
       },
       {
-        id: "nos-cartes",
-        title: "Cartes Mastercard",
-        subtitle: "5 cartes, 5 façons de vivre",
-        description: "Effectuez un retrait ou un paiement en choisissant parmi notre large gamme de cartes Mastercard. De la Gimtel à la Platinium, faites vos transactions en toute sécurité.",
-        cta: "Choisir ma carte",
+        id: "mastercard-business",
+        title: "Mastercard Business",
+        subtitle: "Entreprises / Institutionnel, ONG et Associations",
+        description: "Carte dédiée aux entreprises, institutions, ONG et associations.",
+        cta: "Choisir Mastercard Business",
         ctaLink: "/contact",
         icon: CreditCard,
         gradient: "from-[#D9C3A0]/30 to-[#B68C4A]/20",
         avantages: [
-          "Une gamme complète de 5 cartes Mastercard adaptées à chaque besoin",
-          "Des paiements et retraits sécurisés partout dans le monde",
-          "La carte Gimtel, Classique, Travel, Business ou Platinium selon votre rythme de vie"
+          "Entreprises / Institutionnel, ONG et Associations",
+          "575 MRU / mois",
+          "Plafond de retrait : 500 euros / jour",
+          "Plafond de paiement : 8 000 euros / jour"
         ],
         documents: [
-          "Auprès de votre conseiller clientèle",
-          "A partir de votre compte e-BNM"
+          "Faire une demande et signer une convention"
         ],
         stats: [
-          { label: "Cartes", value: "5 Mastercard" },
-          { label: "Réseau", value: "200+ pays" },
-          { label: "Sécurité", value: "Maximale" }
+          { label: "Carte", value: "Business" },
+          { label: "Retrait", value: "500 €/j" },
+          { label: "Paiement", value: "8 000 €/j" }
+        ]
+      },
+      {
+        id: "mastercard-classic",
+        title: "Mastercard Classic",
+        subtitle: "Professionnels & Particuliers",
+        description: "La carte classique pour vos paiements et retraits au quotidien.",
+        cta: "Choisir Mastercard Classic",
+        ctaLink: "/contact",
+        icon: CreditCard,
+        gradient: "from-[#D9C3A0]/30 to-[#B68C4A]/20",
+        avantages: [
+          "Professionnels : 345 MRU / mois",
+          "Particuliers : 345 MRU / mois",
+          "Plafond de retrait : 350 euros / jour",
+          "Plafond de paiement : 3 000 euros / jour"
+        ],
+        documents: [
+          "Faire une demande et signer une convention"
+        ],
+        stats: [
+          { label: "Carte", value: "Classic" },
+          { label: "Retrait", value: "350 €/j" },
+          { label: "Paiement", value: "3 000 €/j" }
+        ]
+      },
+      {
+        id: "mastercard-platinum",
+        title: "Mastercard Platinum",
+        subtitle: "Professionnels, Particuliers, Entreprises / Institutionnel, ONG et Associations",
+        description: "La carte haut de gamme pour des plafonds élevés et des services premium.",
+        cta: "Choisir Mastercard Platinum",
+        ctaLink: "/contact",
+        icon: CreditCard,
+        gradient: "from-[#D9C3A0]/30 to-[#B68C4A]/20",
+        avantages: [
+          "Professionnels, particuliers, Entreprises / Institutionnel, ONG et Associations",
+          "750 MRU / mois",
+          "Plafond de retrait : 2 000 euros / jour",
+          "Plafond de paiement : 20 000 euros / jour"
+        ],
+        documents: [
+          "Faire une demande et signer une convention"
+        ],
+        stats: [
+          { label: "Carte", value: "Platinum" },
+          { label: "Retrait", value: "2 000 €/j" },
+          { label: "Paiement", value: "20 000 €/j" }
+        ]
+      },
+      {
+        id: "mastercard-travel",
+        title: "Mastercard Travel",
+        subtitle: "Carte prépayée",
+        description: "Carte prépayée idéale pour vos déplacements et voyages.",
+        cta: "Choisir Mastercard Travel",
+        ctaLink: "/contact",
+        icon: CreditCard,
+        gradient: "from-[#D9C3A0]/30 to-[#B68C4A]/20",
+        avantages: [
+          "Professionnels, particuliers, Entreprises / Institutionnel, ONG et Associations",
+          "1 200 MRU à l'achat",
+          "Plafond de retrait : 350 euros / jour",
+          "Plafond de paiement : 3 000 euros / jour",
+          "Recharge minimum : 300 euros",
+          "Recharge maximum : 3 000 euros"
+        ],
+        documents: [
+          "Signer la convention",
+          "Copie passeport",
+          "Justificatif d'adresse"
+        ],
+        stats: [
+          { label: "Carte", value: "Travel" },
+          { label: "Achat", value: "1 200 MRU" },
+          { label: "Validité", value: "2 ans" }
         ]
       },
       {
@@ -192,16 +268,16 @@ const sections: Section[] = [
       {
         id: "credit-consommation",
         title: "Crédit à la Consommation",
-        subtitle: "Vos envies deviennent réalité",
-        description: "Nouvelle voiture, renouvellement immobilier, équipements électroménagers — le crédit à la consommation BNM est la solution à vos projets. Des crédits souples, accessibles et adaptés à votre capacité financière.",
+        subtitle: "Crédit à moyen et long terme",
+        description: "Ce financement est destiné à l'acquisition de biens d'équipement tels que le mobilier, l'électroménager, les véhicules, ainsi que tout autre besoin de consommation.",
         cta: "Simuler mon crédit",
         ctaLink: "/contact",
         icon: ShoppingBag,
         gradient: "from-[#B68C4A]/15 to-[#0E6B4B]/10",
         avantages: [
-          "Financez vos projets : voiture, immobilier, équipements",
-          "Des crédits souples adaptés à votre capacité financière",
-          "Un accompagnement pour que chaque projet devienne réalité"
+          "Financement des biens d'équipement et des projets de consommation",
+          "Des solutions adaptées à vos besoins de moyen et long terme",
+          "Un accompagnement personnalisé pour chaque dossier"
         ],
         documents: [
           "Une demande manuscrite",
@@ -211,47 +287,75 @@ const sections: Section[] = [
           "Une garantie bancaire"
         ],
         stats: [
-          { label: "Montant max", value: "Jusqu'à 5M MRU" },
-          { label: "Durée", value: "12-60 mois" },
-          { label: "Taux", value: "À partir de 5.5%" }
+          { label: "Montant max", value: "Selon dossier" },
+          { label: "Durée", value: "Moyen et long terme" },
+          { label: "Taux", value: "Selon offre" }
+        ]
+      },
+      {
+        id: "credit-equipement",
+        title: "Crédit Équipement",
+        subtitle: "Financement de vos équipements",
+        description: "Ce crédit permet d'acquérir des équipements professionnels et personnels : mobilier, électroménager, véhicules et autres biens d'investissement. Montant équivalent à 12 mois de salaire, remboursable sur 48 mois.",
+        cta: "Simuler mon crédit",
+        ctaLink: "/contact",
+        icon: Car,
+        gradient: "from-[#0E6B4B]/10 to-[#6E8F6B]/20",
+        avantages: [
+          "Financement des équipements indispensables à votre quotidien",
+          "Montant équivalent à 12 mois de salaire",
+          "Remboursement sur 48 mois",
+          "Un accompagnement personnalisé pour sécuriser votre achat"
+        ],
+        documents: [
+          "Une demande manuscrite",
+          "Une copie du contrat de travail",
+          "Une domiciliation du salaire",
+          "Relevé de compte des 6 derniers mois",
+          "Une garantie bancaire"
+        ],
+        stats: [
+          { label: "Montant max", value: "12 mois de salaire" },
+          { label: "Durée", value: "48 mois" },
+          { label: "Taux", value: "Selon offre" }
         ]
       },
       {
         id: "credit-oxygene",
-        title: "Crédit Oxygène",
-        subtitle: "Les bons moments, sans pression",
-        description: "Rentrée scolaire, Ramadan, fêtes religieuses — certains rendez-vous sont sacrés. Grâce aux crédits ponctuels Oxygène BNM, préparez ces moments en toute sérénité.",
+        title: "Crédit Fêtes et Rentrée scolaire",
+        subtitle: "Crédit court terme",
+        description: "Cette facilité est accordée à l'occasion des fêtes religieuses (Aïd El-Fitr, Aïd El-Adha et Ramadan) ainsi qu'à l'ouverture de l'année scolaire. Le montant du prêt est limité à un (1) mois de salaire, avec un plafond de 50 000 MRU, remboursable sur une durée maximale de 10 mois, à un taux de 0 %.",
         cta: "Souffler avec Oxygène",
         ctaLink: "/contact",
         icon: Zap,
         gradient: "from-[#B68C4A]/20 to-[#D9C3A0]/30",
         avantages: [
-          "Des crédits ponctuels pour les moments clés de l'année",
-          "Préparez la rentrée scolaire de vos enfants en toute sérénité",
-          "Partagez le Ramadan et les fêtes religieuses avec vos proches"
+          "Une facilité dédiée aux fêtes religieuses et à la rentrée scolaire",
+          "Montant limité à un mois de salaire avec un plafond de 50 000 MRU",
+          "Remboursement sur une durée maximale de 10 mois à 0 %"
         ],
         documents: [
           "Faites une demande auprès de votre conseiller financier clientèle"
         ],
         stats: [
-          { label: "Sans intérêt", value: "Possible" },
-          { label: "Réponse", value: "48h" },
-          { label: "Saisons", value: "4/an" }
+          { label: "Plafond", value: "50 000 MRU" },
+          { label: "Durée max", value: "10 mois" },
+          { label: "Taux", value: "0 %" }
         ]
       },
       {
         id: "credit-investissement",
-        title: "Crédit Investissement",
-        subtitle: "Construisez, achetez, rénovez",
-        description: "Un projet immobilier est un rude combat. Avec le crédit BNM, emprunter pour acquérir, construire ou rénover devient simple. Un crédit sur-mesure pour que chacun puisse rentrer chez soi en toute assurance.",
+        title: "Crédit Immobilier",
+        subtitle: "Jusqu'à 36 mois de salaire",
+        description: "Ce financement est destiné à l'acquisition, à la construction ou à la rénovation d'un bien immobilier. Le montant du crédit peut atteindre jusqu'à 36 mois de salaire, remboursable sur une durée maximale de 145 mois, à un taux de 10 % l'an.",
         cta: "Financer mon projet",
         ctaLink: "/contact",
         icon: Rocket,
         gradient: "from-[#0E6B4B]/10 to-[#6E8F6B]/20",
         avantages: [
-          "Acquisition, construction ou rénovation immobilière simplifiée",
-          "Des conditions avantageuses pour réaliser vos rêves",
-          "Un accompagnement personnalisé à chaque étape"
+          "Acquisition, construction ou rénovation d'un bien immobilier",
+          "Jusqu'à 36 mois de salaire de crédit",
+          "Un accompagnement personnalisé jusqu'à la mise en œuvre du projet"
         ],
         documents: [
           "Une demande manuscrite",
@@ -261,9 +365,9 @@ const sections: Section[] = [
           "Garantie bancaire"
         ],
         stats: [
-          { label: "Montant max", value: "Jusqu'à 30M MRU" },
-          { label: "Durée", value: "Jusqu'à 20 ans" },
-          { label: "Taux", value: "À partir de 4.5%" }
+          { label: "Montant max", value: "36 mois de salaire" },
+          { label: "Durée max", value: "145 mois" },
+          { label: "Taux", value: "10 %" }
         ]
       }
     ]
@@ -441,8 +545,8 @@ export default function Particuliers() {
 
   const borrowActions = [
     {
-      title: "Financer vos projets",
-      desc: "Acquérir une voiture, renouveler votre immobilier — la BNM vous accompagne.",
+      title: "Crédit à la Consommation",
+      desc: "Acquérir du mobilier, de l'électroménager, des véhicules et répondre à vos besoins de consommation.",
       icon: ShoppingBag,
       link: "#",
       gradient: "from-[#0E6B4B] to-[#0A4A36]",
@@ -450,8 +554,8 @@ export default function Particuliers() {
       sub: "credit-consommation"
     },
     {
-      title: "Un crédit ponctuel",
-      desc: "Rentrée scolaire, Ramadan, fêtes — la BNM vous soutient en toute sérénité.",
+      title: "Crédit Fêtes et Rentrée scolaire",
+      desc: "Une facilité de trésorerie pour les fêtes religieuses et l'ouverture de l'année scolaire.",
       icon: Heart,
       link: "#",
       gradient: "from-[#B68C4A] to-[#D9C3A0]",
@@ -459,8 +563,8 @@ export default function Particuliers() {
       sub: "credit-oxygene"
     },
     {
-      title: "Acquérir un logement",
-      desc: "Construisez, achetez ou rénovez votre maison avec la BNM.",
+      title: "Crédit Immobilier",
+      desc: "Un financement immobilier jusqu'à 36 mois de salaire pour acheter, construire ou rénover.",
       icon: Home,
       link: "#",
       gradient: "from-[#6E8F6B] to-[#0E6B4B]",

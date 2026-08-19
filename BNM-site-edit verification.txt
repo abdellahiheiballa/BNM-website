@@ -1,0 +1,127 @@
+BNM - NOTE DE RECTIFICATION
+Objet : Vérification du contenu du site internet de la BNM
+Date de vérification : 2026-08-10
+
+----------------------------------------------------------------------------------------------------
+1. RUBRIQUE « CLIENTÈLE DES PARTICULIERS »
+----------------------------------------------------------------------------------------------------
+A. Offres de crédit
+
+1. Crédit Immobilier
+- Texte demandé : "Crédit Immobilier : Jusqu'à 36 mois de salaire."
+- Emplacement dans le site :
+  * Fichier : artifacts/bnm-site/src/pages/Particuliers.tsx
+  * Section : bloc "Emprunter" > sous-offre "credit-investissement"
+  * Vérification : le texte et le sous-titre sont présents dans le code, avec la mention "Jusqu'à 36 mois de salaire".
+
+2. Crédit Équipement
+- Texte demandé : vérifier et mettre à jour le contenu correspondant.
+- Emplacement dans le site :
+  * Fichier : artifacts/bnm-site/src/pages/Particuliers.tsx
+  * Section : bloc "Emprunter" > sous-offre "credit-equipement"
+  * Vérification : la carte "Crédit Équipement" est bien présente avec le libellé correct et le contenu de financement associé.
+
+3. Crédit à la consommation
+a) Crédit court terme (Oxygène)
+- Texte demandé : "Cette facilité est accordée à l'occasion des fêtes religieuses (Aïd El-Fitr, Aïd El-Adha et Ramadan) ainsi qu'à l'ouverture de l'année scolaire. Le montant du prêt est limité à un (1) mois de salaire, avec un plafond de 50 000 MRU, remboursable sur une durée maximale de 10 mois, à un taux de 0 %."
+- Emplacement dans le site :
+  * Fichier : artifacts/bnm-site/src/pages/Particuliers.tsx
+  * Section : bloc "Emprunter" > sous-offre "credit-oxygene"
+  * Vérification : la description correspondante est présente dans le code.
+
+b) Crédit à moyen et long terme
+- Texte demandé pour le Crédit à la consommation : "Ce financement est destiné à l'acquisition de biens d'équipement tels que le mobilier, l'électroménager, les véhicules, ainsi que tout autre besoin de consommation."
+- Texte demandé pour le Crédit Immobilier : "Ce financement est destiné à l'acquisition, à la construction ou à la rénovation d'un bien immobilier. Le montant du crédit peut atteindre jusqu'à 36 mois de salaire, remboursable sur une durée maximale de 145 mois, à un taux de 10% l'an."
+- Emplacement dans le site :
+  * Fichier : artifacts/bnm-site/src/pages/Particuliers.tsx
+  * Section : bloc "Emprunter" > sous-offres "credit-consommation" et "credit-investissement"
+  * Vérification : les deux descriptions sont présentes dans le code et correspondent au texte demandé.
+
+----------------------------------------------------------------------------------------------------
+2. RUBRIQUE « CLIENTÈLE DES ENTREPRISES »
+----------------------------------------------------------------------------------------------------
+Produits ajoutés / mis à jour dans le site :
+
+- Financement d'investissement
+  * Emplacement : artifacts/bnm-site/src/pages/Entreprises.tsx
+  * Section : bloc "Gérer votre trésorerie" / sous-offre "financement-investissement"
+  * Texte ajouté : "Financement destiné à l'acquisition d'équipements, de matériels, de véhicules, à la réalisation de projets d'extension ou à tout investissement productif."
+
+- Découvert bancaire
+  * Emplacement : artifacts/bnm-site/src/pages/Entreprises.tsx
+  * Section : bloc "Gérer votre trésorerie" / sous-offre "decouvert-bancaire"
+  * Texte ajouté : "Couverture des décalages temporaires de trésorerie. Réponse aux besoins récurrents de financement à court terme."
+
+- Facilité de caisse
+  * Emplacement : artifacts/bnm-site/src/pages/Entreprises.tsx
+  * Section : bloc "Gérer votre trésorerie" / sous-offre "facilite-caisse"
+  * Texte ajouté : "Financement ponctuel des besoins de trésorerie. Utilisée dans l'attente d'un encaissement ou d'un virement."
+
+- Escompte commercial
+  * Emplacement : artifacts/bnm-site/src/pages/Entreprises.tsx
+  * Section : bloc "Gérer votre trésorerie" / sous-offre "escompte-commercial"
+  * Texte ajouté : "Mobilisation anticipée des créances commerciales. Permet d'obtenir le règlement des factures avant leur échéance."
+
+- Factoring (Affacturage)
+  * Emplacement : artifacts/bnm-site/src/pages/Entreprises.tsx
+  * Section : bloc "Gérer votre trésorerie" / sous-offre "factoring"
+  * Texte ajouté : "Cession des créances clients à la banque. Amélioration de la trésorerie et réduction des délais d'encaissement."
+
+- Mourabaha (Finance islamique)
+  * Emplacement : artifacts/bnm-site/src/pages/Entreprises.tsx
+  * Section : bloc "Gérer votre trésorerie" / sous-offre "mourabaha"
+  * Texte ajouté : "Financement conforme aux principes de la Charia. Destiné à l'acquisition de biens d'équipement, de véhicules ou d'autres actifs professionnels."
+
+- Cautions bancaires
+  * Emplacement : artifacts/bnm-site/src/pages/Entreprises.tsx
+  * Section : bloc "Financer vos investissements" / sous-offre "cautions"
+  * Texte ajouté : Caution de soumission, caution de bonne exécution, caution de restitution d'avance, cautions douanières et administratives.
+
+- Crédit documentaire (CREDOC)
+  * Emplacement : artifacts/bnm-site/src/pages/Entreprises.tsx
+  * Section : bloc "international" / sous-offre "credit-documentaire"
+  * Texte ajouté : "Financement et sécurisation des opérations d'import-export. Réduction des risques commerciaux entre acheteurs et fournisseurs."
+
+- Produits de trésorerie et placements
+  * Emplacement : artifacts/bnm-site/src/pages/Entreprises.tsx
+  * Section : bloc "Gérer votre trésorerie" / sous-offre "depot-terme"
+  * Texte ajouté : "Dépôts à terme (DAT). Solutions de gestion de trésorerie destinées aux entreprises."
+
+Vérification globale : tous les produits demandés sont présents dans le fichier de page Entreprises.
+
+----------------------------------------------------------------------------------------------------
+3. LOCALISATION DES AGENCES
+----------------------------------------------------------------------------------------------------
+- Agence Wali : supprimée des données de seed.
+- Agence Birmoghrein : supprimée des données de seed.
+- Emplacements vérifiés :
+  * scripts/seed-agences.cjs
+  * scripts/seed-agences.mjs
+  * scripts/seed-agences.sql
+- Vérification : aucune occurrence de "Agence Wali", "Agence wali", "Agence Birmoghrein", "Bir Moghrein" n'est retrouvée dans ces sources ni dans les fichiers de code applicatif.
+
+Note : la page d'agences [artifacts/bnm-site/src/pages/Agences.tsx] lit les agences depuis les données de l'API / base, donc la suppression des agences est gérée via les données de seed et la source de liste.
+
+----------------------------------------------------------------------------------------------------
+4. BANQUE D'IMAGES / M. SAABDOUH
+----------------------------------------------------------------------------------------------------
+- Demande : retirer du site internet l'ensemble des images représentant M. Saabdouh.
+- Vérification effectuée : aucune référence à "Saabdouh" et aucune image nommée ou appelée dans le code ne correspond à cette personne.
+- Fichiers et dossiers vérifiés :
+  * artifacts/bnm-site/src/pages/
+  * artifacts/bnm-site/public/assets/
+  * artifacts/bnm-site/public/assets/images/
+- Conclusion : il n'y a pas de trace restante dans le code ni dans les images publiques référencées du site de l'image concernée.
+
+----------------------------------------------------------------------------------------------------
+CONCLUSION GÉNÉRALE
+----------------------------------------------------------------------------------------------------
+Les mises à jour demandées dans la NOTE DE RECTIFICATION ont bien été appliquées et vérifiées dans les fichiers suivants :
+- artifacts/bnm-site/src/pages/Particuliers.tsx
+- artifacts/bnm-site/src/pages/Entreprises.tsx
+- artifacts/bnm-site/src/pages/Agences.tsx
+- scripts/seed-agences.cjs
+- scripts/seed-agences.mjs
+- scripts/seed-agences.sql
+
+Le document a été préparé pour vérification humaine afin de confirmer visuellement et fonctionnellement les changements sur le site.
