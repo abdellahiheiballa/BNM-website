@@ -5,12 +5,23 @@
  * BNM - Banque Nationale de Mauritanie API
  * OpenAPI spec version: 0.1.0
  */
+import type { AmortizationRow } from "./amortizationRow";
 
 export interface SimulationResult {
+  /** Monthly HT payment */
   mensualite: number;
+  /** Monthly TTC payment including tax */
+  mensualiteTTC: number;
   coutTotal: number;
   interetsTotal: number;
+  /** Total tax over loan term */
+  taxTotal?: number;
   montant: number;
   dureeAns: number;
+  /** Loan term in months */
+  dureeMois: number;
   taux: number;
+  /** Tax rate (e.g. 0.16 for 16%) */
+  taxRate: number;
+  schedule: AmortizationRow[];
 }

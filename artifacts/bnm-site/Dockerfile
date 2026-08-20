@@ -1,7 +1,7 @@
-FROM node:20-alpine AS builder
+FROM node:22-slim AS builder
 WORKDIR /app
 
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 COPY lib/ ./lib/
 COPY artifacts/bnm-site/ ./artifacts/bnm-site/
 

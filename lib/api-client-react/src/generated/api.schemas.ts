@@ -145,12 +145,26 @@ export interface SimulateClassicInput {
    * @minimum 1
    * @maximum 25
    */
-  dureeAns: number;
+  dureeAns?: number;
+  /**
+   * @minimum 1
+   * @maximum 300
+   */
+  dureeMois?: number;
   /**
    * @minimum 0
    * @maximum 100
    */
   taux?: number;
+  /**
+   * @minimum 0
+   * @maximum 1
+   */
+  tax?: number;
+  /** First payment due date (YYYY-MM-DD). Defaults to one month from today. */
+  firstDueDate?: string;
+  /** Loan start date (YYYY-MM-DD). Used to calculate days for the first period. Defaults to one month before firstDueDate. */
+  loanStartDate?: string;
 }
 
 export interface SimulateMurabahaInput {
@@ -170,13 +184,34 @@ export interface SimulateMurabahaInput {
   dureeAns: number;
 }
 
+export interface AmortizationRow {
+  date: string;
+  tax: number;
+  amountTTC: number;
+  interest: number;
+  principal: number;
+  balance: number;
+  num: number;
+  days: number;
+}
+
 export interface SimulationResult {
+  /** Monthly HT payment */
   mensualite: number;
+  /** Monthly TTC payment including tax */
+  mensualiteTTC: number;
   coutTotal: number;
   interetsTotal: number;
+  /** Total tax over loan term */
+  taxTotal?: number;
   montant: number;
   dureeAns: number;
+  /** Loan term in months */
+  dureeMois: number;
   taux: number;
+  /** Tax rate (e.g. 0.16 for 16%) */
+  taxRate: number;
+  schedule: AmortizationRow[];
 }
 
 export interface MurabahaResult {

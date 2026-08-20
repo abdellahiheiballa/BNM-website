@@ -1,6 +1,7 @@
 import "leaflet/dist/leaflet.css";
 import { useEffect, useMemo, useState } from "react";
 import { MapContainer, Marker, TileLayer, useMap } from "react-leaflet";
+import L from "leaflet";
 import { useListAgences, type Agence } from "@workspace/api-client-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -8,6 +9,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapPin, Phone, Clock, Search, MapIcon, Mail } from "lucide-react";
+
+const defaultIcon = new L.Icon({
+  iconUrl: "/leaflet/marker-icon.png",
+  iconRetinaUrl: "/leaflet/marker-icon-2x.png",
+  shadowUrl: "/leaflet/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41],
+});
 
 type AgenceWithCoords = Agence & {
   latitude: number;
@@ -94,6 +105,7 @@ export default function Agences() {
                 <Marker
                   key={agence.id}
                   position={[agence.latitude, agence.longitude]}
+                  icon={defaultIcon}
                   eventHandlers={{
                     click: () => setSelectedId(agence.id),
                   }}

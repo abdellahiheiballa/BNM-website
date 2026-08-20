@@ -16,10 +16,24 @@ export interface SimulateClassicInput {
    * @minimum 1
    * @maximum 25
    */
-  dureeAns: number;
+  dureeAns?: number;
+  /**
+   * @minimum 1
+   * @maximum 300
+   */
+  dureeMois?: number;
   /**
    * @minimum 0
    * @maximum 100
    */
   taux?: number;
+  /**
+   * @minimum 0
+   * @maximum 1
+   */
+  tax?: number;
+  /** First payment due date (YYYY-MM-DD). Defaults to one month from today. */
+  firstDueDate?: Date;
+  /** Loan start date (YYYY-MM-DD). Used to calculate days for the first period. Defaults to one month before firstDueDate. */
+  loanStartDate?: Date;
 }

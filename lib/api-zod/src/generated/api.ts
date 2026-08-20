@@ -137,30 +137,74 @@ export const simulateClassicBodyMontantMax = 50000000;
 
 export const simulateClassicBodyDureeAnsMax = 25;
 
+export const simulateClassicBodyDureeMoisMax = 300;
+
 export const simulateClassicBodyTauxDefault = 5.5;
 export const simulateClassicBodyTauxMin = 0;
 export const simulateClassicBodyTauxMax = 100;
+
+export const simulateClassicBodyTaxDefault = 0;
+export const simulateClassicBodyTaxMin = 0;
+export const simulateClassicBodyTaxMax = 1;
 
 export const SimulateClassicBody = zod.object({
   montant: zod
     .number()
     .min(simulateClassicBodyMontantMin)
     .max(simulateClassicBodyMontantMax),
-  dureeAns: zod.number().min(1).max(simulateClassicBodyDureeAnsMax),
+  dureeAns: zod.number().min(1).max(simulateClassicBodyDureeAnsMax).optional(),
+  dureeMois: zod
+    .number()
+    .min(1)
+    .max(simulateClassicBodyDureeMoisMax)
+    .optional(),
   taux: zod
     .number()
     .min(simulateClassicBodyTauxMin)
     .max(simulateClassicBodyTauxMax)
     .default(simulateClassicBodyTauxDefault),
+  tax: zod
+    .number()
+    .min(simulateClassicBodyTaxMin)
+    .max(simulateClassicBodyTaxMax)
+    .default(simulateClassicBodyTaxDefault),
+  firstDueDate: zod.coerce
+    .date()
+    .optional()
+    .describe(
+      "First payment due date (YYYY-MM-DD). Defaults to one month from today.",
+    ),
+  loanStartDate: zod.coerce
+    .date()
+    .optional()
+    .describe(
+      "Loan start date (YYYY-MM-DD). Used to calculate days for the first period. Defaults to one month before firstDueDate.",
+    ),
 });
 
 export const SimulateClassicResponse = zod.object({
-  mensualite: zod.number(),
+  mensualite: zod.number().describe("Monthly HT payment"),
+  mensualiteTTC: zod.number().describe("Monthly TTC payment including tax"),
   coutTotal: zod.number(),
   interetsTotal: zod.number(),
+  taxTotal: zod.number().optional().describe("Total tax over loan term"),
   montant: zod.number(),
   dureeAns: zod.number(),
+  dureeMois: zod.number().describe("Loan term in months"),
   taux: zod.number(),
+  taxRate: zod.number().describe("Tax rate (e.g. 0.16 for 16%)"),
+  schedule: zod.array(
+    zod.object({
+      date: zod.coerce.date(),
+      tax: zod.number(),
+      amountTTC: zod.number(),
+      interest: zod.number(),
+      principal: zod.number(),
+      balance: zod.number(),
+      num: zod.number(),
+      days: zod.number(),
+    }),
+  ),
 });
 
 /**

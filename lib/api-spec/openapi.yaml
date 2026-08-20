@@ -813,14 +813,30 @@ components:
           type: integer
           minimum: 1
           maximum: 25
+        dureeMois:
+          type: integer
+          minimum: 1
+          maximum: 300
         taux:
           type: number
           minimum: 0
           maximum: 100
           default: 5.5
+        tax:
+          type: number
+          minimum: 0
+          maximum: 1
+          default: 0
+        firstDueDate:
+          type: string
+          format: date
+          description: First payment due date (YYYY-MM-DD). Defaults to one month from today.
+        loanStartDate:
+          type: string
+          format: date
+          description: Loan start date (YYYY-MM-DD). Used to calculate days for the first period. Defaults to one month before firstDueDate.
       required:
         - montant
-        - dureeAns
 
     SimulateMurabahaInput:
       type: object
@@ -850,16 +866,33 @@ components:
       properties:
         mensualite:
           type: number
+          description: Monthly HT payment
+        mensualiteTTC:
+          type: number
+          description: Monthly TTC payment including tax
         coutTotal:
           type: number
         interetsTotal:
           type: number
+        taxTotal:
+          type: number
+          description: Total tax over loan term
         montant:
           type: number
         dureeAns:
           type: integer
+        dureeMois:
+          type: integer
+          description: Loan term in months
         taux:
           type: number
+        taxRate:
+          type: number
+          description: Tax rate (e.g. 0.16 for 16%)
+        schedule:
+          type: array
+          items:
+            $ref: "#/components/schemas/AmortizationRow"
       required:
         - mensualite
         - coutTotal
@@ -867,6 +900,40 @@ components:
         - montant
         - dureeAns
         - taux
+        - mensualiteTTC
+        - taxRate
+        - dureeMois
+        - schedule
+
+    AmortizationRow:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+        tax:
+          type: number
+        amountTTC:
+          type: number
+        interest:
+          type: number
+        principal:
+          type: number
+        balance:
+          type: number
+        num:
+          type: integer
+        days:
+          type: integer
+      required:
+        - date
+        - tax
+        - amountTTC
+        - interest
+        - principal
+        - balance
+        - num
+        - days
 
     MurabahaResult:
       type: object

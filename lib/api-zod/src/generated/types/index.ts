@@ -10,6 +10,7 @@ export * from "./actualite";
 export * from "./adminLoginInput";
 export * from "./adminUploadFile200";
 export * from "./agence";
+export * from "./amortizationRow";
 export * from "./contactInput";
 export * from "./createActualiteInput";
 export * from "./createOffreInput";
