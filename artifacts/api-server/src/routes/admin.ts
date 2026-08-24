@@ -44,9 +44,11 @@ router.post("/login", loginLimiter, async (req, res) => {
     return res.status(401).json({ error: "Invalid credentials" });
   }
 
+  const isSecure = req.secure || req.headers["x-forwarded-proto"] === "https";
+
   res.cookie(SESSION_COOKIE_NAME, String(admin.id), {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: isSecure,
     sameSite: "strict",
     maxAge: 7 * 24 * 60 * 60 * 1000,
   });
