@@ -383,7 +383,7 @@ function SubOffreCard({ subOffre, active, onClick }: { subOffre: SubOffre; activ
       aria-controls={`suboffre-${subOffre.id}`}
       className={`group relative flex items-center gap-4 p-5 text-left transition-all duration-300 ${
         active
-          ? "bg-primary text-white shadow-xl scale-[1.02] border-l-4 border-secondary"
+          ? "bg-primary text-white shadow-xl lg:scale-[1.02] origin-left border-l-4 border-secondary"
           : "bg-white text-foreground hover:bg-primary/5 border border-border hover:border-primary/30 hover:shadow-md"
       }`}
     >
