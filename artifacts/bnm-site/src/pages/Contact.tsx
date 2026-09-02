@@ -62,7 +62,7 @@ export default function Contact() {
     <div className="flex flex-col min-h-screen bg-muted/10">
       {/* Header */}
       <section className="bg-primary py-16 md:py-24 text-white relative overflow-hidden">
-        <div className="absolute inset-0 opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]" />
+        <div className="absolute inset-0 opacity-10 bg-[url('/assets/images/cubes.png')]" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-2xl">
             <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">Contactez-nous</h1>

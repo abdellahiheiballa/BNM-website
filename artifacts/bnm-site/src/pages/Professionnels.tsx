@@ -286,6 +286,8 @@ function SubOffreCard({ subOffre, active, onClick }: { subOffre: SubOffre; activ
   return (
     <button
       onClick={onClick}
+      aria-pressed={active}
+      aria-controls={`suboffre-${subOffre.id}`}
       className={`group relative flex items-center gap-4 p-5 text-left transition-all duration-300 ${
         active
           ? "bg-primary text-white shadow-xl scale-[1.02] border-l-4 border-secondary"
@@ -314,7 +316,7 @@ function OffreContent({ offre }: { offre: SubOffre }) {
   const [activeTab, setActiveTab] = useState<"avantages" | "documents">("avantages");
 
   return (
-    <div className="space-y-8">
+    <div id={`suboffre-${offre.id}`} className="space-y-8">
       <div className={`bg-gradient-to-br ${offre.gradient} rounded-none p-6 md:p-8 relative overflow-hidden`}>
         <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
           <offre.icon className="w-full h-full" />
@@ -331,7 +333,7 @@ function OffreContent({ offre }: { offre: SubOffre }) {
       </div>
 
       {offre.stats && (
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {offre.stats.map((stat, i) => (
             <div key={i} className="bg-muted/50 border border-border p-3 text-center">
               <p className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{stat.label}</p>
@@ -533,7 +535,7 @@ export default function Professionnels() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
             <div className="lg:col-span-4">
-              <div className="sticky top-28 space-y-6">
+              <div className="relative lg:sticky lg:top-28 space-y-6">
                 <div>
                   <p className="text-xs font-bold text-primary uppercase tracking-widest mb-1">Navigation</p>
                   <p className="text-sm text-muted-foreground">Vous souhaitez...</p>

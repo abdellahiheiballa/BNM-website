@@ -1,4 +1,4 @@
-FROM node:22-slim
+FROM node:22-bullseye
 
 WORKDIR /app
 
@@ -6,7 +6,9 @@ COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 COPY lib/ ./lib/
 COPY artifacts/api-server/ ./artifacts/api-server/
 
-RUN corepack enable && pnpm install --frozen-lockfile
+RUN npm install -g corepack \
+	&& corepack enable \
+	&& pnpm install --frozen-lockfile
 
 RUN cd artifacts/api-server && node ./build.mjs
 

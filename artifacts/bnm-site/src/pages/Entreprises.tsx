@@ -522,7 +522,7 @@ export default function Entreprises() {
               </div>
             </div>
             <div className="relative h-[400px] hidden lg:block">
-              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?q=80&w=2070&auto=format&fit=crop')" }} />
+              <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: "url('/assets/images/entreprises-bg.jpg')" }} />
               <div className="absolute inset-0 bg-primary/20" />
             </div>
           </div>

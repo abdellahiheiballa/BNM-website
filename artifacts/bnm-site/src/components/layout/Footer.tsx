@@ -47,7 +47,7 @@ export default function Footer() {
               </div>
               <div className="flex flex-col leading-tight">
                 <span className="text-base font-bold text-white tracking-tight">BNM</span>
-                <span className="text-[10px] text-white/70 uppercase tracking-widest">Banque Nationale</span>
+                <span className="text-[10px] text-white/70 uppercase tracking-widest">La Banque Nationale de Mauritanie</span>
               </div>
             </div>
             <p className="text-sm text-primary-foreground/80 leading-relaxed">
