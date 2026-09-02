@@ -54,16 +54,16 @@ export default function Footer() {
               La Banque Nationale de Mauritanie vous accompagne dans tous vos projets avec des solutions bancaires innovantes et adaptées à vos besoins.
             </p>
             <div className="flex gap-4 pt-4">
-              <a href="#" className="rounded-full bg-primary-foreground/10 p-2 hover:bg-secondary hover:text-primary transition-colors">
+              <a href="https://www.facebook.com/Banque.Nationale.de.Mauritanie/" target="_blank" rel="noopener noreferrer" className="rounded-full bg-primary-foreground/10 p-2 hover:bg-secondary hover:text-primary transition-colors">
                 <Facebook className="h-4 w-4" />
               </a>
-              <a href="#" className="rounded-full bg-primary-foreground/10 p-2 hover:bg-secondary hover:text-primary transition-colors">
+              <a href="https://twitter.com/la_bnm" target="_blank" rel="noopener noreferrer" className="rounded-full bg-primary-foreground/10 p-2 hover:bg-secondary hover:text-primary transition-colors">
                 <Twitter className="h-4 w-4" />
               </a>
-              <a href="#" className="rounded-full bg-primary-foreground/10 p-2 hover:bg-secondary hover:text-primary transition-colors">
+              <a href="https://www.linkedin.com/company/banque-nationale-de-mauritanie-bnm/" target="_blank" rel="noopener noreferrer" className="rounded-full bg-primary-foreground/10 p-2 hover:bg-secondary hover:text-primary transition-colors">
                 <Linkedin className="h-4 w-4" />
               </a>
-              <a href="#" className="rounded-full bg-primary-foreground/10 p-2 hover:bg-secondary hover:text-primary transition-colors">
+              <a href="https://www.instagram.com/banque.nationale.de.mauritanie" target="_blank" rel="noopener noreferrer" className="rounded-full bg-primary-foreground/10 p-2 hover:bg-secondary hover:text-primary transition-colors">
                 <Instagram className="h-4 w-4" />
               </a>
             </div>

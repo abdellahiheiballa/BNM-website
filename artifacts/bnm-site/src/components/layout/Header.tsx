@@ -1,11 +1,41 @@
 import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Search, Menu, X, User } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export default function Header() {
   const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  const toggleRef = useRef<HTMLButtonElement | null>(null);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return;
+
+    function onDocClick(e: MouseEvent | TouchEvent) {
+      const target = e.target as Node | null;
+      if (!target) return;
+      if (menuRef.current && !menuRef.current.contains(target) && toggleRef.current && !toggleRef.current.contains(target)) {
+        setIsMobileMenuOpen(false);
+      }
+    }
+
+    function onScroll() {
+      setIsMobileMenuOpen(false);
+    }
+
+    document.addEventListener("click", onDocClick);
+    document.addEventListener("touchstart", onDocClick);
+    document.addEventListener("wheel", onScroll, { passive: true });
+    document.addEventListener("touchmove", onScroll, { passive: true });
+
+    return () => {
+      document.removeEventListener("click", onDocClick);
+      document.removeEventListener("touchstart", onDocClick);
+      document.removeEventListener("wheel", onScroll);
+      document.removeEventListener("touchmove", onScroll);
+    };
+  }, [isMobileMenuOpen]);
 
   const navLinks = [
     { href: "/particuliers", label: "Particuliers" },
@@ -103,6 +133,7 @@ export default function Header() {
             size="icon"
             className="md:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            ref={(el: HTMLButtonElement) => (toggleRef.current = el)}
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
@@ -111,7 +142,7 @@ export default function Header() {
 
       {/* Mobile menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t bg-background p-4 absolute top-[100%] left-0 w-full shadow-lg flex flex-col gap-4">
+        <div ref={(el) => (menuRef.current = el)} className="md:hidden border-t bg-background p-4 absolute top-[100%] left-0 w-full shadow-lg flex flex-col gap-4">
           <nav className="flex flex-col space-y-2">
             {navLinks.map((link) => (
               <Link
