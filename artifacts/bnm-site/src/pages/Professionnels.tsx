@@ -288,7 +288,7 @@ function SubOffreCard({ subOffre, active, onClick }: { subOffre: SubOffre; activ
       onClick={onClick}
       aria-pressed={active}
       aria-controls={`suboffre-${subOffre.id}`}
-      className={`group relative flex items-center gap-4 p-5 text-left transition-all duration-300 ${
+      className={`group relative flex items-center gap-4 w-full box-border max-w-full p-3 md:p-5 text-left transition-all duration-300 ${
         active
           ? "bg-primary text-white shadow-xl lg:scale-[1.02] origin-left border-l-4 border-secondary"
           : "bg-white text-foreground hover:bg-primary/5 border border-border hover:border-primary/30 hover:shadow-md"
@@ -305,9 +305,11 @@ function SubOffreCard({ subOffre, active, onClick }: { subOffre: SubOffre; activ
           {subOffre.subtitle}
         </p>
       </div>
-      <ChevronRight className={`w-4 h-4 shrink-0 transition-transform duration-300 ${
-        active ? "text-secondary rotate-0" : "text-muted-foreground group-hover:translate-x-1"
-      }`} />
+      <div className="absolute right-4 top-1/2 -translate-y-1/2">
+        <ChevronRight className={`w-4 h-4 transition-transform duration-300 ${
+          active ? "text-secondary rotate-0" : "text-muted-foreground group-hover:translate-x-1"
+        }`} />
+      </div>
     </button>
   );
 }
@@ -533,7 +535,7 @@ export default function Professionnels() {
 
       <section className="py-12 bg-background">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+          <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
             <div className="lg:col-span-4">
               <div className="relative lg:sticky lg:top-28 space-y-6">
                 <div>
