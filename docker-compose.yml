@@ -32,10 +32,11 @@ services:
       dockerfile: artifacts/bnm-site/Dockerfile
     ports:
       - "80:80"
-      - "443:443"
       - "5173:80"
+      - "443:443"
     volumes:
-      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - ./artifacts/bnm-site/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./ssl:/etc/nginx/ssl:ro
     depends_on:
       - backend
     restart: unless-stopped
