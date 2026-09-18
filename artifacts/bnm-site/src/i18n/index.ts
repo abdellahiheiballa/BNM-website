@@ -26,7 +26,7 @@ export const formatNumber = (value: number | string | undefined, options?: Intl.
   if (Number.isNaN(numericValue)) {
     return String(value ?? "");
   }
-  return new Intl.NumberFormat(getCurrentLocale(), options).format(numericValue);
+  return new Intl.NumberFormat(`${getCurrentLocale()}-u-nu-latn`, options).format(numericValue);
 };
 
 export const formatCurrency = (
@@ -38,7 +38,7 @@ export const formatCurrency = (
   if (Number.isNaN(numericValue)) {
     return String(value ?? "");
   }
-  return new Intl.NumberFormat(getCurrentLocale(), {
+  return new Intl.NumberFormat(`${getCurrentLocale()}-u-nu-latn`, {
     style: "currency",
     currency,
     ...options,
@@ -58,7 +58,7 @@ export const formatPercent = (value: number | string | undefined, digits = 2) =>
   if (Number.isNaN(numericValue)) {
     return String(value ?? "");
   }
-  return new Intl.NumberFormat(getCurrentLocale(), {
+  return new Intl.NumberFormat(`${getCurrentLocale()}-u-nu-latn`, {
     style: "percent",
     minimumFractionDigits: digits,
     maximumFractionDigits: digits,

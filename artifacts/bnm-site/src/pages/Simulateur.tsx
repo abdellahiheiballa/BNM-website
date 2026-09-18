@@ -55,7 +55,7 @@ export default function Simulateur() {
   };
 
   const formatMRU = (value: number) => {
-    return new Intl.NumberFormat(i18n.language === "ar" ? "ar-MR" : "fr-FR", {
+    return new Intl.NumberFormat(i18n.language === "ar" ? "ar-MR-u-nu-latn" : "fr-FR", {
       style: 'currency',
       currency: 'MRU',
       minimumFractionDigits: 0,

@@ -2,13 +2,13 @@ import { useGetStats, useListOffres, useListActualites } from "@workspace/api-cl
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
-import { ArrowRight, Building2, Users, Calendar, Newspaper, Landmark, Briefcase, ChevronRight, ExternalLink, Wallet } from "lucide-react";
+import { ArrowRight, Bot, Building2, Users, Calendar, Newspaper, Landmark, Briefcase, ChevronRight, ExternalLink, Wallet } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslation } from "react-i18next";
 import { formatDate, formatNumber } from "@/i18n";
 
 export default function Home() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { data: stats, isLoading: statsLoading } = useGetStats();
   const { data: offres, isLoading: offresLoading } = useListOffres();
   const { data: actualites, isLoading: actualitesLoading } = useListActualites({ limit: 3 });
@@ -58,9 +58,17 @@ export default function Home() {
           ) : stats ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x border rounded-lg bg-background shadow-sm">
               <div className="p-8 text-center space-y-2">
-                <Users className="w-8 h-8 mx-auto text-secondary mb-4" />
-                <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalClients)}</div>
-                <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.satisfiedClients")}</div>
+                <Bot className="w-8 h-8 mx-auto text-secondary mb-4" />
+                <div className="text-2xl font-bold text-primary">{t("home.aiChat")}</div>
+                <div className="text-sm font-medium text-muted-foreground">{t("home.availability")}</div>
+                <a
+                  href="https://wa.me/22242440036"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-sm font-semibold text-primary hover:text-secondary transition-colors"
+                >
+                  {t("home.whatsapp")}
+                </a>
               </div>
               <div className="p-8 text-center space-y-2">
                 <Building2 className="w-8 h-8 mx-auto text-secondary mb-4" />

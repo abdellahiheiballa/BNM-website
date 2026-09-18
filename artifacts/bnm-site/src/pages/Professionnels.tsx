@@ -431,6 +431,11 @@ export default function Professionnels() {
       epargner: t("products.professionnels.sections.epargne", { defaultValue: "Épargne & Placement" }),
       emprunter: t("products.professionnels.sections.credits", { defaultValue: "Crédits & Financements" }),
     };
+    const taglineTranslations: Record<string, string> = {
+      comptes: t("products.professionnels.taglines.comptes", { defaultValue: "Gérez votre argent en toute simplicité" }),
+      epargner: t("products.professionnels.taglines.epargne", { defaultValue: "Préparez demain, sereinement" }),
+      emprunter: t("products.professionnels.taglines.credits", { defaultValue: "Réalisez vos projets, quel qu'en soit le prix" }),
+    };
     const subOffres = section.subOffres.map((offre) => {
       if (offre.id === "ouvrir-compte") {
         return {
@@ -467,9 +472,35 @@ export default function Professionnels() {
           stats: t<{ label: string; value: string }[]>("products.professionnels.chequier.stats", { returnObjects: true, defaultValue: offre.stats ?? [] }),
         };
       }
+      const offerKeyById: Record<string, string> = {
+        "epargne-classique": "epargneClassique",
+        "epargne-islamique": "epargneIslamique",
+        "credit-consommation": "creditConsommation",
+        "credit-oxygene": "creditOxygene",
+        "credit-investissement": "creditInvestissement",
+      };
+      const offerKey = offerKeyById[offre.id];
+      if (offerKey) {
+        const key = (field: string) => `products.professionnels.${offerKey}.${field}`;
+        return {
+          ...offre,
+          title: t(key("title"), { defaultValue: offre.title }),
+          subtitle: t(key("subtitle"), { defaultValue: offre.subtitle }),
+          description: t(key("description"), { defaultValue: offre.description }),
+          cta: t(key("cta"), { defaultValue: offre.cta }),
+          avantages: t<string[]>(key("advantages"), { returnObjects: true, defaultValue: offre.avantages }),
+          documents: t<string[]>(key("documents"), { returnObjects: true, defaultValue: offre.documents }),
+          stats: t<{ label: string; value: string }[]>(key("stats"), { returnObjects: true, defaultValue: offre.stats ?? [] }),
+        };
+      }
       return offre;
     });
-    return { ...section, title: sectionTranslations[section.id] ?? section.title, subOffres };
+    return {
+      ...section,
+      title: sectionTranslations[section.id] ?? section.title,
+      tagline: taglineTranslations[section.id] ?? section.tagline,
+      subOffres,
+    };
   });
   const currentSection = localizedSections.find(s => s.id === activeSection)!;
   const currentSubOffre = currentSection.subOffres.find(s => s.id === activeSubOffre)!;
@@ -479,22 +510,22 @@ export default function Professionnels() {
 
   const quickActions = [
     {
-      title: "Être client BNM",
-      desc: "Ouvrez un compte et découvrez une banque qui vous accompagne au quotidien.",
+      title: t("professionals.quickActions.client.title"),
+      desc: t("professionals.quickActions.client.description"),
       icon: Users,
       link: "/devenir-client",
       gradient: "from-[#0E6B4B] to-[#6E8F6B]"
     },
     {
-      title: "Régler vos achats",
-      desc: "Avec votre carte Mastercard, payez partout en toute simplicité.",
+      title: t("professionals.quickActions.purchases.title"),
+      desc: t("professionals.quickActions.purchases.description"),
       icon: CreditCard,
       link: "#",
       gradient: "from-[#B68C4A] to-[#D9C3A0]"
     },
     {
-      title: "Paiement sécurisé",
-      desc: "Optez pour le chéquier BNM, fiabilité et rapidité garanties.",
+      title: t("professionals.quickActions.securePayment.title"),
+      desc: t("professionals.quickActions.securePayment.description"),
       icon: ShieldCheck,
       link: "#",
       gradient: "from-[#6E8F6B] to-[#0E6B4B]"

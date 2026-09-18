@@ -301,6 +301,24 @@ export default function Entreprises() {
       "financer-investissements": t("products.entreprises.sections.financerInvestissements", { defaultValue: "Financer vos investissements" }),
       international: t("products.entreprises.sections.developperInternational", { defaultValue: "Développer votre activité à l'international" }),
     };
+    const sectionSubtitleTranslations: Record<string, string> = {
+      "gerer-comptes": t("products.entreprises.descriptions.comptes", { defaultValue: section.subtitle }),
+      "gerer-tresorerie": t("products.entreprises.sectionContent.gererTresorerie", { defaultValue: section.subtitle }),
+      "financer-investissements": t("products.entreprises.sectionContent.financerInvestissements", { defaultValue: section.subtitle }),
+      international: t("products.entreprises.sectionContent.international", { defaultValue: section.subtitle }),
+    };
+    const offerKeys: Record<string, string> = {
+      "decouvert-bancaire": "decouvert",
+      "facilite-caisse": "facilite",
+      "escompte-commercial": "escompte",
+      factoring: "factoring",
+      mourabaha: "mourabaha",
+      "depot-terme": "depot",
+      "financement-investissement": "investissement",
+      cautions: "cautions",
+      transferts: "transferts",
+      "credit-documentaire": "credoc",
+    };
     const subOffres = section.subOffres.map((offre) => {
       if (offre.id === "comptes-moyens-paiement") {
         return {
@@ -321,9 +339,26 @@ export default function Entreprises() {
           documents: t<string[]>("products.entreprises.ebnm.documents", { returnObjects: true, defaultValue: offre.documents }),
         };
       }
+      const offerKey = offerKeys[offre.id];
+      if (offerKey) {
+        const key = (field: string) => `products.entreprises.offers.${offerKey}.${field}`;
+        return {
+          ...offre,
+          title: t(key("title"), { defaultValue: offre.title }),
+          description: t(key("description"), { defaultValue: offre.description }),
+          cta: t("products.entreprises.contactCta", { defaultValue: offre.cta }),
+          avantages: t<string[]>(key("advantages"), { returnObjects: true, defaultValue: offre.avantages }),
+          documents: t<string[]>(key("documents"), { returnObjects: true, defaultValue: offre.documents }),
+        };
+      }
       return offre;
     });
-    return { ...section, title: sectionTranslations[section.id] ?? section.title, subOffres };
+    return {
+      ...section,
+      title: sectionTranslations[section.id] ?? section.title,
+      subtitle: sectionSubtitleTranslations[section.id] ?? section.subtitle,
+      subOffres,
+    };
   });
   const currentSection = localizedSections.find(s => s.id === activeSection)!;
   const currentSubOffre = currentSection.subOffres.find(s => s.id === activeSubOffre)!;
@@ -532,19 +567,19 @@ export default function Entreprises() {
               <ul className="space-y-4 pt-4">
                 <li className="flex items-start">
                   <ArrowRight className="w-5 h-5 text-secondary mr-3 shrink-0 mt-0.5" />
-                  <span>Crédits documentaires (Import/Export)</span>
+                  <span>{t("businesses.tradeDocumentaryCredits")}</span>
                 </li>
                 <li className="flex items-start">
                   <ArrowRight className="w-5 h-5 text-secondary mr-3 shrink-0 mt-0.5" />
-                  <span>Remises documentaires</span>
+                  <span>{t("businesses.tradeDocumentaryRemittances")}</span>
                 </li>
                 <li className="flex items-start">
                   <ArrowRight className="w-5 h-5 text-secondary mr-3 shrink-0 mt-0.5" />
-                  <span>Garanties bancaires internationales</span>
+                  <span>{t("businesses.tradeGuarantees")}</span>
                 </li>
                 <li className="flex items-start">
                   <ArrowRight className="w-5 h-5 text-secondary mr-3 shrink-0 mt-0.5" />
-                  <span>Financement des opérations de négoce</span>
+                  <span>{t("businesses.tradeFinancing")}</span>
                 </li>
               </ul>
               <div className="pt-6">

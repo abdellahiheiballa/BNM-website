@@ -83,7 +83,7 @@ export default function Agences() {
     ? { ...selectedAgence, latitude: selectedAgence.latitude, longitude: selectedAgence.longitude }
     : null;
 
-  const mapPanel = (
+  const renderMapPanel = () => (
     <Card className="h-[620px] rounded-none overflow-hidden shadow-md sticky top-24">
       <div className="h-full w-full">
         {isLoading ? (
@@ -323,12 +323,12 @@ export default function Agences() {
               <TabsTrigger value="map">{t("agencies.map")}</TabsTrigger>
             </TabsList>
             <TabsContent value="list" className="mt-4">{listPanel}</TabsContent>
-            <TabsContent value="map" className="mt-4">{mapPanel}</TabsContent>
+            <TabsContent value="map" className="mt-4">{renderMapPanel()}</TabsContent>
           </Tabs>
 
           <div className="hidden lg:grid grid-cols-[0.9fr_1.1fr] gap-6 items-start">
             {listPanel}
-            {mapPanel}
+            {renderMapPanel()}
           </div>
         </div>
       </section>
