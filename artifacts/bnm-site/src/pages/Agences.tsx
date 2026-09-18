@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MapPin, Phone, Clock, Search, MapIcon, Mail } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const defaultIcon = new L.Icon({
   iconUrl: "/leaflet/marker-icon.png",
@@ -38,6 +39,7 @@ function MapController({ agence, onCenterChange }: { agence: AgenceWithCoords | 
 }
 
 export default function Agences() {
+  const { t } = useTranslation();
   const { data: agences, isLoading } = useListAgences();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCity, setSelectedCity] = useState("Toutes");
@@ -115,8 +117,8 @@ export default function Agences() {
         ) : (
           <div className="h-full flex flex-col items-center justify-center bg-muted text-center p-8">
             <MapIcon className="w-14 h-14 text-muted-foreground mb-4" />
-            <h3 className="text-xl font-semibold text-primary mb-2">Carte indisponible</h3>
-            <p className="text-muted-foreground">Aucune coordonnée n'est disponible pour les agences affichées.</p>
+            <h3 className="text-xl font-semibold text-primary mb-2">{t("agencies.unavailable")}</h3>
+            <p className="text-muted-foreground">{t("agencies.noCoordinates")}</p>
           </div>
         )}
       </div>
@@ -187,7 +189,7 @@ export default function Agences() {
 
               <div className="pt-4 border-t mt-4">
                 <Button variant="ghost" className="w-full text-primary hover:text-secondary hover:bg-secondary/10 rounded-none justify-between">
-                  Voir sur la carte <MapPin className="w-4 h-4 ml-2" />
+                  {t("agencies.viewOnMap")} <MapPin className="w-4 h-4 ml-2" />
                 </Button>
               </div>
             </CardContent>
@@ -196,8 +198,8 @@ export default function Agences() {
       ) : (
         <div className="text-center py-20 bg-background border rounded-none">
           <MapPin className="w-12 h-12 text-muted-foreground mx-auto mb-4 opacity-50" />
-          <h3 className="text-xl font-medium text-primary mb-2">Aucune agence trouvée</h3>
-          <p className="text-muted-foreground">Modifiez vos critères de recherche pour trouver une agence.</p>
+          <h3 className="text-xl font-medium text-primary mb-2">{t("agencies.noneFound")}</h3>
+          <p className="text-muted-foreground">{t("agencies.refineSearch")}</p>
           <Button
             variant="outline"
             className="mt-6 rounded-none text-primary"
@@ -207,7 +209,7 @@ export default function Agences() {
               setSelectedId(null);
             }}
           >
-            Réinitialiser la recherche
+            {t("agencies.reset")}
           </Button>
         </div>
       )}
@@ -221,9 +223,9 @@ export default function Agences() {
           <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
             <MapIcon className="w-8 h-8 text-secondary" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">Nos Agences</h1>
+          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">{t("agencies.title")}</h1>
           <p className="text-lg text-white/80 max-w-2xl mx-auto">
-            Trouvez l'agence BNM la plus proche de chez vous parmi notre vaste réseau couvrant l'ensemble du territoire mauritanien.
+            {t("agencies.description")}
           </p>
         </div>
       </section>
@@ -236,7 +238,7 @@ export default function Agences() {
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-5 h-5" />
                   <Input
-                    placeholder="Rechercher une agence, une adresse, une ville..."
+                    placeholder={t("agencies.searchPlaceholder")}
                     className="pl-10 h-12 rounded-none bg-muted/50 border-transparent focus-visible:ring-primary"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -254,7 +256,7 @@ export default function Agences() {
                       }`}
                       onClick={() => setSelectedCity(city)}
                     >
-                      {city}
+                      {city === "Toutes" ? (t("common.all") || "Toutes") : city}
                     </Button>
                   ))}
                 </div>
@@ -264,46 +266,45 @@ export default function Agences() {
 
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-2xl font-serif font-bold text-primary">
-              {isLoading ? "Recherche en cours..." : `${filteredAgences.length} agence${filteredAgences.length !== 1 ? 's' : ''} trouvée${filteredAgences.length !== 1 ? 's' : ''}`}
+              {isLoading ? t("agencies.searching") : `${filteredAgences.length} ${filteredAgences.length === 1 ? t("agencies.foundOne") : t("agencies.foundMany")}`}
             </h2>
             <div className="text-sm text-muted-foreground">
-              {!isLoading && `${agencesArray.length} agence${agencesArray.length !== 1 ? 's' : ''} au total`}
+              {!isLoading && `${agencesArray.length} ${agencesArray.length === 1 ? t("agencies.totalOne") : t("agencies.totalMany")}`}
             </div>
           </div>
 
           <Card className="mb-10 rounded-none border-none shadow-sm">
             <CardContent className="p-6 md:p-8">
-              <h3 className="text-xl font-bold text-primary mb-4">Réseau d'agences BNM</h3>
+              <h3 className="text-xl font-bold text-primary mb-4">{t("agencies.networkTitle")}</h3>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6 text-sm">
                 <div>
-                  <span className="block text-muted-foreground">Produit</span>
-                  <span className="font-medium text-foreground">Agences</span>
+                  <span className="block text-muted-foreground">{t("agencies.product")}</span>
+                  <span className="font-medium text-foreground">{t("agencies.productValue")}</span>
                 </div>
                 <div>
-                  <span className="block text-muted-foreground">Langue</span>
-                  <span className="font-medium text-foreground">Français</span>
+                  <span className="block text-muted-foreground">{t("agencies.language")}</span>
+                  <span className="font-medium text-foreground">{t("common.language")}</span>
                 </div>
                 <div>
-                  <span className="block text-muted-foreground">Statut</span>
-                  <span className="font-medium text-foreground">Actif</span>
+                  <span className="block text-muted-foreground">{t("agencies.status")}</span>
+                  <span className="font-medium text-foreground">{t("agencies.active")}</span>
                 </div>
                 <div>
-                  <span className="block text-muted-foreground">Mots-clés</span>
-                  <span className="font-medium text-foreground">agences, réseau, adresses, téléphone, e-mail, localisation, gps, Nouakchott, Nouadhibou, Zouerate</span>
+                  <span className="block text-muted-foreground">{t("agencies.keywords")}</span>
+                  <span className="font-medium text-foreground">{t("agencies.keywordValue")}</span>
                 </div>
               </div>
               <div className="space-y-6">
                 <div>
-                  <h4 className="font-bold text-primary mb-2">Combien d'agences compte le réseau BNM ?</h4>
+                  <h4 className="font-bold text-primary mb-2">{t("agencies.questionCount")}</h4>
                   <p className="text-muted-foreground text-sm leading-relaxed">
-                    Le réseau de la BNM compte 35 agences réparties sur le territoire mauritanien (Nouakchott, Nouadhibou, Zouerate, et plusieurs villes de l'intérieur).
+                    {t("agencies.answerCount")}
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-bold text-primary mb-2">Quelles sont les agences de la BNM et leurs coordonnées ?</h4>
+                  <h4 className="font-bold text-primary mb-2">{t("agencies.questionCoordinates")}</h4>
                   <p className="text-muted-foreground text-sm leading-relaxed">
-                    Pour chaque agence sont indiqués, lorsqu'ils sont disponibles, le numéro de téléphone, l'adresse e-mail et les coordonnées GPS.
-                    Utilisez la liste ci-dessous ou la carte pour localiser l'agence la plus proche de chez vous.
+                    {t("agencies.answerCoordinates")}
                   </p>
                 </div>
               </div>
@@ -312,14 +313,14 @@ export default function Agences() {
 
           <div className="mb-6 flex items-center justify-between">
             <h2 className="text-2xl font-serif font-bold text-primary">
-              {isLoading ? "Recherche en cours..." : `${filteredAgences.length} agence${filteredAgences.length !== 1 ? 's' : ''} trouvée${filteredAgences.length !== 1 ? 's' : ''}`}
+              {isLoading ? t("agencies.searching") : `${filteredAgences.length} ${filteredAgences.length === 1 ? t("agencies.foundOne") : t("agencies.foundMany")}`}
             </h2>
           </div>
 
           <Tabs defaultValue="list" className="lg:hidden">
             <TabsList className="grid w-full grid-cols-2 rounded-none">
-              <TabsTrigger value="list">Liste</TabsTrigger>
-              <TabsTrigger value="map">Carte</TabsTrigger>
+              <TabsTrigger value="list">{t("agencies.list")}</TabsTrigger>
+              <TabsTrigger value="map">{t("agencies.map")}</TabsTrigger>
             </TabsList>
             <TabsContent value="list" className="mt-4">{listPanel}</TabsContent>
             <TabsContent value="map" className="mt-4">{mapPanel}</TabsContent>

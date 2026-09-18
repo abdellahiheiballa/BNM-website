@@ -7,8 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Calculator, Plus, Minus, ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function Simulateur() {
+  const { t, i18n } = useTranslation();
   const [tab, setTab] = useState("classic");
 
   const [classicMontant, setClassicMontant] = useState(3672000);
@@ -53,7 +55,7 @@ export default function Simulateur() {
   };
 
   const formatMRU = (value: number) => {
-    return new Intl.NumberFormat('fr-FR', {
+    return new Intl.NumberFormat(i18n.language === "ar" ? "ar-MR" : "fr-FR", {
       style: 'currency',
       currency: 'MRU',
       minimumFractionDigits: 0,
@@ -69,9 +71,9 @@ export default function Simulateur() {
           <div className="w-16 h-16 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-6">
             <Calculator className="w-8 h-8 text-secondary" />
           </div>
-          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">Simulateurs de Financement</h1>
+          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">{t("simulator.title")}</h1>
           <p className="text-lg text-white/80 max-w-2xl mx-auto">
-            Estimez vos mensualités en quelques secondes, que vous optiez pour un crédit classique ou un financement islamique Mourabaha.
+            {t("simulator.description")}
           </p>
         </div>
       </section>
@@ -85,13 +87,13 @@ export default function Simulateur() {
                 value="classic" 
                 className="rounded-none text-base data-[state=active]:bg-primary data-[state=active]:text-white font-medium"
               >
-                Crédit Classique
+                {t("simulator.classic")}
               </TabsTrigger>
               <TabsTrigger 
                 value="murabaha"
                 className="rounded-none text-base data-[state=active]:bg-primary data-[state=active]:text-white font-medium"
               >
-                Financement Murabaha (Islamique)
+                {t("simulator.murabaha")}
               </TabsTrigger>
             </TabsList>
 
@@ -100,14 +102,14 @@ export default function Simulateur() {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <Card className="lg:col-span-2 rounded-none border-none shadow-md">
                   <CardHeader className="bg-muted/30 border-b">
-                    <CardTitle className="text-2xl font-serif text-primary">Calculez votre crédit</CardTitle>
-                    <CardDescription>Réglez les paramètres pour obtenir une estimation.</CardDescription>
+                    <CardTitle className="text-2xl font-serif text-primary">{t("simulator.calculateCredit")}</CardTitle>
+                    <CardDescription>{t("simulator.adjustParameters")}</CardDescription>
                   </CardHeader>
                   <CardContent className="p-8 space-y-8">
                     
                     <div className="space-y-4">
                       <div className="flex justify-between items-end">
-                        <Label className="text-base font-semibold text-primary">Montant du prêt</Label>
+                        <Label className="text-base font-semibold text-primary">{t("simulator.loanAmount")}</Label>
                         <div className="text-2xl font-bold text-primary bg-muted px-4 py-1 rounded">
                           {formatMRU(classicMontant)}
                         </div>
@@ -126,10 +128,10 @@ export default function Simulateur() {
 
                     <div className="space-y-4">
                       <div className="flex justify-between items-end">
-                        <Label className="text-base font-semibold text-primary">Durée (années)</Label>
+                        <Label className="text-base font-semibold text-primary">{t("simulator.years")}</Label>
                         <div className="flex items-center gap-4">
                           <Button variant="outline" size="icon" className="h-8 w-8 rounded-none" onClick={() => setClassicDureeAns(Math.max(1, classicDureeAns - 1))}><Minus className="w-4 h-4" /></Button>
-                          <div className="text-xl font-bold text-primary w-12 text-center">{classicDureeAns} ans</div>
+                          <div className="text-xl font-bold text-primary w-12 text-center">{classicDureeAns} {t("simulator.yearsShort")}</div>
                           <Button variant="outline" size="icon" className="h-8 w-8 rounded-none" onClick={() => setClassicDureeAns(Math.min(25, classicDureeAns + 1))}><Plus className="w-4 h-4" /></Button>
                         </div>
                       </div>
@@ -143,7 +145,7 @@ export default function Simulateur() {
 
                     <div className="space-y-4">
                       <div className="flex justify-between items-end">
-                        <Label className="text-base font-semibold text-primary">Durée (mois)</Label>
+                        <Label className="text-base font-semibold text-primary">{t("simulator.months")}</Label>
                         <div className="w-32">
                           <Input 
                             type="number" 
@@ -155,12 +157,12 @@ export default function Simulateur() {
                           />
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground">Si renseigné, ce champ prime sur la durée en années.</p>
+                      <p className="text-xs text-muted-foreground">{t("simulator.monthOverride")}</p>
                     </div>
 
                     <div className="space-y-4">
                       <div className="flex justify-between items-end">
-                        <Label className="text-base font-semibold text-primary">Taux d'intérêt annuel (%)</Label>
+                        <Label className="text-base font-semibold text-primary">{t("simulator.annualRate")}</Label>
                         <div className="w-24">
                           <Input 
                             type="number" 
@@ -175,7 +177,7 @@ export default function Simulateur() {
 
                     <div className="space-y-4">
                       <div className="flex justify-between items-end">
-                        <Label className="text-base font-semibold text-primary">Taxe TPS (%)</Label>
+                        <Label className="text-base font-semibold text-primary">{t("simulator.tax")}</Label>
                         <div className="w-24">
                           <Input 
                             type="number" 
@@ -186,12 +188,12 @@ export default function Simulateur() {
                           />
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground">La taxe est calculée sur la part d'intérêt de chaque mensualité.</p>
+                      <p className="text-xs text-muted-foreground">{t("simulator.taxDescription")}</p>
                     </div>
 
                     <div className="space-y-4">
                       <div className="flex justify-between items-end">
-                        <Label className="text-base font-semibold text-primary">Date de première échéance</Label>
+                        <Label className="text-base font-semibold text-primary">{t("simulator.firstDueDate")}</Label>
                         <div className="w-40">
                           <Input 
                             type="date"
@@ -205,7 +207,7 @@ export default function Simulateur() {
 
                     <div className="space-y-4">
                       <div className="flex justify-between items-end">
-                        <Label className="text-base font-semibold text-primary">Date de début du prêt</Label>
+                        <Label className="text-base font-semibold text-primary">{t("simulator.loanStartDate")}</Label>
                         <div className="w-40">
                           <Input 
                             type="date"
@@ -215,7 +217,7 @@ export default function Simulateur() {
                           />
                         </div>
                       </div>
-                      <p className="text-xs text-muted-foreground">Utilisée pour calculer les intérêts de la première période.</p>
+                      <p className="text-xs text-muted-foreground">{t("simulator.firstPeriodInterest")}</p>
                     </div>
 
                     <Button 
@@ -223,7 +225,7 @@ export default function Simulateur() {
                       onClick={handleClassicSubmit}
                       disabled={simulateClassic.isPending}
                     >
-                      {simulateClassic.isPending ? "Calcul en cours..." : "Lancer la simulation"}
+                      {simulateClassic.isPending ? t("simulator.calculating") : t("simulator.launch")}
                     </Button>
                   </CardContent>
                 </Card>
@@ -231,55 +233,55 @@ export default function Simulateur() {
                 {/* Classic Results Box */}
                 <Card className="bg-primary text-white rounded-none border-none shadow-xl h-fit sticky top-24">
                   <CardHeader className="bg-white/5 border-b border-white/10">
-                    <CardTitle className="text-center font-serif text-xl">Résultat Estimatif</CardTitle>
+                    <CardTitle className="text-center font-serif text-xl">{t("simulator.estimatedResult")}</CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 space-y-6">
                     {simulateClassic.data ? (
                       <div className="animate-in fade-in duration-500">
                         <div className="text-center mb-8">
-                          <div className="text-sm text-white/70 mb-2 uppercase tracking-wider">Mensualité TTC</div>
+                          <div className="text-sm text-white/70 mb-2 uppercase tracking-wider">{t("simulator.monthlyTtc")}</div>
                           <div className="text-4xl font-bold text-secondary">{formatMRU(simulateClassic.data.mensualiteTTC)}</div>
-                          <div className="text-sm text-white/50 mt-1">/ mois</div>
+                          <div className="text-sm text-white/50 mt-1">{t("simulator.perMonth")}</div>
                         </div>
                         
                         <div className="space-y-4 border-t border-white/10 pt-6">
                           <div className="flex justify-between items-center">
-                            <span className="text-white/70">Montant emprunté</span>
+                            <span className="text-white/70">{t("simulator.borrowedAmount")}</span>
                             <span className="font-semibold">{formatMRU(simulateClassic.data.montant)}</span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-white/70">Durée</span>
-                            <span className="font-semibold">{simulateClassic.data.dureeMois} mois</span>
+                            <span className="text-white/70">{t("simulator.months")}</span>
+                            <span className="font-semibold">{simulateClassic.data.dureeMois} {t("simulator.monthsShort")}</span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-white/70">Taux</span>
+                            <span className="text-white/70">{t("simulator.rate")}</span>
                             <span className="font-semibold">{simulateClassic.data.taux}%</span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-white/70">Taxe TPS</span>
+                            <span className="text-white/70">{t("simulator.tax")}</span>
                             <span className="font-semibold">{(simulateClassic.data.taxRate * 100).toFixed(0)}%</span>
                           </div>
                           <div className="flex justify-between items-center text-secondary">
-                            <span>Coût total du crédit</span>
+                            <span>{t("simulator.totalCreditCost")}</span>
                             <span className="font-bold">{formatMRU(simulateClassic.data.interetsTotal)}</span>
                           </div>
                           <div className="flex justify-between items-center text-secondary">
-                            <span>Total taxes</span>
+                            <span>{t("simulator.totalTaxes")}</span>
                             <span className="font-bold">{formatMRU(simulateClassic.data.taxTotal || 0)}</span>
                           </div>
                           <div className="flex justify-between items-center font-bold text-lg pt-2 border-t border-white/10">
-                            <span>Total à rembourser</span>
+                            <span>{t("simulator.totalRepayment")}</span>
                             <span>{formatMRU(simulateClassic.data.coutTotal)}</span>
                           </div>
                         </div>
 
                         <Button className="w-full bg-white text-primary hover:bg-gray-100 font-bold mt-8 rounded-none group">
-                          Demander ce crédit <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          {t("simulator.requestCredit")} <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Button>
                       </div>
                     ) : (
                       <div className="text-center py-12 text-white/50">
-                        Remplissez le formulaire et cliquez sur "Lancer la simulation" pour voir les résultats.
+                        {t("simulator.emptyResult")}
                       </div>
                     )}
                   </CardContent>
@@ -292,14 +294,14 @@ export default function Simulateur() {
                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <Card className="lg:col-span-2 rounded-none border-none shadow-md">
                   <CardHeader className="bg-muted/30 border-b">
-                    <CardTitle className="text-2xl font-serif text-primary">Calculez votre Murabaha</CardTitle>
-                    <CardDescription>Estimez le financement de votre bien selon les principes de la Charia.</CardDescription>
+                    <CardTitle className="text-2xl font-serif text-primary">{t("simulator.calculateMurabaha")}</CardTitle>
+                    <CardDescription>{t("simulator.murabahaDescription")}</CardDescription>
                   </CardHeader>
                   <CardContent className="p-8 space-y-8">
                     
                     <div className="space-y-4">
                       <div className="flex justify-between items-end">
-                        <Label className="text-base font-semibold text-primary">Prix du bien à acquérir</Label>
+                        <Label className="text-base font-semibold text-primary">{t("simulator.propertyPrice")}</Label>
                         <div className="text-2xl font-bold text-primary bg-muted px-4 py-1 rounded">
                           {formatMRU(murabahaPrix)}
                         </div>
@@ -314,7 +316,7 @@ export default function Simulateur() {
 
                     <div className="space-y-4">
                       <div className="flex justify-between items-end">
-                        <Label className="text-base font-semibold text-primary">Votre apport personnel</Label>
+                        <Label className="text-base font-semibold text-primary">{t("simulator.personalContribution")}</Label>
                         <div className="text-2xl font-bold text-primary bg-muted px-4 py-1 rounded">
                           {formatMRU(murabahaApport)}
                         </div>
@@ -326,22 +328,22 @@ export default function Simulateur() {
                         className="py-4"
                       />
                       <div className="text-xs text-muted-foreground text-right">
-                        Soit {((murabahaApport / murabahaPrix) * 100).toFixed(0)}% du prix du bien
+                        {t("simulator.propertyPercentage", { value: ((murabahaApport / murabahaPrix) * 100).toFixed(0) })}
                       </div>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       <div className="space-y-4">
-                        <Label className="text-base font-semibold text-primary block">Durée de remboursement (ans)</Label>
+                        <Label className="text-base font-semibold text-primary block">{t("simulator.repaymentDuration")}</Label>
                         <div className="flex items-center gap-4">
                           <Button variant="outline" size="icon" className="h-10 w-10 rounded-none" onClick={() => setMurabahaDuree(Math.max(1, murabahaDuree - 1))}><Minus className="w-4 h-4" /></Button>
-                          <div className="text-xl font-bold text-primary flex-1 text-center bg-muted py-1.5 rounded">{murabahaDuree} ans</div>
+                          <div className="text-xl font-bold text-primary flex-1 text-center bg-muted py-1.5 rounded">{murabahaDuree} {t("simulator.yearsShort")}</div>
                           <Button variant="outline" size="icon" className="h-10 w-10 rounded-none" onClick={() => setMurabahaDuree(Math.min(25, murabahaDuree + 1))}><Plus className="w-4 h-4" /></Button>
                         </div>
                       </div>
 
                       <div className="space-y-4">
-                        <Label className="text-base font-semibold text-primary block">Marge bancaire (%)</Label>
+                        <Label className="text-base font-semibold text-primary block">{t("simulator.bankMargin")}</Label>
                         <Input 
                           type="number" 
                           step="0.1"
@@ -357,7 +359,7 @@ export default function Simulateur() {
                       onClick={handleMurabahaSubmit}
                       disabled={simulateMurabaha.isPending}
                     >
-                      {simulateMurabaha.isPending ? "Calcul en cours..." : "Lancer la simulation Murabaha"}
+                      {simulateMurabaha.isPending ? t("simulator.calculating") : t("simulator.launchMurabaha")}
                     </Button>
                   </CardContent>
                 </Card>
@@ -365,47 +367,47 @@ export default function Simulateur() {
                 {/* Murabaha Results Box */}
                 <Card className="bg-primary text-white rounded-none border-none shadow-xl h-fit sticky top-24">
                   <CardHeader className="bg-white/5 border-b border-white/10">
-                    <CardTitle className="text-center font-serif text-xl">Résultat Murabaha</CardTitle>
+                    <CardTitle className="text-center font-serif text-xl">{t("simulator.murabahaResult")}</CardTitle>
                   </CardHeader>
                   <CardContent className="p-6 space-y-6">
                     {simulateMurabaha.data ? (
                       <div className="animate-in fade-in duration-500">
                         <div className="text-center mb-8">
-                          <div className="text-sm text-white/70 mb-2 uppercase tracking-wider">Mensualité estimée</div>
+                          <div className="text-sm text-white/70 mb-2 uppercase tracking-wider">{t("simulator.estimatedMonthly")}</div>
                           <div className="text-4xl font-bold text-secondary">{formatMRU(simulateMurabaha.data.mensualite)}</div>
-                          <div className="text-sm text-white/50 mt-1">/ mois</div>
+                          <div className="text-sm text-white/50 mt-1">{t("simulator.perMonth")}</div>
                         </div>
                         
                         <div className="space-y-4 border-t border-white/10 pt-6">
                           <div className="flex justify-between items-center">
-                            <span className="text-white/70">Prix d'achat par la banque</span>
+                            <span className="text-white/70">{t("simulator.bankPurchasePrice")}</span>
                             <span className="font-semibold">{formatMRU(murabahaPrix - murabahaApport)}</span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-white/70">Durée</span>
-                            <span className="font-semibold">{simulateMurabaha.data.dureeAns} mois</span>
+                            <span className="text-white/70">{t("simulator.months")}</span>
+                            <span className="font-semibold">{simulateMurabaha.data.dureeAns} {t("simulator.monthsShort")}</span>
                           </div>
                           <div className="flex justify-between items-center">
-                            <span className="text-white/70">Marge de la banque</span>
+                            <span className="text-white/70">{t("simulator.bankMarginResult")}</span>
                             <span className="font-semibold text-secondary">{simulateMurabaha.data.marge}%</span>
                           </div>
                           <div className="flex justify-between items-center font-bold text-lg pt-4 border-t border-white/10">
-                            <span>Prix de revente final</span>
+                            <span>{t("simulator.finalResalePrice")}</span>
                             <span>{formatMRU(simulateMurabaha.data.coutTotal)}</span>
                           </div>
                         </div>
 
                         <div className="mt-6 bg-white/5 p-3 text-xs text-white/70 italic border border-white/10">
-                          Selon la Murabaha, la banque achète le bien et vous le revend à un prix majoré d'une marge convenue à l'avance.
+                          {t("simulator.murabahaNote")}
                         </div>
 
                         <Button className="w-full bg-white text-primary hover:bg-gray-100 font-bold mt-6 rounded-none group">
-                          Demander ce financement <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          {t("simulator.requestFinancing")} <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Button>
                       </div>
                     ) : (
                       <div className="text-center py-12 text-white/50">
-                        Remplissez le formulaire et cliquez sur "Lancer la simulation" pour voir les résultats.
+                        {t("simulator.emptyResult")}
                       </div>
                     )}
                   </CardContent>
@@ -415,7 +417,7 @@ export default function Simulateur() {
           </Tabs>
 
           <p className="text-xs text-muted-foreground mt-8 text-center max-w-3xl mx-auto">
-            Mentions légales : Les résultats de ce simulateur sont donnés à titre indicatif et ne constituent en aucun cas une offre contractuelle de crédit ou de financement. L'octroi d'un financement est soumis à l'acceptation de votre dossier par la Banque Nationale de Mauritanie.
+            {t("simulator.legalNotice")}
           </p>
         </div>
       </section>

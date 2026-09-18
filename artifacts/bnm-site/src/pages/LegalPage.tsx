@@ -43,10 +43,10 @@ export default function LegalPage({ kind }: { kind: LegalPageKind }) {
             </p>
             <p className="mt-4">
               {kind === "mentions"
-                ? "Cette page fournit les informations légales de la Banque Nationale de Mauritanie et les conditions générales applicables à l’utilisation des services bancaires et numériques du groupe BNM."
+                ? t("legal.mentionsBody")
                 : kind === "privacy"
-                  ? "Cette page décrit la manière dont la Banque Nationale de Mauritanie traite les informations personnelles, la sécurité des données et les droits des clients et visiteurs du site."
-                  : "Cette page présente les éléments de tarification et la logique de facturation applicable aux services bancaires et solutions proposées par la Banque Nationale de Mauritanie."}
+                  ? t("legal.privacyBody")
+                  : t("legal.pricingBody")}
             </p>
           </div>
 

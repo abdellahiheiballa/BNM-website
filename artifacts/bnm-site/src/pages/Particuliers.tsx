@@ -2,17 +2,26 @@ import { useListOffres } from "@workspace/api-client-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
-import { 
-  ArrowRight, CreditCard, PiggyBank, Home, Car, Smartphone, 
-  Sparkles, Star, Zap, ArrowUpRight, Diamond, Rocket, 
+import {
+  ArrowRight, CreditCard, PiggyBank, Home, Car, Smartphone,
+  Sparkles, Star, Zap, ArrowUpRight, Diamond, Rocket,
   ChevronRight, Award, FileText, Check, Users, Compass,
   MapPin, Wallet, Landmark, BookOpen, ShoppingBag, ShieldCheck,
   TrendingUp, LineChart, Heart, CheckCircle, HelpCircle, Phone,
   Palette, Sun, Moon
 } from "lucide-react";
 import { Link } from "wouter";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useTranslation } from "react-i18next";
+
+const iconMap = {
+  Wallet, CreditCard, PiggyBank, Home, Car, Smartphone,
+  Sparkles, Star, Zap, ArrowUpRight, Diamond, Rocket,
+  ChevronRight, Award, FileText, Check, Users, Compass,
+  MapPin, Landmark, BookOpen, ShoppingBag, ShieldCheck,
+  TrendingUp, LineChart, Heart, CheckCircle, HelpCircle, Phone,
+  Palette, Sun, Moon
+};
 
 type SubOffre = {
   id: string;
@@ -21,7 +30,7 @@ type SubOffre = {
   description: string;
   cta: string;
   ctaLink: string;
-  icon: typeof Landmark;
+  icon: keyof typeof iconMap;
   gradient: string;
   avantages: string[];
   documents: string[];
@@ -32,351 +41,13 @@ type Section = {
   id: string;
   title: string;
   tagline: string;
-  icon: typeof Landmark;
+  icon: keyof typeof iconMap;
   gradient: string;
   subOffres: SubOffre[];
 };
 
-const sections: Section[] = [
-  {
-    id: "comptes",
-    title: "Comptes & Moyens de Paiement",
-    tagline: "Simplifiez votre banque au quotidien",
-    icon: Wallet,
-    gradient: "from-[#0E6B4B] to-[#0A4A36]",
-    subOffres: [
-      {
-        id: "ouvrir-compte",
-        title: "Ouvrir un compte",
-        subtitle: "Votre première étape vers la liberté financière",
-        description: "Devenir client à la Banque Nationale de Mauritanie, c'est choisir de simplifier la gestion de vos comptes au quotidien. Notre engagement est au service de vos projets personnels et professionnels.",
-        cta: "Demander l'ouverture",
-        ctaLink: "/contact",
-        icon: Diamond,
-        gradient: "from-[#0E6B4B]/10 to-[#0A4A36]/10",
-        avantages: [
-          "Une gestion simplifiée de vos comptes au quotidien",
-          "Un accompagnement pour tous ceux qui entreprennent sur le chemin de la réussite",
-          "Un service bancaire pensé pour durer avec vous"
-        ],
-        documents: [
-          "Deux photos d'identité",
-          "Une copie du CIN ou du passeport",
-          "Un certificat de résidence",
-          "Une domiciliation de salaire (Compte courant ou Compte de devises)",
-          "Un spécimen de signature"
-        ],
-        stats: [
-          { label: "Ouverture", value: "Rapide" },
-          { label: "Frais", value: "Gratuit" },
-          { label: "Agences", value: "Partout" }
-        ]
-      },
-      {
-        id: "mastercard-business",
-        title: "Mastercard Business",
-        subtitle: "Entreprises / Institutionnel, ONG et Associations",
-        description: "Carte dédiée aux entreprises, institutions, ONG et associations.",
-        cta: "Choisir Mastercard Business",
-        ctaLink: "/contact",
-        icon: CreditCard,
-        gradient: "from-[#D9C3A0]/30 to-[#B68C4A]/20",
-        avantages: [
-          "Entreprises / Institutionnel, ONG et Associations",
-          "575 MRU / mois",
-          "Plafond de retrait : 500 euros / jour",
-          "Plafond de paiement : 8 000 euros / jour"
-        ],
-        documents: [
-          "Faire une demande et signer une convention"
-        ],
-        stats: [
-          { label: "Carte", value: "Business" },
-          { label: "Retrait", value: "500 €/j" },
-          { label: "Paiement", value: "8 000 €/j" }
-        ]
-      },
-      {
-        id: "mastercard-classic",
-        title: "Mastercard Classic",
-        subtitle: "Professionnels & Particuliers",
-        description: "La carte classique pour vos paiements et retraits au quotidien.",
-        cta: "Choisir Mastercard Classic",
-        ctaLink: "/contact",
-        icon: CreditCard,
-        gradient: "from-[#D9C3A0]/30 to-[#B68C4A]/20",
-        avantages: [
-          "Professionnels : 345 MRU / mois",
-          "Particuliers : 345 MRU / mois",
-          "Plafond de retrait : 350 euros / jour",
-          "Plafond de paiement : 3 000 euros / jour"
-        ],
-        documents: [
-          "Faire une demande et signer une convention"
-        ],
-        stats: [
-          { label: "Carte", value: "Classic" },
-          { label: "Retrait", value: "350 €/j" },
-          { label: "Paiement", value: "3 000 €/j" }
-        ]
-      },
-      {
-        id: "mastercard-platinum",
-        title: "Mastercard Platinum",
-        subtitle: "Professionnels, Particuliers, Entreprises / Institutionnel, ONG et Associations",
-        description: "La carte haut de gamme pour des plafonds élevés et des services premium.",
-        cta: "Choisir Mastercard Platinum",
-        ctaLink: "/contact",
-        icon: CreditCard,
-        gradient: "from-[#D9C3A0]/30 to-[#B68C4A]/20",
-        avantages: [
-          "Professionnels, particuliers, Entreprises / Institutionnel, ONG et Associations",
-          "750 MRU / mois",
-          "Plafond de retrait : 2 000 euros / jour",
-          "Plafond de paiement : 20 000 euros / jour"
-        ],
-        documents: [
-          "Faire une demande et signer une convention"
-        ],
-        stats: [
-          { label: "Carte", value: "Platinum" },
-          { label: "Retrait", value: "2 000 €/j" },
-          { label: "Paiement", value: "20 000 €/j" }
-        ]
-      },
-      {
-        id: "mastercard-travel",
-        title: "Mastercard Travel",
-        subtitle: "Carte prépayée",
-        description: "Carte prépayée idéale pour vos déplacements et voyages.",
-        cta: "Choisir Mastercard Travel",
-        ctaLink: "/contact",
-        icon: CreditCard,
-        gradient: "from-[#D9C3A0]/30 to-[#B68C4A]/20",
-        avantages: [
-          "Professionnels, particuliers, Entreprises / Institutionnel, ONG et Associations",
-          "1 200 MRU à l'achat",
-          "Plafond de retrait : 350 euros / jour",
-          "Plafond de paiement : 3 000 euros / jour",
-          "Recharge minimum : 300 euros",
-          "Recharge maximum : 3 000 euros"
-        ],
-        documents: [
-          "Signer la convention",
-          "Copie passeport",
-          "Justificatif d'adresse"
-        ],
-        stats: [
-          { label: "Carte", value: "Travel" },
-          { label: "Achat", value: "1 200 MRU" },
-          { label: "Validité", value: "2 ans" }
-        ]
-      },
-      {
-        id: "carnet-cheque",
-        title: "Carnet de chèque",
-        subtitle: "Le chèque réinventé, livré chez vous",
-        description: "Disposez d'un chéquier, c'est bénéficier d'un moyen de paiement fiable, rapide et sécurisé. Commandez à distance via e-BNM et recevez-le en moins de 72h.",
-        cta: "Commander un chéquier",
-        ctaLink: "/contact",
-        icon: BookOpen,
-        gradient: "from-[#6E8F6B]/20 to-[#0E6B4B]/10",
-        avantages: [
-          "Un moyen de paiement fiable, rapide et sécurisé",
-          "Commande à distance via e-BNM, délivré en moins de 72h",
-          "Une tranquillité d'esprit au quotidien"
-        ],
-        documents: [
-          "Auprès de votre conseiller clientèle",
-          "A partir de votre compte e-BNM"
-        ],
-        stats: [
-          { label: "Livraison", value: "< 72h" },
-          { label: "Commande", value: "En ligne" },
-          { label: "Sécurité", value: "Fiable" }
-        ]
-      }
-    ]
-  },
-  {
-    id: "epargne",
-    title: "Épargne",
-    tagline: "Préparez l'avenir, commencez aujourd'hui",
-    icon: PiggyBank,
-    gradient: "from-[#0A4A36] to-[#0E6B4B]",
-    subOffres: [
-      {
-        id: "epargne-classique",
-        title: "Épargne Classique",
-        subtitle: "Fructifiez votre capital sans risque",
-        description: "Grâce au compte épargne BNM, décidez de votre avenir avec une multitude de possibilités qui s'ouvrent à vous. Ouvrez gratuitement un compte rémunéré et préparez demain en toute sérénité.",
-        cta: "Ouvrir un compte épargne",
-        ctaLink: "/contact",
-        icon: PiggyBank,
-        gradient: "from-[#0E6B4B]/10 to-[#6E8F6B]/20",
-        avantages: [
-          "Faites fructifier vos économies en toute sécurité",
-          "Un compte épargne gratuit, ouvert en quelques minutes",
-          "Préparez l'avenir avec sérénité dès aujourd'hui"
-        ],
-        documents: [
-          "Deux photos d'identité",
-          "Une copie du CIN ou du passeport",
-          "Un certificat de résidence",
-          "Un spécimen de signature"
-        ],
-        stats: [
-          { label: "Frais", value: "Gratuit" },
-          { label: "Rémunéré", value: "Oui" },
-          { label: "Sécurité", value: "Maximale" }
-        ]
-      },
-      {
-        id: "epargne-islamique",
-        title: "Épargne Islamique",
-        subtitle: "Placement éthique, avenir serein",
-        description: "Bénéficiez d'une solution d'épargne fiable et sécurisée, respectant les préceptes islamiques. Chez BNM, vos valeurs construisent un avenir meilleur.",
-        cta: "Découvrir l'épargne islamique",
-        ctaLink: "/contact",
-        icon: Star,
-        gradient: "from-[#B68C4A]/15 to-[#D9C3A0]/30",
-        avantages: [
-          "Une épargne conforme aux préceptes de la Charia",
-          "Sûreté, confiance et avenir meilleur pour réaliser vos objectifs",
-          "Construisez en toute quiétude vos projets de demain"
-        ],
-        documents: [
-          "Deux photos d'identité",
-          "Une copie du CIN ou du passeport",
-          "Un certificat de résidence",
-          "Un spécimen de signature"
-        ],
-        stats: [
-          { label: "Conformité", value: "Charia" },
-          { label: "Frais", value: "Gratuit" },
-          { label: "Sécurité", value: "Maximale" }
-        ]
-      }
-    ]
-  },
-  {
-    id: "emprunter",
-    title: "Emprunter",
-    tagline: "Réalisez tous vos projets, pas à pas",
-    icon: TrendingUp,
-    gradient: "from-[#B68C4A] to-[#0E6B4B]",
-    subOffres: [
-      {
-        id: "credit-consommation",
-        title: "Crédit à la Consommation",
-        subtitle: "Crédit à moyen et long terme",
-        description: "Ce financement est destiné à l'acquisition de biens d'équipement tels que le mobilier, l'électroménager, les véhicules, ainsi que tout autre besoin de consommation.",
-        cta: "Simuler mon crédit",
-        ctaLink: "/contact",
-        icon: ShoppingBag,
-        gradient: "from-[#B68C4A]/15 to-[#0E6B4B]/10",
-        avantages: [
-          "Financement des biens d'équipement et des projets de consommation",
-          "Des solutions adaptées à vos besoins de moyen et long terme",
-          "Un accompagnement personnalisé pour chaque dossier"
-        ],
-        documents: [
-          "Une demande manuscrite",
-          "Une copie du contrat de travail",
-          "Une domiciliation du salaire",
-          "Relevé de compte des 6 derniers mois",
-          "Une garantie bancaire"
-        ],
-        stats: [
-          { label: "Montant max", value: "Selon dossier" },
-          { label: "Durée", value: "Moyen et long terme" },
-          { label: "Taux", value: "Selon offre" }
-        ]
-      },
-      {
-        id: "credit-equipement",
-        title: "Crédit Équipement",
-        subtitle: "Financement de vos équipements",
-        description: "Ce crédit permet d'acquérir des équipements professionnels et personnels : mobilier, électroménager, véhicules et autres biens d'investissement. Montant équivalent à 12 mois de salaire, remboursable sur 48 mois.",
-        cta: "Simuler mon crédit",
-        ctaLink: "/contact",
-        icon: Car,
-        gradient: "from-[#0E6B4B]/10 to-[#6E8F6B]/20",
-        avantages: [
-          "Financement des équipements indispensables à votre quotidien",
-          "Montant équivalent à 12 mois de salaire",
-          "Remboursement sur 48 mois",
-          "Un accompagnement personnalisé pour sécuriser votre achat"
-        ],
-        documents: [
-          "Une demande manuscrite",
-          "Une copie du contrat de travail",
-          "Une domiciliation du salaire",
-          "Relevé de compte des 6 derniers mois",
-          "Une garantie bancaire"
-        ],
-        stats: [
-          { label: "Montant max", value: "12 mois de salaire" },
-          { label: "Durée", value: "48 mois" },
-          { label: "Taux", value: "Selon offre" }
-        ]
-      },
-      {
-        id: "credit-oxygene",
-        title: "Crédit Fêtes et Rentrée scolaire",
-        subtitle: "Crédit court terme",
-        description: "Cette facilité est accordée à l'occasion des fêtes religieuses (Aïd El-Fitr, Aïd El-Adha et Ramadan) ainsi qu'à l'ouverture de l'année scolaire. Le montant du prêt est limité à un (1) mois de salaire, avec un plafond de 50 000 MRU, remboursable sur une durée maximale de 10 mois, à un taux de 0 %.",
-        cta: "Souffler avec Oxygène",
-        ctaLink: "/contact",
-        icon: Zap,
-        gradient: "from-[#B68C4A]/20 to-[#D9C3A0]/30",
-        avantages: [
-          "Une facilité dédiée aux fêtes religieuses et à la rentrée scolaire",
-          "Montant limité à un mois de salaire avec un plafond de 50 000 MRU",
-          "Remboursement sur une durée maximale de 10 mois à 0 %"
-        ],
-        documents: [
-          "Faites une demande auprès de votre conseiller financier clientèle"
-        ],
-        stats: [
-          { label: "Plafond", value: "50 000 MRU" },
-          { label: "Durée max", value: "10 mois" },
-          { label: "Taux", value: "0 %" }
-        ]
-      },
-      {
-        id: "credit-investissement",
-        title: "Crédit Immobilier",
-        subtitle: "Jusqu'à 36 mois de salaire",
-        description: "Ce financement est destiné à l'acquisition, à la construction ou à la rénovation d'un bien immobilier. Le montant du crédit peut atteindre jusqu'à 36 mois de salaire, remboursable sur une durée maximale de 145 mois, à un taux de 10 % l'an.",
-        cta: "Financer mon projet",
-        ctaLink: "/contact",
-        icon: Rocket,
-        gradient: "from-[#0E6B4B]/10 to-[#6E8F6B]/20",
-        avantages: [
-          "Acquisition, construction ou rénovation d'un bien immobilier",
-          "Jusqu'à 36 mois de salaire de crédit",
-          "Un accompagnement personnalisé jusqu'à la mise en œuvre du projet"
-        ],
-        documents: [
-          "Une demande manuscrite",
-          "Une copie du contrat de travail",
-          "Une domiciliation du salaire",
-          "Relevé de compte des 6 derniers mois",
-          "Garantie bancaire"
-        ],
-        stats: [
-          { label: "Montant max", value: "36 mois de salaire" },
-          { label: "Durée max", value: "145 mois" },
-          { label: "Taux", value: "10 %" }
-        ]
-      }
-    ]
-  }
-];
-
 function SubOffreCard({ subOffre, active, onClick }: { subOffre: SubOffre; active: boolean; onClick: () => void }) {
-  const Icon = subOffre.icon;
+  const Icon = iconMap[subOffre.icon];
   return (
     <button
       onClick={onClick}
@@ -411,17 +82,18 @@ function SubOffreCard({ subOffre, active, onClick }: { subOffre: SubOffre; activ
 function OffreContent({ offre }: { offre: SubOffre }) {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<"avantages" | "documents">("avantages");
+  const Icon = iconMap[offre.icon];
 
   return (
     <div id={`suboffre-${offre.id}`} className="space-y-8">
       {/* Hero mini-section */}
       <div className={`bg-gradient-to-br ${offre.gradient} rounded-none p-6 md:p-8 relative overflow-hidden`}>
         <div className="absolute top-0 right-0 w-32 h-32 opacity-5">
-          <offre.icon className="w-full h-full" />
+          <Icon className="w-full h-full" />
         </div>
         <div className="flex items-start gap-4">
           <div className="p-3 bg-white/20 backdrop-blur rounded-xl shrink-0">
-            <offre.icon className="w-6 h-6 text-white" />
+            <Icon className="w-6 h-6 text-white" />
           </div>
           <div>
             <h3 className="text-2xl font-bold text-white mb-1">{offre.title}</h3>
@@ -517,9 +189,196 @@ function OffreContent({ offre }: { offre: SubOffre }) {
 }
 
 export default function Particuliers() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data: offres, isLoading } = useListOffres({ categorie: "particuliers" });
   const offresArray = Array.isArray(offres) ? offres : [];
+
+  const sections: Section[] = useMemo(() => [
+    {
+      id: "comptes",
+      title: t("products.particuliers.sections.comptes"),
+      tagline: t("products.particuliers.sections.comptesTagline"),
+      icon: "Wallet",
+      gradient: "from-[#0E6B4B] to-[#0A4A36]",
+      subOffres: [
+        {
+          id: "ouvrir-compte",
+          title: t("products.particuliers.compte.title"),
+          subtitle: t("products.particuliers.compte.subtitle"),
+          description: t("products.particuliers.compte.description"),
+          cta: t("products.particuliers.compte.cta"),
+          ctaLink: "/contact",
+          icon: "Diamond",
+          gradient: "from-[#0E6B4B]/10 to-[#0A4A36]/10",
+          avantages: t("products.particuliers.compte.avantages", { returnObjects: true }),
+          documents: t("products.particuliers.compte.documents", { returnObjects: true }),
+          stats: t("products.particuliers.compte.stats", { returnObjects: true }),
+        },
+        {
+          id: "mastercard-business",
+          title: t("products.particuliers.mastercards.business.title"),
+          subtitle: t("products.particuliers.mastercards.business.subtitle"),
+          description: t("products.particuliers.mastercards.business.description"),
+          cta: t("products.particuliers.mastercards.business.cta"),
+          ctaLink: "/contact",
+          icon: "CreditCard",
+          gradient: "from-[#D9C3A0]/30 to-[#B68C4A]/20",
+          avantages: t("products.particuliers.mastercards.business.avantages", { returnObjects: true }),
+          documents: t("products.particuliers.mastercards.business.documents", { returnObjects: true }),
+          stats: t("products.particuliers.mastercards.business.stats", { returnObjects: true }),
+        },
+        {
+          id: "mastercard-classic",
+          title: t("products.particuliers.mastercards.classic.title"),
+          subtitle: t("products.particuliers.mastercards.classic.subtitle"),
+          description: t("products.particuliers.mastercards.classic.description"),
+          cta: t("products.particuliers.mastercards.classic.cta"),
+          ctaLink: "/contact",
+          icon: "CreditCard",
+          gradient: "from-[#D9C3A0]/30 to-[#B68C4A]/20",
+          avantages: t("products.particuliers.mastercards.classic.avantages", { returnObjects: true }),
+          documents: t("products.particuliers.mastercards.classic.documents", { returnObjects: true }),
+          stats: t("products.particuliers.mastercards.classic.stats", { returnObjects: true }),
+        },
+        {
+          id: "mastercard-platinum",
+          title: t("products.particuliers.mastercards.platinum.title"),
+          subtitle: t("products.particuliers.mastercards.platinum.subtitle"),
+          description: t("products.particuliers.mastercards.platinum.description"),
+          cta: t("products.particuliers.mastercards.platinum.cta"),
+          ctaLink: "/contact",
+          icon: "CreditCard",
+          gradient: "from-[#D9C3A0]/30 to-[#B68C4A]/20",
+          avantages: t("products.particuliers.mastercards.platinum.avantages", { returnObjects: true }),
+          documents: t("products.particuliers.mastercards.platinum.documents", { returnObjects: true }),
+          stats: t("products.particuliers.mastercards.platinum.stats", { returnObjects: true }),
+        },
+        {
+          id: "mastercard-travel",
+          title: t("products.particuliers.mastercards.travel.title"),
+          subtitle: t("products.particuliers.mastercards.travel.subtitle"),
+          description: t("products.particuliers.mastercards.travel.description"),
+          cta: t("products.particuliers.mastercards.travel.cta"),
+          ctaLink: "/contact",
+          icon: "CreditCard",
+          gradient: "from-[#D9C3A0]/30 to-[#B68C4A]/20",
+          avantages: t("products.particuliers.mastercards.travel.avantages", { returnObjects: true }),
+          documents: t("products.particuliers.mastercards.travel.documents", { returnObjects: true }),
+          stats: t("products.particuliers.mastercards.travel.stats", { returnObjects: true }),
+        },
+        {
+          id: "carnet-cheque",
+          title: t("products.particuliers.carnetCheque.title"),
+          subtitle: t("products.particuliers.carnetCheque.subtitle"),
+          description: t("products.particuliers.carnetCheque.description"),
+          cta: t("products.particuliers.carnetCheque.cta"),
+          ctaLink: "/contact",
+          icon: "Landmark",
+          gradient: "from-[#B68C4A]/15 to-[#D9C3A0]/30",
+          avantages: t("products.particuliers.carnetCheque.avantages", { returnObjects: true }),
+          documents: t("products.particuliers.carnetCheque.documents", { returnObjects: true }),
+          stats: t("products.particuliers.carnetCheque.stats", { returnObjects: true }),
+        }
+      ]
+    },
+    {
+      id: "epargne",
+      title: t("products.particuliers.sections.epargne"),
+      tagline: t("products.particuliers.sections.epargneTagline"),
+      icon: "PiggyBank",
+      gradient: "from-[#0A4A36] to-[#0E6B4B]",
+      subOffres: [
+        {
+          id: "epargne-classique",
+          title: t("products.particuliers.epargne.classique.title"),
+          subtitle: t("products.particuliers.epargne.classique.subtitle"),
+          description: t("products.particuliers.epargne.classique.description"),
+          cta: t("products.particuliers.epargne.classique.cta"),
+          ctaLink: "/contact",
+          icon: "PiggyBank",
+          gradient: "from-[#0E6B4B]/10 to-[#6E8F6B]/20",
+          avantages: t("products.particuliers.epargne.classique.avantages", { returnObjects: true }),
+          documents: t("products.particuliers.epargne.classique.documents", { returnObjects: true }),
+          stats: t("products.particuliers.epargne.classique.stats", { returnObjects: true }),
+        },
+        {
+          id: "epargne-islamique",
+          title: t("products.particuliers.epargne.islamique.title"),
+          subtitle: t("products.particuliers.epargne.islamique.subtitle"),
+          description: t("products.particuliers.epargne.islamique.description"),
+          cta: t("products.particuliers.epargne.islamique.cta"),
+          ctaLink: "/contact",
+          icon: "Star",
+          gradient: "from-[#B68C4A]/15 to-[#D9C3A0]/30",
+          avantages: t("products.particuliers.epargne.islamique.avantages", { returnObjects: true }),
+          documents: t("products.particuliers.epargne.islamique.documents", { returnObjects: true }),
+          stats: t("products.particuliers.epargne.islamique.stats", { returnObjects: true }),
+        }
+      ]
+    },
+    {
+      id: "emprunter",
+      title: t("products.particuliers.sections.emprunter"),
+      tagline: t("products.particuliers.sections.emprunterTagline"),
+      icon: "TrendingUp",
+      gradient: "from-[#B68C4A] to-[#0E6B4B]",
+      subOffres: [
+        {
+          id: "credit-consommation",
+          title: t("products.particuliers.credits.consommation.title"),
+          subtitle: t("products.particuliers.credits.consommation.subtitle"),
+          description: t("products.particuliers.credits.consommation.description"),
+          cta: t("products.particuliers.credits.consommation.cta"),
+          ctaLink: "/contact",
+          icon: "ShoppingBag",
+          gradient: "from-[#B68C4A]/15 to-[#0E6B4B]/10",
+          avantages: t("products.particuliers.credits.consommation.avantages", { returnObjects: true }),
+          documents: t("products.particuliers.credits.consommation.documents", { returnObjects: true }),
+          stats: t("products.particuliers.credits.consommation.stats", { returnObjects: true }),
+        },
+        {
+          id: "credit-equipement",
+          title: t("products.particuliers.credits.equipement.title"),
+          subtitle: t("products.particuliers.credits.equipement.subtitle"),
+          description: t("products.particuliers.credits.equipement.description"),
+          cta: t("products.particuliers.credits.equipement.cta"),
+          ctaLink: "/contact",
+          icon: "Car",
+          gradient: "from-[#0E6B4B]/10 to-[#6E8F6B]/20",
+          avantages: t("products.particuliers.credits.equipement.avantages", { returnObjects: true }),
+          documents: t("products.particuliers.credits.equipement.documents", { returnObjects: true }),
+          stats: t("products.particuliers.credits.equipement.stats", { returnObjects: true }),
+        },
+        {
+          id: "credit-oxygene",
+          title: t("products.particuliers.credits.fetes.title"),
+          subtitle: t("products.particuliers.credits.fetes.subtitle"),
+          description: t("products.particuliers.credits.fetes.description"),
+          cta: t("products.particuliers.credits.fetes.cta"),
+          ctaLink: "/contact",
+          icon: "Zap",
+          gradient: "from-[#B68C4A]/20 to-[#D9C3A0]/30",
+          avantages: t("products.particuliers.credits.fetes.avantages", { returnObjects: true }),
+          documents: t("products.particuliers.credits.fetes.documents", { returnObjects: true }),
+          stats: t("products.particuliers.credits.fetes.stats", { returnObjects: true }),
+        },
+        {
+          id: "credit-investissement",
+          title: t("products.particuliers.credits.immobilier.title"),
+          subtitle: t("products.particuliers.credits.immobilier.subtitle"),
+          description: t("products.particuliers.credits.immobilier.description"),
+          cta: t("products.particuliers.credits.immobilier.cta"),
+          ctaLink: "/contact",
+          icon: "Rocket",
+          gradient: "from-[#0E6B4B]/10 to-[#6E8F6B]/20",
+          avantages: t("products.particuliers.credits.immobilier.avantages", { returnObjects: true }),
+          documents: t("products.particuliers.credits.immobilier.documents", { returnObjects: true }),
+          stats: t("products.particuliers.credits.immobilier.stats", { returnObjects: true }),
+        }
+      ]
+    }
+  ], [i18n.language]);
+
   const [activeSection, setActiveSection] = useState<string>(sections[0].id);
   const [activeSubOffre, setActiveSubOffre] = useState<string>(sections[0].subOffres[0].id);
 
@@ -531,19 +390,17 @@ export default function Particuliers() {
 
   const quickActions = [
     {
-      title: "Constituez un patrimoine",
-      desc: "Bénéficiez d'une solution d'épargne fiable et sécurisée.",
-      icon: PiggyBank,
-      link: "#",
+      title: t("products.particuliers.quickActions.constiuer.title"),
+      desc: t("products.particuliers.quickActions.constiuer.desc"),
+      icon: "PiggyBank" as keyof typeof iconMap,
       gradient: "from-[#0E6B4B] to-[#6E8F6B]",
       section: "epargne",
       sub: "epargne-classique"
     },
     {
-      title: "Épargne islamique",
-      desc: "Bénéficiez d'une solution d'épargne respectant les préceptes islamiques.",
-      icon: Star,
-      link: "#",
+      title: t("products.particuliers.quickActions.islamique.title"),
+      desc: t("products.particuliers.quickActions.islamique.desc"),
+      icon: "Star" as keyof typeof iconMap,
       gradient: "from-[#B68C4A] to-[#D9C3A0]",
       section: "epargne",
       sub: "epargne-islamique"
@@ -552,40 +409,43 @@ export default function Particuliers() {
 
   const borrowActions = [
     {
-      title: "Crédit à la Consommation",
-      desc: "Acquérir du mobilier, de l'électroménager, des véhicules et répondre à vos besoins de consommation.",
-      icon: ShoppingBag,
-      link: "#",
+      title: t("products.particuliers.borrowActions.consommation.title"),
+      desc: t("products.particuliers.borrowActions.consommation.desc"),
+      icon: "ShoppingBag" as keyof typeof iconMap,
       gradient: "from-[#0E6B4B] to-[#0A4A36]",
       section: "emprunter",
       sub: "credit-consommation"
     },
     {
-      title: "Crédit Fêtes et Rentrée scolaire",
-      desc: "Une facilité de trésorerie pour les fêtes religieuses et l'ouverture de l'année scolaire.",
-      icon: Heart,
-      link: "#",
+      title: t("products.particuliers.borrowActions.fetes.title"),
+      desc: t("products.particuliers.borrowActions.fetes.desc"),
+      icon: "Heart" as keyof typeof iconMap,
       gradient: "from-[#B68C4A] to-[#D9C3A0]",
       section: "emprunter",
       sub: "credit-oxygene"
     },
     {
-      title: "Crédit Immobilier",
-      desc: "Un financement immobilier jusqu'à 36 mois de salaire pour acheter, construire ou rénover.",
-      icon: Home,
-      link: "#",
+      title: t("products.particuliers.borrowActions.immobilier.title"),
+      desc: t("products.particuliers.borrowActions.immobilier.desc"),
+      icon: "Home" as keyof typeof iconMap,
       gradient: "from-[#6E8F6B] to-[#0E6B4B]",
       section: "emprunter",
       sub: "credit-investissement"
     }
   ];
 
+  // Handle language change by resetting sections
+  const handleLanguageChange = () => {
+    setActiveSection(sections[0].id);
+    setActiveSubOffre(sections[0].subOffres[0].id);
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
       <section className="relative w-full min-h-[500px] flex items-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-primary via-primary/95 to-primary/80 z-10" />
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-105"
           style={{ backgroundImage: `url(${heroImage})` }}
         />
@@ -624,7 +484,7 @@ export default function Particuliers() {
         <div className="container mx-auto px-4">
           <div className="flex gap-1 py-3 overflow-x-auto hide-scrollbar">
             {sections.map((section) => {
-              const Icon = section.icon;
+              const Icon = iconMap[section.icon];
               const isActive = activeSection === section.id;
               return (
                 <button
@@ -632,6 +492,7 @@ export default function Particuliers() {
                   onClick={() => {
                     setActiveSection(section.id);
                     setActiveSubOffre(section.subOffres[0].id);
+                    handleLanguageChange();
                   }}
                   className={`flex items-center gap-2 px-5 py-3 text-sm font-semibold transition-all duration-300 shrink-0 ${
                     isActive
@@ -653,7 +514,7 @@ export default function Particuliers() {
         <div className="container mx-auto px-4 py-10">
           <div className="flex items-center gap-4">
             <div className="p-3 bg-white/15 backdrop-blur rounded-xl">
-              <currentSection.icon className="w-8 h-8" />
+              {(() => { const Icon = iconMap[currentSection.icon]; return <Icon className="w-8 h-8" />; })()}
             </div>
             <div>
               <h2 className="text-2xl md:text-3xl font-bold">{currentSection.title}</h2>
@@ -675,21 +536,24 @@ export default function Particuliers() {
                   <p className="text-sm text-muted-foreground">{t("individuals.youWant")}</p>
                 </div>
                 <div className="space-y-1">
-                  {currentSection.subOffres.map((sub) => (
-                    <SubOffreCard
-                      key={sub.id}
-                      subOffre={sub}
-                      active={activeSubOffre === sub.id}
-                      onClick={() => setActiveSubOffre(sub.id)}
-                    />
-                  ))}
+                  {currentSection.subOffres.map((sub) => {
+                    const subWithIcon: SubOffre = { ...sub };
+                    return (
+                      <SubOffreCard
+                        key={sub.id}
+                        subOffre={subWithIcon}
+                        active={activeSubOffre === sub.id}
+                        onClick={() => setActiveSubOffre(sub.id)}
+                      />
+                    );
+                  })}
                 </div>
                 <div className="bg-muted/30 border border-border p-4">
                   <p className="text-xs text-muted-foreground uppercase tracking-wider mb-2">
                     {currentIndex + 1} / {currentSection.subOffres.length}
                   </p>
                   <div className="h-1.5 bg-muted rounded-full overflow-hidden">
-                    <div 
+                    <div
                       className="h-full bg-gradient-to-r from-primary to-secondary rounded-full transition-all duration-500"
                       style={{ width: `${((currentIndex + 1) / currentSection.subOffres.length) * 100}%` }}
                     />
@@ -700,7 +564,11 @@ export default function Particuliers() {
 
             {/* Content area */}
             <div className="lg:col-span-8">
-              <OffreContent offre={currentSubOffre} />
+              <OffreContent offre={{
+                ...currentSubOffre,
+                icon: currentSubOffre.icon,
+                gradient: currentSubOffre.gradient
+              } as SubOffre} />
             </div>
           </div>
         </div>
@@ -715,7 +583,7 @@ export default function Particuliers() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
             {quickActions.map((item, i) => {
-              const Icon = item.icon;
+              const Icon = iconMap[item.icon];
               return (
                 <button
                   key={i}
@@ -746,7 +614,7 @@ export default function Particuliers() {
           <h3 className="text-2xl font-bold text-primary text-center mb-8">{t("individuals.alsoWant")}</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {borrowActions.map((item, i) => {
-              const Icon = item.icon;
+              const Icon = iconMap[item.icon];
               return (
                 <button
                   key={i}

@@ -294,7 +294,38 @@ export default function Entreprises() {
   const [activeSection, setActiveSection] = useState<string>(sections[0].id);
   const [activeSubOffre, setActiveSubOffre] = useState<string>(sections[0].subOffres[0].id);
 
-  const currentSection = sections.find(s => s.id === activeSection)!;
+  const localizedSections = sections.map((section) => {
+    const sectionTranslations: Record<string, string> = {
+      "gerer-comptes": t("products.entreprises.sections.gererComptes", { defaultValue: "Gérer vos comptes" }),
+      "gerer-tresorerie": t("products.entreprises.sections.gererTresorerie", { defaultValue: "Gérer votre trésorerie" }),
+      "financer-investissements": t("products.entreprises.sections.financerInvestissements", { defaultValue: "Financer vos investissements" }),
+      international: t("products.entreprises.sections.developperInternational", { defaultValue: "Développer votre activité à l'international" }),
+    };
+    const subOffres = section.subOffres.map((offre) => {
+      if (offre.id === "comptes-moyens-paiement") {
+        return {
+          ...offre,
+          title: t("products.entreprises.descriptions.ebnm", { defaultValue: "Comptes et moyens de paiements" }),
+          description: t("products.entreprises.descriptions.comptesDetail", { defaultValue: offre.description }),
+          cta: t("products.entreprises.contactCta", { defaultValue: "Contactez un conseiller clientèle" }),
+          avantages: [t("products.entreprises.descriptions.comptesAdvantage", { defaultValue: offre.avantages[0] })],
+        };
+      }
+      if (offre.id === "e-bnm") {
+        return {
+          ...offre,
+          title: t("products.entreprises.ebnm.title", { defaultValue: "e-BNM" }),
+          description: t("products.entreprises.ebnm.description", { defaultValue: offre.description }),
+          cta: t("products.entreprises.ebnm.cta", { defaultValue: "Contactez un conseiller clientèle" }),
+          avantages: t<string[]>("products.entreprises.ebnm.advantages", { returnObjects: true, defaultValue: offre.avantages }),
+          documents: t<string[]>("products.entreprises.ebnm.documents", { returnObjects: true, defaultValue: offre.documents }),
+        };
+      }
+      return offre;
+    });
+    return { ...section, title: sectionTranslations[section.id] ?? section.title, subOffres };
+  });
+  const currentSection = localizedSections.find(s => s.id === activeSection)!;
   const currentSubOffre = currentSection.subOffres.find(s => s.id === activeSubOffre)!;
 
   const heroImage = "/assets/images/Entreprises.jpg.jpeg";
@@ -324,7 +355,7 @@ export default function Entreprises() {
       <section className="py-12 bg-muted/30 border-b">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap gap-4 justify-center">
-            {sections.map((section) => {
+            {localizedSections.map((section) => {
               const Icon = section.icon;
               return (
                 <button

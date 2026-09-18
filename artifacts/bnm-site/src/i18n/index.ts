@@ -1,7 +1,7 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-import ar from "./locales/ar";
-import fr from "./locales/fr";
+import ar, { products as productsAr } from "./locales/ar";
+import fr, { products as productsFr } from "./locales/fr";
 
 export const supportedLanguages = ["fr", "ar"] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
@@ -9,8 +9,8 @@ export type SupportedLanguage = (typeof supportedLanguages)[number];
 export const languageStorageKey = "bnm-language-v1";
 
 export const resources = {
-  fr: { translation: fr },
-  ar: { translation: ar },
+  fr: { translation: { ...fr, products: productsFr } },
+  ar: { translation: { ...ar, products: productsAr } },
 } as const;
 
 const getInitialLanguage = (): SupportedLanguage => {

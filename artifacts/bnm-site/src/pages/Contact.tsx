@@ -10,20 +10,21 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MapPin, Phone, Mail, Clock, Building, Send } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { useTranslation } from "react-i18next";
 
-const contactSchema = z.object({
-  nom: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
-  email: z.string().email("Adresse email invalide"),
-  telephone: z.string().optional(),
-  sujet: z.string().optional(),
-  message: z.string().min(10, "Le message doit contenir au moins 10 caractères"),
-});
-
-type ContactFormValues = z.infer<typeof contactSchema>;
+type ContactFormValues = { nom: string; email: string; telephone?: string; sujet?: string; message: string };
 
 export default function Contact() {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const submitContact = useSubmitContact();
+  const contactSchema = z.object({
+    nom: z.string().min(2, t("contact.nameMin", { defaultValue: "Le nom doit contenir au moins 2 caractères" })),
+    email: z.string().email(t("contact.emailInvalid", { defaultValue: "Adresse email invalide" })),
+    telephone: z.string().optional(),
+    sujet: z.string().optional(),
+    message: z.string().min(10, t("contact.messageMin", { defaultValue: "Le message doit contenir au moins 10 caractères" })),
+  });
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactSchema),
@@ -42,16 +43,16 @@ export default function Contact() {
       {
         onSuccess: () => {
           toast({
-            title: "Message envoyé avec succès",
-            description: "Notre équipe vous répondra dans les plus brefs délais.",
+            title: t("contact.sentTitle"),
+            description: t("contact.sentDescription"),
           });
           form.reset();
         },
         onError: () => {
           toast({
             variant: "destructive",
-            title: "Erreur d'envoi",
-            description: "Une erreur est survenue lors de l'envoi du message. Veuillez réessayer.",
+            title: t("contact.sendErrorTitle"),
+            description: t("contact.sendErrorDescription"),
           });
         }
       }
@@ -65,9 +66,9 @@ export default function Contact() {
         <div className="absolute inset-0 opacity-10 bg-[url('/assets/images/cubes.png')]" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">Contactez-nous</h1>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">{t("contact.title")}</h1>
             <p className="text-lg text-white/80 leading-relaxed">
-              Une question, une suggestion ou besoin d'assistance ? La Banque Nationale de Mauritanie est à votre écoute.
+              {t("contact.description")}
             </p>
           </div>
         </div>
@@ -84,7 +85,7 @@ export default function Contact() {
                 <CardContent className="p-6">
                   <h3 className="text-xl font-bold text-primary mb-6 flex items-center">
                     <Building className="w-5 h-5 mr-2 text-secondary" />
-                    Siège Social
+                    {t("contact.headquarters")}
                   </h3>
                   <div className="space-y-4 text-muted-foreground">
                     <div className="flex items-start">
@@ -102,8 +103,8 @@ export default function Contact() {
                     <div className="flex items-start pt-2 border-t mt-4">
                       <Clock className="w-5 h-5 mr-3 mt-0.5 text-primary shrink-0" />
                       <div>
-                        <span className="font-semibold text-foreground block mb-1">Horaires d'ouverture</span>
-                        <span className="text-sm">Du Lundi au Jeudi : 08h00 - 16h30<br />Vendredi : 08h00 - 12h00</span>
+                        <span className="font-semibold text-foreground block mb-1">{t("contact.openingHours")}</span>
+                        <span className="text-sm whitespace-pre-line">{t("contact.hours")}</span>
                       </div>
                     </div>
                   </div>
@@ -112,9 +113,9 @@ export default function Contact() {
 
               <Card className="rounded-none bg-primary text-white border-none shadow-md">
                 <CardContent className="p-6 text-center space-y-4">
-                  <h3 className="text-lg font-bold">Service Client</h3>
+                  <h3 className="text-lg font-bold">{t("contact.customerService")}</h3>
                   <p className="text-white/80 text-sm">
-                    Notre centre de relation client est disponible pour répondre à toutes vos requêtes bancaires.
+                    {t("contact.customerServiceDescription")}
                   </p>
                   <div className="inline-flex items-center justify-center bg-white/10 px-4 py-2 rounded-full font-mono text-xl tracking-wider font-bold">
                     1234
@@ -127,7 +128,7 @@ export default function Contact() {
             <div className="lg:col-span-2">
               <Card className="rounded-none shadow-md border-border h-full">
                 <CardContent className="p-8 md:p-10">
-                  <h2 className="text-2xl font-serif font-bold text-primary mb-6">Envoyez-nous un message</h2>
+                  <h2 className="text-2xl font-serif font-bold text-primary mb-6">{t("contact.sendMessage")}</h2>
                   
                   <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -137,9 +138,9 @@ export default function Contact() {
                           name="nom"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-primary font-semibold">Nom complet *</FormLabel>
+                              <FormLabel className="text-primary font-semibold">{t("contact.fullName")}</FormLabel>
                               <FormControl>
-                                <Input placeholder="Saisissez votre nom" className="rounded-sm bg-muted/50 border-muted focus-visible:ring-secondary" {...field} />
+                                <Input placeholder={t("contact.fullNamePlaceholder")} className="rounded-sm bg-muted/50 border-muted focus-visible:ring-secondary" {...field} />
                               </FormControl>
                               <FormMessage />
                             </FormItem>
@@ -150,7 +151,7 @@ export default function Contact() {
                           name="email"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-primary font-semibold">Email *</FormLabel>
+                              <FormLabel className="text-primary font-semibold">{t("contact.email")}</FormLabel>
                               <FormControl>
                                 <Input type="email" placeholder="votre.email@exemple.com" className="rounded-sm bg-muted/50 border-muted focus-visible:ring-secondary" {...field} />
                               </FormControl>
@@ -166,7 +167,7 @@ export default function Contact() {
                           name="telephone"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-primary font-semibold">Téléphone</FormLabel>
+                              <FormLabel className="text-primary font-semibold">{t("contact.phone")}</FormLabel>
                               <FormControl>
                                 <Input placeholder="+222 XX XX XX XX" className="rounded-sm bg-muted/50 border-muted focus-visible:ring-secondary" {...field} />
                               </FormControl>
@@ -179,18 +180,18 @@ export default function Contact() {
                           name="sujet"
                           render={({ field }) => (
                             <FormItem>
-                              <FormLabel className="text-primary font-semibold">Sujet</FormLabel>
+                              <FormLabel className="text-primary font-semibold">{t("contact.subject")}</FormLabel>
                               <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <FormControl>
                                   <SelectTrigger className="rounded-sm bg-muted/50 border-muted focus:ring-secondary">
-                                    <SelectValue placeholder="Sélectionnez un sujet" />
+                                    <SelectValue placeholder={t("contact.chooseSubject")} />
                                   </SelectTrigger>
                                 </FormControl>
                                 <SelectContent>
-                                  <SelectItem value="information">Demande d'information</SelectItem>
-                                  <SelectItem value="reclamation">Réclamation</SelectItem>
-                                  <SelectItem value="partenariat">Partenariat</SelectItem>
-                                  <SelectItem value="autre">Autre</SelectItem>
+                                  <SelectItem value="information">{t("contact.information")}</SelectItem>
+                                  <SelectItem value="reclamation">{t("contact.complaint")}</SelectItem>
+                                  <SelectItem value="partenariat">{t("contact.partnership")}</SelectItem>
+                                  <SelectItem value="autre">{t("contact.other")}</SelectItem>
                                 </SelectContent>
                               </Select>
                               <FormMessage />
@@ -204,10 +205,10 @@ export default function Contact() {
                         name="message"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel className="text-primary font-semibold">Message *</FormLabel>
+                            <FormLabel className="text-primary font-semibold">{t("contact.message")}</FormLabel>
                             <FormControl>
                               <Textarea 
-                                placeholder="Détaillez votre demande ici..." 
+                                placeholder={t("contact.messagePlaceholder")} 
                                 className="min-h-[150px] rounded-sm bg-muted/50 border-muted focus-visible:ring-secondary resize-y"
                                 {...field} 
                               />
@@ -223,9 +224,9 @@ export default function Contact() {
                         disabled={submitContact.isPending}
                       >
                         {submitContact.isPending ? (
-                          "Envoi en cours..."
+                          t("contact.sending")
                         ) : (
-                          <>Envoyer le message <Send className="ml-2 w-4 h-4" /></>
+                          <>{t("contact.send")} <Send className="ml-2 w-4 h-4" /></>
                         )}
                       </Button>
                     </form>

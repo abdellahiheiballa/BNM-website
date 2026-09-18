@@ -7,8 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Lock, User, AlertCircle } from "lucide-react";
 import { useAuth } from "@/contexts/AuthContext";
 import { Alert } from "@/components/ui/alert";
+import { useTranslation } from "react-i18next";
 
 export default function AdminLogin() {
+  const { t } = useTranslation();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -23,7 +25,7 @@ export default function AdminLogin() {
       await login(username, password);
       navigate("/admin");
     } catch {
-      setError("Identifiants invalides");
+      setError(t("admin.invalidCredentials"));
     }
   };
 
@@ -32,7 +34,7 @@ export default function AdminLogin() {
       <Card className="w-full max-w-md rounded-none shadow-lg">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl font-serif text-primary">
-            Espace Administration
+            {t("admin.title")}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -44,7 +46,7 @@ export default function AdminLogin() {
           )}
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label className="font-semibold">Nom d'utilisateur</Label>
+              <Label className="font-semibold">{t("admin.username")}</Label>
               <div className="relative mt-2">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
@@ -57,7 +59,7 @@ export default function AdminLogin() {
               </div>
             </div>
             <div>
-              <Label className="font-semibold">Mot de passe</Label>
+              <Label className="font-semibold">{t("admin.password")}</Label>
               <div className="relative mt-2">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <Input
@@ -71,7 +73,7 @@ export default function AdminLogin() {
               </div>
             </div>
             <Button type="submit" className="w-full rounded-none">
-              Se connecter
+              {t("admin.login")}
             </Button>
           </form>
         </CardContent>

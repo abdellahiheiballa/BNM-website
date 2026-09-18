@@ -1,7 +1,9 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Target, Eye, Heart, History, TrendingUp, Users } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 export default function APropos() {
+  const { t } = useTranslation();
   const buildingImage = "/assets/images/Si%C3%A8ge%20de%20la%20BNM.jpg.jpeg";
 
   return (
@@ -11,10 +13,10 @@ export default function APropos() {
         <div className="container relative z-20 mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-1000">
             <h1 className="text-4xl md:text-6xl font-serif font-bold text-white leading-tight">
-              L'institution financière de référence en Mauritanie
+              {t("about.title")}
             </h1>
             <p className="text-xl text-white/80 leading-relaxed font-light">
-              Une histoire bâtie sur la confiance, l'innovation et l'engagement envers le développement économique du pays.
+              {t("about.heroDescription")}
             </p>
           </div>
         </div>
@@ -27,20 +29,20 @@ export default function APropos() {
             <div className="space-y-6">
               <div className="flex items-center gap-4 mb-4">
                 <div className="h-px bg-secondary w-12" />
-                <span className="text-secondary font-bold uppercase tracking-widest text-sm">Notre Histoire</span>
+                <span className="text-secondary font-bold uppercase tracking-widest text-sm">{t("about.historyLabel")}</span>
               </div>
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary leading-tight">
-                Une banque au cœur de l'économie mauritanienne
+                {t("about.historyTitle")}
               </h2>
               <div className="prose prose-lg text-muted-foreground">
                 <p>
-                  Créée avec l'ambition de moderniser le paysage bancaire national, la Banque Nationale de Mauritanie (BNM) s'est imposée comme un acteur majeur et incontournable du financement de l'économie.
+                  {t("about.historyOne")}
                 </p>
                 <p>
-                  Forte de son vaste réseau d'agences réparties sur l'ensemble du territoire et de partenariats stratégiques à l'international, la BNM accompagne au quotidien particuliers, professionnels et grandes entreprises dans la réalisation de leurs projets.
+                  {t("about.historyTwo")}
                 </p>
                 <p>
-                  Notre croissance continue repose sur une solidité financière reconnue, une gouvernance rigoureuse et une capacité d'innovation permanente pour répondre aux nouveaux usages de nos clients.
+                  {t("about.historyThree")}
                 </p>
               </div>
             </div>
@@ -48,7 +50,7 @@ export default function APropos() {
               <div className="absolute inset-0 bg-primary/10 rounded-tl-[100px]" />
               <img 
                 src={buildingImage} 
-                alt="Siège de la BNM" 
+                alt={t("common.bankName")}
                 className="absolute inset-4 object-cover w-[calc(100%-2rem)] h-[calc(100%-2rem)] rounded-tl-[100px] shadow-2xl grayscale hover:grayscale-0 transition-all duration-700"
               />
             </div>
@@ -60,9 +62,9 @@ export default function APropos() {
       <section className="py-24 bg-muted/30 border-y">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-6">Notre ADN</h2>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-primary mb-6">{t("about.dnaTitle")}</h2>
             <p className="text-lg text-muted-foreground">
-              Ce qui nous définit et guide nos actions au quotidien pour vous servir avec excellence.
+              {t("about.dnaDescription")}
             </p>
           </div>
 
@@ -72,9 +74,9 @@ export default function APropos() {
                 <div className="w-16 h-16 mx-auto bg-primary/5 rounded-full flex items-center justify-center text-primary mb-6">
                   <Target className="w-8 h-8" />
                 </div>
-                <h3 className="text-2xl font-bold text-primary">Notre Mission</h3>
+                <h3 className="text-2xl font-bold text-primary">{t("about.mission")}</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Offrir des services bancaires innovants, accessibles et sécurisés pour soutenir l'inclusion financière et accompagner la croissance de nos clients.
+                  {t("about.missionDescription")}
                 </p>
               </CardContent>
             </Card>
@@ -84,9 +86,9 @@ export default function APropos() {
                 <div className="w-16 h-16 mx-auto bg-white/10 rounded-full flex items-center justify-center text-secondary mb-6">
                   <Eye className="w-8 h-8" />
                 </div>
-                <h3 className="text-2xl font-bold">Notre Vision</h3>
+                <h3 className="text-2xl font-bold">{t("about.vision")}</h3>
                 <p className="text-white/80 leading-relaxed">
-                  Être la banque de référence en Mauritanie, reconnue pour son excellence opérationnelle, son agilité digitale et son impact positif sur la société.
+                  {t("about.visionDescription")}
                 </p>
               </CardContent>
             </Card>
@@ -96,9 +98,9 @@ export default function APropos() {
                 <div className="w-16 h-16 mx-auto bg-primary/5 rounded-full flex items-center justify-center text-primary mb-6">
                   <Heart className="w-8 h-8" />
                 </div>
-                <h3 className="text-2xl font-bold text-primary">Nos Valeurs</h3>
+                <h3 className="text-2xl font-bold text-primary">{t("about.values")}</h3>
                 <p className="text-muted-foreground leading-relaxed">
-                  Confiance, intégrité, proximité, innovation et responsabilité sociétale sont les piliers de notre relation avec vous.
+                  {t("about.valuesDescription")}
                 </p>
               </CardContent>
             </Card>
@@ -111,9 +113,9 @@ export default function APropos() {
         <div className="container mx-auto px-4">
            <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
               <div>
-                <h2 className="text-3xl font-serif font-bold text-primary mb-8">Gouvernance</h2>
+                <h2 className="text-3xl font-serif font-bold text-primary mb-8">{t("about.governance")}</h2>
                 <p className="text-lg text-muted-foreground mb-8 leading-relaxed">
-                  La BNM s'appuie sur une gouvernance d'entreprise solide et transparente, conforme aux meilleures pratiques internationales et aux directives de la Banque Centrale de Mauritanie.
+                  {t("about.governanceDescription")}
                 </p>
                 <div className="space-y-6">
                   <div className="flex items-start">
@@ -121,8 +123,8 @@ export default function APropos() {
                       <TrendingUp className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-primary mb-2">Comité de Direction</h4>
-                      <p className="text-muted-foreground">Supervise l'exécution de la stratégie globale et veille à la performance opérationnelle et financière.</p>
+                      <h4 className="text-xl font-bold text-primary mb-2">{t("about.management")}</h4>
+                      <p className="text-muted-foreground">{t("about.managementDescription")}</p>
                     </div>
                   </div>
                   <div className="flex items-start">
@@ -130,8 +132,8 @@ export default function APropos() {
                       <Users className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-primary mb-2">Conseil d'Administration</h4>
-                      <p className="text-muted-foreground">Définit les orientations stratégiques, garantit la solidité du bilan et assure le contrôle de la gestion.</p>
+                      <h4 className="text-xl font-bold text-primary mb-2">{t("about.board")}</h4>
+                      <p className="text-muted-foreground">{t("about.boardDescription")}</p>
                     </div>
                   </div>
                   <div className="flex items-start">
@@ -139,8 +141,8 @@ export default function APropos() {
                       <History className="w-6 h-6 text-primary" />
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold text-primary mb-2">Comités Spécialisés</h4>
-                      <p className="text-muted-foreground">Comité d'audit, comité des risques et comité Charia garantissant la rigueur de nos processus et de nos offres.</p>
+                      <h4 className="text-xl font-bold text-primary mb-2">{t("about.committees")}</h4>
+                      <p className="text-muted-foreground">{t("about.committeesDescription")}</p>
                     </div>
                   </div>
                 </div>
@@ -148,10 +150,10 @@ export default function APropos() {
               <div className="bg-primary p-12 text-white flex flex-col justify-center">
                  <div className="text-secondary font-serif text-6xl mb-6">"</div>
                  <blockquote className="text-2xl leading-relaxed font-light mb-8 italic">
-                   Notre engagement est total : construire une banque moderne, solide et inclusive, capable d'être le moteur financier des ambitions de la Mauritanie.
+                   {t("about.quote")}
                  </blockquote>
                  <div>
-                   <div className="font-bold text-xl">Direction Générale</div>
+                   <div className="font-bold text-xl">{t("about.generalManagement")}</div>
                    <div className="text-white/60">Banque Nationale de Mauritanie</div>
                  </div>
               </div>

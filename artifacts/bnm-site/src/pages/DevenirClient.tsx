@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Alert } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, CheckCircle2, FileText, Upload } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 const SECTORS = [
   "Commerce",
@@ -35,6 +36,7 @@ function isPdf(file: File) {
 }
 
 export default function DevenirClient() {
+  const { t } = useTranslation();
   const { toast } = useToast();
   const [form, setForm] = useState({
     nomComplet: "",
@@ -65,13 +67,13 @@ export default function DevenirClient() {
 
     const allowed = ["image/jpeg", "image/png", "image/webp", "application/pdf"].includes(file.type);
     if (!allowed) {
-      setClientError("Les pièces jointes doivent être au format JPG, PNG, WEBP ou PDF.");
+      setClientError(t("becomeClient.attachmentsFormat"));
       setter(emptyAttachment());
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      setClientError("Chaque pièce jointe doit faire moins de 5 Mo.");
+      setClientError(t("becomeClient.attachmentSize"));
       setter(emptyAttachment());
       return;
     }
@@ -84,12 +86,12 @@ export default function DevenirClient() {
   };
 
   const validate = () => {
-    if (!form.nomComplet.trim()) return "Le nom complet est obligatoire.";
-    if (!form.cinPasseport.trim()) return "Le numéro CIN/Passeport est obligatoire.";
-    if (!form.telephone.trim()) return "Le téléphone est obligatoire.";
-    if (!form.adresse.trim()) return "L'adresse est obligatoire.";
-    if (!form.secteurActivite) return "Le secteur d'activité est obligatoire.";
-    if (!cin.file || !justificatif.file) return "Les deux pièces justificatives sont requises.";
+    if (!form.nomComplet.trim()) return t("becomeClient.nameRequired");
+    if (!form.cinPasseport.trim()) return t("becomeClient.idRequired");
+    if (!form.telephone.trim()) return t("becomeClient.phoneRequired");
+    if (!form.adresse.trim()) return t("becomeClient.addressRequired");
+    if (!form.secteurActivite) return t("becomeClient.sectorRequired");
+    if (!cin.file || !justificatif.file) return t("becomeClient.filesRequired");
     return null;
   };
 
@@ -101,7 +103,7 @@ export default function DevenirClient() {
     const err = validate();
     if (err) {
       setClientError(err);
-      toast({ title: "Vérifiez le formulaire", description: err });
+      toast({ title: t("becomeClient.verifyForm"), description: err });
       return;
     }
 
@@ -121,7 +123,7 @@ export default function DevenirClient() {
 
       if (!response.ok) {
         const text = await response.text();
-        let message = "Erreur lors de l'envoi";
+        let message = t("becomeClient.uploadError");
         try {
           const parsed = JSON.parse(text);
           message = parsed.error || parsed.message || message;
@@ -141,10 +143,10 @@ export default function DevenirClient() {
       });
       setCin(emptyAttachment());
       setJustificatif(emptyAttachment());
-      toast({ title: "Demande envoyée", description: "Votre demande devenir client a bien été transmise." });
+      toast({ title: t("becomeClient.sentTitle"), description: t("becomeClient.sentDescription") });
     } catch (err) {
-      setClientError(err instanceof Error ? err.message : "Erreur lors de l'envoi");
-      toast({ title: "Échec de l'envoi", description: clientError });
+      setClientError(err instanceof Error ? err.message : t("becomeClient.uploadError"));
+      toast({ title: t("becomeClient.sendFailure"), description: err instanceof Error ? err.message : t("becomeClient.uploadError") });
     } finally {
       setIsSubmitting(false);
     }
@@ -155,12 +157,12 @@ export default function DevenirClient() {
       <section className="bg-primary py-16 text-white relative">
         <div className="container mx-auto px-4">
           <Link href="/" className="inline-flex items-center gap-2 text-white/90 hover:text-white mb-6">
-            <ArrowLeft className="w-4 h-4" /> Retour à l'accueil
+            <ArrowLeft className="w-4 h-4" /> {t("becomeClient.backHome")}
           </Link>
           <div className="max-w-3xl space-y-4">
-            <h1 className="text-4xl md:text-5xl font-serif font-bold">Devenir client BNM</h1>
+            <h1 className="text-4xl md:text-5xl font-serif font-bold">{t("becomeClient.title")}</h1>
             <p className="text-lg text-white/80">
-              Soumettez votre demande d'ouverture de compte. Les informations et pièces jointes sont transmises à notre équipe relation client.
+              {t("becomeClient.description")}
             </p>
           </div>
         </div>
@@ -171,17 +173,17 @@ export default function DevenirClient() {
           <div className="lg:col-span-2 space-y-6">
             <Card className="rounded-none border-none shadow-sm">
               <CardHeader>
-                <CardTitle>Pièces à fournir</CardTitle>
-                <CardDescription>Formats acceptés : JPG, PNG, WEBP et PDF. Taille maximale : 5 Mo par fichier.</CardDescription>
+                <CardTitle>{t("becomeClient.requiredDocuments")}</CardTitle>
+                <CardDescription>{t("becomeClient.acceptedFormats")}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4 text-muted-foreground">
                 <div className="flex gap-3">
                   <FileText className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
-                  <span>CIN ou passeport en cours de validité.</span>
+                  <span>{t("becomeClient.identityDocument")}</span>
                 </div>
                 <div className="flex gap-3">
                   <FileText className="w-5 h-5 text-secondary shrink-0 mt-0.5" />
-                  <span>Justificatif de domicile récent : facture, quittance ou document équivalent.</span>
+                  <span>{t("becomeClient.addressDocument")}</span>
                 </div>
               </CardContent>
             </Card>
@@ -190,7 +192,7 @@ export default function DevenirClient() {
               <CardHeader>
                 <CardTitle className="text-secondary">Click by BNM</CardTitle>
                 <CardDescription className="text-white/80">
-                  Votre compte peut être lié automatiquement au portefeuille mobile Click by BNM.
+                  {t("becomeClient.clickDescription")}
                 </CardDescription>
               </CardHeader>
             </Card>
@@ -199,7 +201,7 @@ export default function DevenirClient() {
           <div className="lg:col-span-3">
             <Card className="rounded-none border-none shadow-md">
               <CardHeader>
-                <CardTitle className="text-2xl text-primary">Formulaire d'onboarding</CardTitle>
+                <CardTitle className="text-2xl text-primary">{t("becomeClient.formTitle")}</CardTitle>
               </CardHeader>
               <CardContent>
                 {clientError && (
@@ -211,14 +213,14 @@ export default function DevenirClient() {
                 {submitted && (
                   <Alert className="mb-6 rounded-none border-secondary text-secondary">
                     <CheckCircle2 className="h-4 w-4" />
-                    Votre demande a été envoyée avec succès.
+                    {t("becomeClient.success")}
                   </Alert>
                 )}
 
                 <form onSubmit={onSubmit} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                      <Label className="font-semibold">Nom complet</Label>
+                      <Label className="font-semibold">{t("becomeClient.fullName")}</Label>
                       <Input
                         className="rounded-none mt-2"
                         value={form.nomComplet}
@@ -228,7 +230,7 @@ export default function DevenirClient() {
                     </div>
 
                     <div>
-                      <Label className="font-semibold">Numéro CIN/Passeport</Label>
+                      <Label className="font-semibold">{t("becomeClient.idNumber")}</Label>
                       <Input
                         className="rounded-none mt-2"
                         value={form.cinPasseport}
@@ -238,7 +240,7 @@ export default function DevenirClient() {
                     </div>
 
                     <div>
-                      <Label className="font-semibold">Téléphone</Label>
+                      <Label className="font-semibold">{t("becomeClient.phone")}</Label>
                       <Input
                         className="rounded-none mt-2"
                         value={form.telephone}
@@ -248,18 +250,18 @@ export default function DevenirClient() {
                     </div>
 
                     <div>
-                      <Label className="font-semibold">Secteur d'activité</Label>
+                      <Label className="font-semibold">{t("becomeClient.sector")}</Label>
                       <Select
                         value={form.secteurActivite}
                         onValueChange={(value) => setForm((s) => ({ ...s, secteurActivite: value }))}
                       >
                         <SelectTrigger className="rounded-none mt-2">
-                          <SelectValue placeholder="Choisir" />
+                          <SelectValue placeholder={t("becomeClient.choose")} />
                         </SelectTrigger>
                         <SelectContent>
-                          {SECTORS.map((sector) => (
+                          {SECTORS.map((sector, index) => (
                             <SelectItem key={sector} value={sector}>
-                              {sector}
+                              {["commerce", "construction", "transport", "agriculture", "industry", "services", "public", "other"].map((key) => t(`becomeClient.sectors.${key}`))[index]}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -267,7 +269,7 @@ export default function DevenirClient() {
                     </div>
 
                     <div className="md:col-span-2">
-                      <Label className="font-semibold">Adresse</Label>
+                      <Label className="font-semibold">{t("becomeClient.address")}</Label>
                       <Textarea
                         className="rounded-none mt-2"
                         value={form.adresse}
@@ -277,7 +279,7 @@ export default function DevenirClient() {
                     </div>
 
                     <div>
-                      <Label className="font-semibold">CIN/Passeport</Label>
+                      <Label className="font-semibold">{t("becomeClient.idFile")}</Label>
                       <Input
                         type="file"
                         className="rounded-none mt-2"
@@ -288,7 +290,7 @@ export default function DevenirClient() {
                     </div>
 
                     <div>
-                      <Label className="font-semibold">Justificatif de domicile</Label>
+                      <Label className="font-semibold">{t("becomeClient.addressFile")}</Label>
                       <Input
                         type="file"
                         className="rounded-none mt-2"
@@ -301,10 +303,10 @@ export default function DevenirClient() {
 
                   {preview && (
                     <div className="rounded-none border bg-muted/40 p-4">
-                      <div className="text-sm font-semibold mb-3">Aperçu d'une pièce jointe</div>
+                      <div className="text-sm font-semibold mb-3">{t("becomeClient.preview")}</div>
                       <div className="aspect-[21/9] bg-background">
                         {preview.isPdf ? (
-                          <iframe title="Aperçu document" src={preview.source} className="w-full h-full" />
+                          <iframe title={t("becomeClient.previewDocument")} src={preview.source} className="w-full h-full" />
                         ) : (
                           <img src={preview.source} alt="Aperçu document" className="w-full h-full object-cover" />
                         )}
@@ -314,10 +316,10 @@ export default function DevenirClient() {
 
                   <div className="flex flex-col sm:flex-row gap-3 sm:justify-end">
                     <Button type="button" variant="outline" className="rounded-none" onClick={() => window.history.back()}>
-                      Annuler
+                      {t("becomeClient.cancel")}
                     </Button>
                     <Button type="submit" className="rounded-none" disabled={!canSubmit || isSubmitting}>
-                      {isSubmitting ? "Envoi..." : <>Envoyer la demande <Upload className="ml-2 h-4 w-4" /></>}
+                      {isSubmitting ? t("becomeClient.sending") : <>{t("becomeClient.submit")} <Upload className="ml-2 h-4 w-4" /></>}
                     </Button>
                   </div>
                 </form>

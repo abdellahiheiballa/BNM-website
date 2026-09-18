@@ -425,7 +425,53 @@ export default function Professionnels() {
   const [activeSection, setActiveSection] = useState<string>(sections[0].id);
   const [activeSubOffre, setActiveSubOffre] = useState<string>(sections[0].subOffres[0].id);
 
-  const currentSection = sections.find(s => s.id === activeSection)!;
+  const localizedSections = sections.map((section) => {
+    const sectionTranslations: Record<string, string> = {
+      comptes: t("products.professionnels.sections.comptes", { defaultValue: "Comptes & Paiements" }),
+      epargner: t("products.professionnels.sections.epargne", { defaultValue: "Épargne & Placement" }),
+      emprunter: t("products.professionnels.sections.credits", { defaultValue: "Crédits & Financements" }),
+    };
+    const subOffres = section.subOffres.map((offre) => {
+      if (offre.id === "ouvrir-compte") {
+        return {
+          ...offre,
+          title: t("products.professionnels.compte.title", { defaultValue: "Ouvrir un compte" }),
+          subtitle: t("products.professionnels.compte.subtitle", { defaultValue: "Premier pas vers l'autonomie financière" }),
+          description: t("products.professionnels.compte.description", { defaultValue: "Ouvrir un compte à la BNM, c'est bien plus que des moyens de paiements." }),
+          cta: t("products.professionnels.compte.cta", { defaultValue: "Demander l'ouverture" }),
+          avantages: t<string[]>("products.professionnels.compte.advantages", { returnObjects: true, defaultValue: [] }),
+          stats: t<{ label: string; value: string }[]>("products.professionnels.compte.stats", { returnObjects: true, defaultValue: [] }),
+        };
+      }
+      if (offre.id === "nos-cartes") {
+        return {
+          ...offre,
+          title: t("products.professionnels.cartes.title", { defaultValue: "Cartes Mastercard" }),
+          subtitle: t("products.professionnels.cartes.subtitle", { defaultValue: "5 cartes, 5 univers, vos besoins" }),
+          description: t("products.professionnels.cartes.description", { defaultValue: offre.description }),
+          cta: t("products.professionnels.cartes.cta", { defaultValue: offre.cta }),
+          avantages: t<string[]>("products.professionnels.cartes.advantages", { returnObjects: true, defaultValue: offre.avantages }),
+          documents: t<string[]>("products.professionnels.cartes.documents", { returnObjects: true, defaultValue: offre.documents }),
+          stats: t<{ label: string; value: string }[]>("products.professionnels.cartes.stats", { returnObjects: true, defaultValue: offre.stats ?? [] }),
+        };
+      }
+      if (offre.id === "carnet-cheque") {
+        return {
+          ...offre,
+          title: t("products.professionnels.chequier.title", { defaultValue: "Carnet de chèque" }),
+          subtitle: t("products.professionnels.chequier.subtitle", { defaultValue: "Le chèque, mais en mieux" }),
+          description: t("products.professionnels.chequier.description", { defaultValue: offre.description }),
+          cta: t("products.professionnels.chequier.cta", { defaultValue: offre.cta }),
+          avantages: t<string[]>("products.professionnels.chequier.advantages", { returnObjects: true, defaultValue: offre.avantages }),
+          documents: t<string[]>("products.professionnels.chequier.documents", { returnObjects: true, defaultValue: offre.documents }),
+          stats: t<{ label: string; value: string }[]>("products.professionnels.chequier.stats", { returnObjects: true, defaultValue: offre.stats ?? [] }),
+        };
+      }
+      return offre;
+    });
+    return { ...section, title: sectionTranslations[section.id] ?? section.title, subOffres };
+  });
+  const currentSection = localizedSections.find(s => s.id === activeSection)!;
   const currentSubOffre = currentSection.subOffres.find(s => s.id === activeSubOffre)!;
   const currentIndex = currentSection.subOffres.findIndex(s => s.id === activeSubOffre);
 
@@ -496,7 +542,7 @@ export default function Professionnels() {
       <section id="sections" className="sticky top-0 z-30 bg-white/95 backdrop-blur border-b border-border shadow-sm">
         <div className="container mx-auto px-4">
           <div className="flex gap-1 py-3 overflow-x-auto hide-scrollbar">
-            {sections.map((section) => {
+            {localizedSections.map((section) => {
               const Icon = section.icon;
               const isActive = activeSection === section.id;
               return (
