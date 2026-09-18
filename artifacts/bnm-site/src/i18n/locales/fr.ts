@@ -77,6 +77,9 @@ const fr = {
     aiChat: "AiChat",
     availability: "Disponible 24h/24, 7j/7.",
     whatsapp: "WhatsApp",
+    clickCardTitle: "Click",
+    clickCardDescription: "Des services financiers digitaux à portée de main",
+    clickCardLink: "Découvrir Click",
   },
   individuals: {
     badge: "Banque des Particuliers",

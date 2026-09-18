@@ -77,6 +77,9 @@ const ar = {
     aiChat: "AiChat ",
     availability: "متاح 24 ساعة طوال أيام الأسبوع.",
     whatsapp: "واتساب",
+    clickCardTitle: "Click",
+    clickCardDescription: "خدمات مالية رقمية في متناول أيديكم",
+    clickCardLink: "اكتشفوا Click",
   },
   individuals: {
     badge: "خدمات الأفراد",
