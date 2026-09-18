@@ -4,8 +4,10 @@ import { Button } from "@/components/ui/button";
 import { Link, useParams } from "wouter";
 import { Calendar, ArrowLeft, Share2, Facebook, Twitter, Linkedin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { useTranslation } from "react-i18next";
 
 export default function ActualiteDetail() {
+  const { t, i18n } = useTranslation();
   const params = useParams();
   const id = parseInt(params.id || "0", 10);
   const { data: actu, isLoading, error } = useGetActualite(id, {
@@ -37,10 +39,10 @@ export default function ActualiteDetail() {
   if (error || !actu) {
     return (
       <div className="container mx-auto px-4 py-32 text-center">
-        <h2 className="text-2xl font-bold text-primary mb-4">Article introuvable</h2>
-        <p className="text-muted-foreground mb-8">L'actualité que vous recherchez n'existe pas ou a été supprimée.</p>
+        <h2 className="text-2xl font-bold text-primary mb-4">{t("news.notFoundTitle")}</h2>
+        <p className="text-muted-foreground mb-8">{t("news.notFoundDescription")}</p>
         <Link href="/actualites">
-          <Button className="bg-primary text-white rounded-none">Retour aux actualités</Button>
+          <Button className="bg-primary text-white rounded-none">{t("news.backToNews")}</Button>
         </Link>
       </div>
     );
@@ -52,16 +54,16 @@ export default function ActualiteDetail() {
       <div className="w-full bg-muted/30 pt-12 pb-8 border-b">
         <div className="container mx-auto px-4 max-w-4xl">
           <Link href="/actualites" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary mb-8 transition-colors">
-            <ArrowLeft className="w-4 h-4 mr-2" /> Retour aux actualités
+            <ArrowLeft className="w-4 h-4 mr-2" /> {t("news.backToNews")}
           </Link>
           
           <div className="flex items-center gap-4 mb-6">
             <Badge className="bg-secondary text-primary hover:bg-secondary rounded-none px-3 py-1 font-bold tracking-wider uppercase">
-              {actu.categorie || "Actualité"}
+              {actu.categorie || t("news.categoryFallback")}
             </Badge>
             <div className="flex items-center text-sm text-muted-foreground font-medium">
               <Calendar className="w-4 h-4 mr-2" />
-              {new Date(actu.datePublication).toLocaleDateString('fr-FR', {
+              {new Date(actu.datePublication).toLocaleDateString(i18n.language, {
                 weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
               })}
             </div>
@@ -89,7 +91,7 @@ export default function ActualiteDetail() {
           {/* Social Share sidebar */}
           <div className="md:w-16 flex md:flex-col gap-4 py-2 text-muted-foreground shrink-0">
             <span className="text-xs font-semibold uppercase tracking-widest hidden md:block mb-2 text-center" style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}>
-              Partager
+              {t("news.share")}
             </span>
             <Button variant="ghost" size="icon" className="rounded-full hover:bg-primary/5 hover:text-primary">
               <Facebook className="w-5 h-5" />

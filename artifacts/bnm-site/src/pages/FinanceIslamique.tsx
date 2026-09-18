@@ -4,8 +4,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Moon, Landmark, Star, HandCoins } from "lucide-react";
 import { Link } from "wouter";
+import { useTranslation } from "react-i18next";
 
 export default function FinanceIslamique() {
+  const { t } = useTranslation();
   const { data: offres, isLoading } = useListOffres({ categorie: "islamique" });  const offresArray = Array.isArray(offres) ? offres : [];
   const heroImage = "/assets/images/Islamique.jpg.jpeg";
 
@@ -24,10 +26,10 @@ export default function FinanceIslamique() {
               AL WATANI
             </div>
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-white leading-tight">
-              Finance Islamique
+              {t("islamicFinance.title")}
             </h1>
             <p className="text-lg text-white/90 leading-relaxed">
-              Des solutions de financement et d'investissement strictement conformes aux préceptes de la Charia, certifiées par notre Comité de Conformité.
+              {t("islamicFinance.description")}
             </p>
           </div>
         </div>
@@ -39,9 +41,9 @@ export default function FinanceIslamique() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2 space-y-12">
               <div>
-                <h2 className="text-3xl font-serif font-bold text-primary mb-4">Nos Produits Al Watani</h2>
+                <h2 className="text-3xl font-serif font-bold text-primary mb-4">{t("islamicFinance.productsTitle")}</h2>
                 <p className="text-muted-foreground text-lg mb-8">
-                  Découvrez une gamme complète de produits bancaires participatifs, conçus pour répondre à vos besoins tout en respectant vos valeurs.
+                  {t("islamicFinance.productsDescription")}
                 </p>
 
                 {isLoading ? (
@@ -72,14 +74,14 @@ export default function FinanceIslamique() {
                             </CardTitle>
                           </div>
                           <CardDescription className="text-base text-foreground/80">
-                            {offre.description || "Produit certifié conforme aux principes de la finance islamique."}
+                            {offre.description || t("islamicFinance.productFallback")}
                           </CardDescription>
                         </CardHeader>
                       </Card>
                     ))}
                   </div>
                 ) : (
-                   <p className="text-muted-foreground">Aucune offre disponible.</p>
+                   <p className="text-muted-foreground">{t("islamicFinance.noOffers")}</p>
                 )}
               </div>
             </div>
@@ -89,29 +91,29 @@ export default function FinanceIslamique() {
                 <Card className="bg-primary text-white rounded-none border-none">
                   <CardHeader>
                     <Moon className="w-10 h-10 text-secondary mb-4" />
-                    <CardTitle className="text-2xl font-serif text-secondary">Comité Charia</CardTitle>
+                    <CardTitle className="text-2xl font-serif text-secondary">{t("islamicFinance.shariaCommittee")}</CardTitle>
                   </CardHeader>
                   <CardContent className="space-y-4 text-white/90">
                     <p>
-                      Toutes les solutions de financement de la gamme Al Watani sont soumises à l'approbation d'un Comité de Conformité Charia composé d'éminents savants.
+                      {t("islamicFinance.shariaDescription")}
                     </p>
                     <p>
-                      Ce comité garantit l'absence de Riba (intérêt), de Gharar (incertitude excessive) et de Maysir (spéculation) dans toutes vos transactions.
+                      {t("islamicFinance.shariaGuarantee")}
                     </p>
                   </CardContent>
                 </Card>
 
                 <Card className="rounded-none border-primary bg-muted/30">
                   <CardHeader>
-                    <CardTitle className="text-xl text-primary font-serif">Estimez votre financement</CardTitle>
+                    <CardTitle className="text-xl text-primary font-serif">{t("islamicFinance.estimateTitle")}</CardTitle>
                     <CardDescription>
-                      Calculez les mensualités de votre financement Mourabaha en quelques secondes.
+                      {t("islamicFinance.estimateDescription")}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <Link href="/simulateur?tab=murabaha">
                       <Button className="w-full bg-primary text-white hover:bg-primary/90 font-bold rounded-none group">
-                        Simulateur Murabaha
+                        {t("islamicFinance.simulator")}
                         <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </Button>
                     </Link>

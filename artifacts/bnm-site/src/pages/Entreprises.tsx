@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const sections = [
   {
@@ -221,6 +222,7 @@ const sections = [
 ];
 
 function OffreDetail({ offre }: { offre: typeof sections[0]['subOffres'][0] }) {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<"avantages" | "documents">("avantages");
 
   return (
@@ -236,7 +238,7 @@ function OffreDetail({ offre }: { offre: typeof sections[0]['subOffres'][0] }) {
               : "text-muted-foreground hover:text-primary"
           }`}
         >
-          Avantages
+          {t("businesses.advantages")}
         </button>
         <button
           onClick={() => setActiveTab("documents")}
@@ -246,7 +248,7 @@ function OffreDetail({ offre }: { offre: typeof sections[0]['subOffres'][0] }) {
               : "text-muted-foreground hover:text-primary"
           }`}
         >
-          Documents à fournir
+          {t("businesses.documents")}
         </button>
       </div>
 
@@ -286,6 +288,7 @@ function OffreDetail({ offre }: { offre: typeof sections[0]['subOffres'][0] }) {
 }
 
 export default function Entreprises() {
+  const { t } = useTranslation();
   const { data: offres, isLoading } = useListOffres({ categorie: "entreprises" });
   const offresArray = Array.isArray(offres) ? offres : [];
   const [activeSection, setActiveSection] = useState<string>(sections[0].id);
@@ -308,10 +311,10 @@ export default function Entreprises() {
         <div className="container relative z-20 mx-auto px-4">
           <div className="max-w-2xl space-y-4 animate-in fade-in slide-in-from-bottom-8 duration-1000">
             <h1 className="text-4xl md:text-5xl font-serif font-bold text-white">
-              Banque des Entreprises
+              {t("businesses.badge")}
             </h1>
             <p className="text-lg text-white/90 leading-relaxed">
-              Le partenaire financier stratégique pour accompagner la croissance de votre entreprise à l'échelle nationale et internationale.
+              {t("businesses.heroDescription")}
             </p>
           </div>
         </div>
@@ -362,7 +365,7 @@ export default function Entreprises() {
             {/* Sidebar - Sub-offres tabs */}
             <div className="lg:col-span-1">
               <div className="space-y-2 sticky top-24">
-                <p className="text-sm font-bold text-primary uppercase tracking-wider mb-4">Vous souhaitez...</p>
+                <p className="text-sm font-bold text-primary uppercase tracking-wider mb-4">{t("businesses.youWant")}</p>
                 {currentSection.subOffres.map((sub) => (
                   <button
                     key={sub.id}
@@ -404,19 +407,19 @@ export default function Entreprises() {
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <HelpCircle className="w-12 h-12 text-secondary mx-auto" />
-            <h2 className="text-3xl font-serif font-bold">Besoin d'aide?</h2>
+            <h2 className="text-3xl font-serif font-bold">{t("businesses.help")}</h2>
             <p className="text-lg text-white/80 leading-relaxed">
-              Découvrez les offres de la Banque Nationale de Mauritanie pour un traitement efficace de vos opérations.
+              {t("businesses.helpDescription")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
               <Link href="/contact">
                 <Button size="lg" className="bg-secondary text-primary hover:bg-secondary/90 font-bold px-8 rounded-none">
-                  <Phone className="mr-2 w-5 h-5" /> Contactez un conseiller
+                  <Phone className="mr-2 w-5 h-5" /> {t("businesses.contactAdvisor")}
                 </Button>
               </Link>
               <Link href="/agences">
                 <Button size="lg" variant="outline" className="text-white border-white hover:bg-white/10 rounded-none bg-transparent">
-                  <MapPin className="mr-2 w-5 h-5" /> Trouver une agence
+                  <MapPin className="mr-2 w-5 h-5" /> {t("businesses.findAgency")}
                 </Button>
               </Link>
             </div>
@@ -429,9 +432,9 @@ export default function Entreprises() {
         <section className="py-16 bg-muted/30">
           <div className="container mx-auto px-4">
             <div className="mb-10">
-              <h2 className="text-3xl font-serif font-bold text-primary mb-4">Des solutions Corporate de haut niveau</h2>
+              <h2 className="text-3xl font-serif font-bold text-primary mb-4">{t("businesses.corporateTitle")}</h2>
               <p className="text-muted-foreground max-w-3xl">
-                Nous mettons à votre disposition l'expertise de nos équipes spécialisées pour optimiser votre trésorerie, financer vos investissements et faciliter vos opérations à l'international.
+                {t("businesses.corporateDescription")}
               </p>
             </div>
 
@@ -471,10 +474,10 @@ export default function Entreprises() {
                       </CardHeader>
                       <CardContent className="flex-1 flex flex-col justify-between">
                         <CardDescription className="text-base mb-6 text-foreground/80 leading-relaxed">
-                          {offre.description || "Optimisez la performance financière de votre entreprise avec nos solutions expertes."}
+                          {offre.description || t("businesses.corporateFallback")}
                         </CardDescription>
                         <Link href="/contact" className="inline-flex items-center text-primary font-semibold hover:text-secondary mt-auto w-fit transition-colors group-hover:translate-x-2 duration-300">
-                          Contacter un conseiller Corporate <ArrowRight className="ml-2 w-4 h-4" />
+                          {t("businesses.corporateContact")} <ArrowRight className="ml-2 w-4 h-4" />
                         </Link>
                       </CardContent>
                     </Card>
@@ -491,9 +494,9 @@ export default function Entreprises() {
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-secondary">Trade Finance</h2>
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-secondary">{t("businesses.tradeTitle")}</h2>
               <p className="text-lg text-white/90 leading-relaxed">
-                Fort d'un vaste réseau de correspondants bancaires à travers le monde, la BNM sécurise et optimise vos transactions internationales.
+                {t("businesses.tradeDescription")}
               </p>
               <ul className="space-y-4 pt-4">
                 <li className="flex items-start">
@@ -516,7 +519,7 @@ export default function Entreprises() {
               <div className="pt-6">
                 <Link href="/contact">
                   <Button size="lg" className="bg-secondary text-primary hover:bg-secondary/90 font-bold px-8 rounded-none">
-                    Parler à un expert Trade
+                    {t("businesses.tradeExpert")}
                   </Button>
                 </Link>
               </div>

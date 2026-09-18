@@ -2,8 +2,10 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Search, Menu, X, User } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 export default function Header() {
+  const { t, i18n } = useTranslation();
   const [location] = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement | null>(null);
@@ -37,36 +39,42 @@ export default function Header() {
     };
   }, [isMobileMenuOpen]);
 
+  const isRtl = i18n.language === "ar";
+
   const navLinks = [
-    { href: "/particuliers", label: "Particuliers" },
-    { href: "/professionnels", label: "Professionnels" },
-    { href: "/entreprises", label: "Entreprises" },
-    { href: "/finance-islamique", label: "Finance Islamique" },
+    { href: "/particuliers", label: t("navigation.individuals") },
+    { href: "/professionnels", label: t("navigation.professionals") },
+    { href: "/entreprises", label: t("navigation.businesses") },
+    { href: "/finance-islamique", label: t("navigation.islamicFinance") },
   ];
 
   const topLinks = [
-    { href: "/a-propos", label: "À propos de la BNM" },
-    { href: "/actualites", label: "Actualités" },
-    { href: "/agences", label: "Nos Agences" },
-    { href: "/simulateur", label: "Simulateurs" },
-    { href: "/contact", label: "Contact" },
-    { href: "/devenir-client", label: "Devenir client" },
+    { href: "/a-propos", label: t("navigation.about") },
+    { href: "/actualites", label: t("navigation.news") },
+    { href: "/agences", label: t("navigation.agencies") },
+    { href: "/simulateur", label: t("navigation.simulators") },
+    { href: "/contact", label: t("navigation.contact") },
+    { href: "/devenir-client", label: t("navigation.becomeClient") },
   ];
+
+  const changeLanguage = (language: "fr" | "ar") => {
+    void i18n.changeLanguage(language);
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
       {/* Top bar for secondary links */}
       <div className="hidden border-b bg-muted/40 px-4 py-1.5 md:block">
-        <div className="container mx-auto flex items-center justify-end space-x-6 text-xs font-medium text-muted-foreground">
+        <div className="container mx-auto flex items-center justify-end gap-6 text-xs font-medium text-muted-foreground" dir={isRtl ? "rtl" : "ltr"}>
           {topLinks.map((link) => (
             <Link key={link.href} href={link.href} className="hover:text-primary transition-colors">
               {link.label}
             </Link>
           ))}
-          <div className="flex items-center space-x-2 border-l pl-6">
-            <span className="cursor-pointer hover:text-primary">FR</span>
+          <div className={`flex items-center gap-2 ${isRtl ? "border-r pr-6" : "border-l pl-6"}`}>
+            <button type="button" className="hover:text-primary" onClick={() => changeLanguage("fr")} aria-label={t("common.languageFrench")} aria-pressed={i18n.language === "fr"}>FR</button>
             <span className="text-muted-foreground/30">|</span>
-            <span className="cursor-pointer hover:text-primary">AR</span>
+            <button type="button" className="hover:text-primary" onClick={() => changeLanguage("ar")} aria-label={t("common.languageArabic")} aria-pressed={i18n.language === "ar"}>AR</button>
           </div>
         </div>
       </div>
@@ -83,7 +91,7 @@ export default function Header() {
             />
             <div className="hidden flex-col leading-tight sm:flex">
               <span className="text-base font-bold text-primary tracking-tight">BNM</span>
-              <span className="text-[10px] text-muted-foreground uppercase tracking-widest">La Banque Nationale de Mauritanie</span>
+              <span className="text-[10px] text-muted-foreground uppercase tracking-widest">{t("common.bankName")}</span>
             </div>
           </Link>
 
@@ -110,22 +118,23 @@ export default function Header() {
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" className="hidden sm:flex text-primary">
             <Search className="h-5 w-5" />
-            <span className="sr-only">Rechercher</span>
+            <span className="sr-only">{t("common.search")}</span>
           </Button>
           
           <a
             href="https://www.click.mr/"
             target="_blank"
             rel="noreferrer"
+            aria-label={t("common.clickByBnm")} 
             className="hidden sm:flex items-center gap-2 rounded-none shadow-sm h-10 px-4 font-semibold"
             style={{ backgroundColor: "#EEEef1", color: "#131311" }}
           >
             <img
               src="/assets/images/logoclick.png"
-              alt="Click"
+              alt={t("common.clickByBnm")}
               className="h-6 w-6 object-contain"
             />
-            <span>Click</span>
+            <span>{t("common.clickByBnm")}</span>
           </a>
 
           <Button
@@ -133,7 +142,7 @@ export default function Header() {
             size="icon"
             className="md:hidden"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            ref={(el: HTMLButtonElement) => (toggleRef.current = el)}
+            ref={(el) => { toggleRef.current = el; }}
           >
             {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
           </Button>
@@ -142,7 +151,7 @@ export default function Header() {
 
       {/* Mobile menu */}
       {isMobileMenuOpen && (
-        <div ref={(el) => (menuRef.current = el)} className="md:hidden border-t bg-background p-4 absolute top-[100%] left-0 w-full shadow-lg flex flex-col gap-4">
+        <div ref={(el) => { menuRef.current = el; }} className="md:hidden border-t bg-background p-4 absolute top-[100%] left-0 w-full shadow-lg flex flex-col gap-4">
           <nav className="flex flex-col space-y-2">
             {navLinks.map((link) => (
               <Link
@@ -168,19 +177,25 @@ export default function Header() {
               </Link>
             ))}
           </nav>
+          <div className="flex items-center gap-3 border-t pt-4 text-sm">
+            <button type="button" className="hover:text-primary" onClick={() => changeLanguage("fr")} aria-label={t("common.languageFrench")} aria-pressed={i18n.language === "fr"}>{t("common.languageFrench")}</button>
+            <span className="text-muted-foreground/30">|</span>
+            <button type="button" className="hover:text-primary" onClick={() => changeLanguage("ar")} aria-label={t("common.languageArabic")} aria-pressed={i18n.language === "ar"}>{t("common.languageArabic")}</button>
+          </div>
           <a
             href="https://www.click.mr/"
             target="_blank"
             rel="noreferrer"
+            aria-label={t("common.clickByBnm")}
             className="w-full mt-4 flex items-center justify-center gap-2 font-semibold h-12 rounded-none"
             style={{ backgroundColor: "#EEEef1", color: "#131311" }}
           >
             <img
               src="/assets/images/logoclick.png"
-              alt="Click"
+              alt={t("common.clickByBnm")}
               className="h-6 w-6 object-contain"
             />
-            <span>Click</span>
+            <span>{t("common.clickByBnm")}</span>
           </a>
         </div>
       )}

@@ -11,7 +11,7 @@ RUN npm install -g corepack \
 
 RUN cd artifacts/bnm-site && pnpm run build
 
-FROM nginx:alpine
+FROM nginx:stable-alpine
 COPY --from=builder /app/artifacts/bnm-site/dist/public /usr/share/nginx/html
 COPY artifacts/bnm-site/nginx.conf /etc/nginx/conf.d/default.conf
 

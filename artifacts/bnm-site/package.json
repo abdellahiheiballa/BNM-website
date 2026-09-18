@@ -77,6 +77,8 @@
     "zod": "catalog:"
   },
   "dependencies": {
-    "react-leaflet": "^5.0.0"
+    "i18next": "^26.4.2",
+    "react-leaflet": "^5.0.0",
+    "react-i18next": "^17.0.13"
   }
 }

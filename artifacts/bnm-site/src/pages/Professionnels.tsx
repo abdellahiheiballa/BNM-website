@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 type SubOffre = {
   id: string;
@@ -315,6 +316,7 @@ function SubOffreCard({ subOffre, active, onClick }: { subOffre: SubOffre; activ
 }
 
 function OffreContent({ offre }: { offre: SubOffre }) {
+  const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<"avantages" | "documents">("avantages");
 
   return (
@@ -359,7 +361,7 @@ function OffreContent({ offre }: { offre: SubOffre }) {
           >
             <div className="flex items-center justify-center gap-2">
               <Award className="w-4 h-4" />
-              <span>Avantages</span>
+              <span>{t("professionals.advantages")}</span>
             </div>
             {activeTab === "avantages" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-secondary" />}
           </button>
@@ -373,7 +375,7 @@ function OffreContent({ offre }: { offre: SubOffre }) {
           >
             <div className="flex items-center justify-center gap-2">
               <FileText className="w-4 h-4" />
-              <span>Documents</span>
+              <span>{t("professionals.documents")}</span>
             </div>
             {activeTab === "documents" && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-secondary" />}
           </button>
@@ -417,6 +419,7 @@ function OffreContent({ offre }: { offre: SubOffre }) {
 }
 
 export default function Professionnels() {
+  const { t } = useTranslation();
   const { data: offres, isLoading } = useListOffres({ categorie: "professionnels" });
   const offresArray = Array.isArray(offres) ? offres : [];
   const [activeSection, setActiveSection] = useState<string>(sections[0].id);
@@ -466,24 +469,23 @@ export default function Professionnels() {
           <div className="max-w-2xl space-y-6 animate-in fade-in slide-in-from-bottom-8 duration-1000">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-secondary/20 text-secondary text-sm font-semibold">
               <Sparkles className="w-4 h-4" />
-              Banque des Professionnels
+              {t("professionals.badge")}
             </div>
             <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight">
-              Votre succès,<br />
-              <span className="text-secondary">notre métier</span>
+              {t("professionals.heroTitle")}
             </h1>
             <p className="text-lg md:text-xl text-white/90 max-w-xl leading-relaxed">
-              Artisans, commerçants, professions libérales — nous construisons ensemble les solutions bancaires qui accélèrent votre croissance.
+              {t("professionals.heroDescription")}
             </p>
             <div className="flex gap-4 pt-4">
               <Link href="/contact">
                 <Button size="lg" className="bg-secondary text-primary hover:bg-secondary/90 font-bold px-8 group">
-                  On démarre ? <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  {t("professionals.start")} <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </Button>
               </Link>
               <Link href="#sections">
                 <Button size="lg" variant="outline" className="text-white border-white/50 hover:bg-white/10 bg-transparent">
-                  Explorer
+                  {t("professionals.explore")}
                 </Button>
               </Link>
             </div>
@@ -539,8 +541,8 @@ export default function Professionnels() {
             <div className="lg:col-span-4">
               <div className="relative lg:sticky lg:top-28 space-y-6">
                 <div>
-                  <p className="text-xs font-bold text-primary uppercase tracking-widest mb-1">Navigation</p>
-                  <p className="text-sm text-muted-foreground">Vous souhaitez...</p>
+                  <p className="text-xs font-bold text-primary uppercase tracking-widest mb-1">{t("professionals.navigation")}</p>
+                  <p className="text-sm text-muted-foreground">{t("professionals.youWant")}</p>
                 </div>
                 <div className="space-y-1">
                   {currentSection.subOffres.map((sub) => (
@@ -575,8 +577,8 @@ export default function Professionnels() {
       <section className="py-16 bg-gradient-to-br from-muted/50 via-background to-muted/30">
         <div className="container mx-auto px-4">
           <div className="text-center mb-10">
-            <h2 className="text-3xl font-bold text-primary">Vous souhaitez...</h2>
-            <p className="text-muted-foreground mt-2">Choisissez parmi nos services rapides</p>
+            <h2 className="text-3xl font-bold text-primary">{t("professionals.youWant")}</h2>
+            <p className="text-muted-foreground mt-2">{t("professionals.quickServices")}</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             {quickActions.map((item, i) => {
@@ -594,7 +596,7 @@ export default function Professionnels() {
                       <h3 className="text-xl font-bold text-primary mb-2">{item.title}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed mb-6">{item.desc}</p>
                       <div className="flex items-center text-sm font-semibold text-primary group-hover:text-secondary transition-colors">
-                        En savoir plus <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        {t("professionals.learnMore")} <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
                   </div>
@@ -609,11 +611,11 @@ export default function Professionnels() {
         <div className="container mx-auto px-4">
           <div className="flex items-end justify-between mb-10">
             <div>
-              <h2 className="text-3xl font-bold text-primary mb-2">Toutes nos offres</h2>
-              <p className="text-muted-foreground">Des solutions pensées pour les professionnels</p>
+              <h2 className="text-3xl font-bold text-primary mb-2">{t("professionals.allOffers")}</h2>
+              <p className="text-muted-foreground">{t("professionals.allOffersDescription")}</p>
             </div>
             <Link href="/contact" className="hidden sm:flex items-center text-sm font-semibold text-primary hover:text-secondary transition-colors">
-              Voir tout <ArrowRight className="ml-1 w-4 h-4" />
+              {t("professionals.viewAll")} <ArrowRight className="ml-1 w-4 h-4" />
             </Link>
           </div>
 
@@ -654,10 +656,10 @@ export default function Professionnels() {
                       </div>
                       <h3 className="text-lg font-bold text-primary mb-2">{offre.titre}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-4 line-clamp-3">
-                        {offre.description || "Une solution sur-mesure pour les professionnels."}
+                        {offre.description || t("professionals.tailoredOffer")}
                       </p>
                       <Link href="/contact" className="inline-flex items-center text-sm font-semibold text-primary group-hover:text-secondary transition-colors mt-auto">
-                        En savoir plus <ArrowRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                        {t("professionals.learnMore")} <ArrowRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </Link>
                     </div>
                   </div>
@@ -665,7 +667,7 @@ export default function Professionnels() {
               })}
             </div>
           ) : (
-            <p className="text-center text-muted-foreground py-12">Aucune offre disponible pour le moment.</p>
+            <p className="text-center text-muted-foreground py-12">{t("professionals.noOffers")}</p>
           )}
         </div>
       </section>
@@ -677,23 +679,23 @@ export default function Professionnels() {
           <div className="max-w-2xl mx-auto space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-secondary/20 text-secondary text-sm font-semibold mx-auto">
               <Compass className="w-4 h-4" />
-              Conseil personnalisé
+              {t("professionals.adviceBadge")}
             </div>
             <h2 className="text-4xl font-bold text-white">
-              Un conseiller dédié pour vous accompagner
+              {t("professionals.adviceTitle")}
             </h2>
             <p className="text-lg text-white/80 leading-relaxed">
-              Nos chargés d'affaires professionnels analysent votre projet et vous proposent les solutions les plus adaptées. Prenez rendez-vous dès aujourd'hui.
+              {t("professionals.adviceDescription")}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
               <Link href="/contact">
                 <Button size="lg" className="bg-secondary text-primary hover:bg-secondary/90 font-bold px-10 group">
-                  Prendre rendez-vous <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                  {t("professionals.appointment")} <ArrowUpRight className="ml-2 w-4 h-4 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </Button>
               </Link>
               <Link href="/agences">
                 <Button size="lg" variant="outline" className="text-white border-white/50 hover:bg-white/10 bg-transparent px-10">
-                  <MapPin className="mr-2 w-4 h-4" /> Trouver une agence
+                  <MapPin className="mr-2 w-4 h-4" /> {t("professionals.findAgency")}
                 </Button>
               </Link>
             </div>

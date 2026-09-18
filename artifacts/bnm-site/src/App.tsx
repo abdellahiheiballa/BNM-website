@@ -1,4 +1,5 @@
 import { Switch, Route, Router as WouterRouter } from "wouter";
+import { I18nextProvider, useTranslation } from "react-i18next";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -25,8 +26,30 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminActualiteEdit from "./pages/AdminActualiteEdit";
 import AdminOffreEdit from "./pages/AdminOffreEdit";
+import i18n from "./i18n";
+import { useEffect } from "react";
 
 const queryClient = new QueryClient();
+
+function LocaleDocument() {
+  const { i18n: activeI18n } = useTranslation();
+
+  useEffect(() => {
+    const language = activeI18n.language === "ar" ? "ar" : "fr";
+    const isArabic = language === "ar";
+
+    document.documentElement.lang = language;
+    document.documentElement.dir = isArabic ? "rtl" : "ltr";
+    document.body.dir = isArabic ? "rtl" : "ltr";
+    document.body.style.fontFamily = isArabic
+      ? '"Noto Sans Arabic", "Segoe UI", Tahoma, Arial, sans-serif'
+      : '"Inter", "Segoe UI", sans-serif';
+
+    window.localStorage.setItem("bnm-language-v1", language);
+  }, [activeI18n, activeI18n.language]);
+
+  return null;
+}
 
 function AdminRoute({ component: Component }: { component: React.ComponentType }) {
   const { user, isLoading } = useAuth();
@@ -70,16 +93,19 @@ function Router() {
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <AuthProvider>
-          <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-            <Router />
-          </WouterRouter>
-          <Toaster />
-        </AuthProvider>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <I18nextProvider i18n={i18n}>
+      <LocaleDocument />
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <AuthProvider>
+            <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+              <Router />
+            </WouterRouter>
+            <Toaster />
+          </AuthProvider>
+        </TooltipProvider>
+      </QueryClientProvider>
+    </I18nextProvider>
   );
 }
 

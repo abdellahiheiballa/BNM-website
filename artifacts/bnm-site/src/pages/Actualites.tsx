@@ -5,10 +5,17 @@ import { Button } from "@/components/ui/button";
 import { Link, useSearch } from "wouter";
 import { Calendar, ChevronRight } from "lucide-react";
 import { useState } from "react";
-
-const CATEGORIES = ["Toutes", "Banque", "Economie", "Evènements", "Communiqués"];
+import { useTranslation } from "react-i18next";
 
 export default function Actualites() {
+  const { t, i18n } = useTranslation();
+  const categories = [
+    { value: "Toutes", label: t("news.all") },
+    { value: "Banque", label: t("news.bank") },
+    { value: "Economie", label: t("news.economy") },
+    { value: "Evènements", label: t("news.events") },
+    { value: "Communiqués", label: t("news.releases") },
+  ];
   const [selectedCategory, setSelectedCategory] = useState("Toutes");
   const { data: actualitesResponse, isLoading } = useListActualites(
     selectedCategory !== "Toutes" ? { categorie: selectedCategory } : {}
@@ -19,9 +26,9 @@ export default function Actualites() {
       {/* Header */}
       <section className="bg-primary py-16 text-white">
         <div className="container mx-auto px-4">
-          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">Actualités</h1>
+          <h1 className="text-4xl md:text-5xl font-serif font-bold mb-4">{t("news.title")}</h1>
           <p className="text-lg text-white/80 max-w-2xl">
-            Retrouvez toutes les nouveautés, communiqués de presse et informations financières de la Banque Nationale de Mauritanie.
+            {t("news.description")}
           </p>
         </div>
       </section>
@@ -32,18 +39,18 @@ export default function Actualites() {
           {/* Category Filter */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
             <div className="flex flex-wrap gap-2 pb-0 sm:pb-4 border-b sm:border-b-0 sm:mb-0">
-              {CATEGORIES.map((cat) => (
+              {categories.map((cat) => (
                 <Button
-                  key={cat}
-                  variant={selectedCategory === cat ? "default" : "outline"}
+                  key={cat.value}
+                  variant={selectedCategory === cat.value ? "default" : "outline"}
                   className={`rounded-none ${
-                    selectedCategory === cat
+                    selectedCategory === cat.value
                       ? "bg-secondary text-primary hover:bg-secondary/90"
                       : "text-primary border-primary/20 hover:bg-primary/5 hover:text-primary"
                   }`}
-                  onClick={() => setSelectedCategory(cat)}
+                  onClick={() => setSelectedCategory(cat.value)}
                 >
-                  {cat}
+                  {cat.label}
                 </Button>
               ))}
             </div>
@@ -74,13 +81,13 @@ export default function Actualites() {
                       />
                     )}
                     <div className="absolute top-4 left-4 bg-secondary text-primary text-xs font-bold px-3 py-1 uppercase tracking-wider">
-                      {actu.categorie || "Actualité"}
+                      {actu.categorie || t("news.categoryFallback")}
                     </div>
                   </div>
                   <CardContent className="p-6 flex-1 flex flex-col">
                     <div className="flex items-center text-sm text-muted-foreground mb-4">
                       <Calendar className="w-4 h-4 mr-2" />
-                      {new Date(actu.datePublication).toLocaleDateString('fr-FR', {
+                      {new Date(actu.datePublication).toLocaleDateString(i18n.language, {
                         day: 'numeric', month: 'long', year: 'numeric'
                       })}
                     </div>
@@ -92,7 +99,7 @@ export default function Actualites() {
                     </p>
                     <Link href={`/actualites/${actu.id}`}>
                       <Button variant="link" className="p-0 h-auto text-primary font-semibold hover:text-secondary group/btn justify-start">
-                        Lire l'article <ChevronRight className="ml-1 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
+                        {t("news.readArticle")} <ChevronRight className="ml-1 w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                       </Button>
                     </Link>
                   </CardContent>
@@ -101,14 +108,14 @@ export default function Actualites() {
             </div>
           ) : (
             <div className="text-center py-20 bg-background border">
-              <h3 className="text-xl font-medium text-primary mb-2">Aucune actualité trouvée</h3>
-              <p className="text-muted-foreground">Il n'y a pas d'articles dans cette catégorie pour le moment.</p>
+              <h3 className="text-xl font-medium text-primary mb-2">{t("news.emptyTitle")}</h3>
+              <p className="text-muted-foreground">{t("news.emptyDescription")}</p>
               <Button 
                 variant="outline" 
                 className="mt-6 rounded-none text-primary"
                 onClick={() => setSelectedCategory("Toutes")}
               >
-                Voir toutes les actualités
+                {t("news.showAll")}
               </Button>
             </div>
           )}
