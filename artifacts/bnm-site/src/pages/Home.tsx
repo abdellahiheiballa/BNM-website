@@ -56,7 +56,7 @@ export default function Home() {
               {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-32 w-full" />)}
             </div>
           ) : stats ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x border rounded-lg bg-background shadow-sm">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-8 divide-x border rounded-lg bg-background shadow-sm">
               <div className="p-8 text-center space-y-2">
                 <Bot className="w-8 h-8 mx-auto text-secondary mb-4" />
                 <div className="text-2xl font-bold text-primary">{t("home.aiChat")}</div>
@@ -69,11 +69,6 @@ export default function Home() {
                 >
                   {t("home.whatsapp")}
                 </a>
-              </div>
-              <div className="p-8 text-center space-y-2">
-                <Building2 className="w-8 h-8 mx-auto text-secondary mb-4" />
-                <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalAgences)}</div>
-                <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.agencies")}</div>
               </div>
               <div className="p-8 text-center space-y-2">
                 <Calendar className="w-8 h-8 mx-auto text-secondary mb-4" />
