@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { useLocation } from "wouter";
 import { useSimulateClassic, useSimulateMurabaha } from "@workspace/api-client-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,10 +9,10 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
 import { Calculator, Plus, Minus, ArrowRight } from "lucide-react";
-import { useTranslation } from "react-i18next";
 
 export default function Simulateur() {
   const { t, i18n } = useTranslation();
+  const [, navigate] = useLocation();
   const [tab, setTab] = useState("classic");
 
   const [classicMontant, setClassicMontant] = useState(3672000);
@@ -275,7 +277,7 @@ export default function Simulateur() {
                           </div>
                         </div>
 
-                        <Button className="w-full bg-white text-primary hover:bg-gray-100 font-bold mt-8 rounded-none group">
+                        <Button className="w-full bg-white text-primary hover:bg-gray-100 font-bold mt-8 rounded-none group" onClick={() => navigate("/contact")}>
                           {t("simulator.requestCredit")} <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Button>
                       </div>
@@ -401,7 +403,7 @@ export default function Simulateur() {
                           {t("simulator.murabahaNote")}
                         </div>
 
-                        <Button className="w-full bg-white text-primary hover:bg-gray-100 font-bold mt-6 rounded-none group">
+                        <Button className="w-full bg-white text-primary hover:bg-gray-100 font-bold mt-6 rounded-none group" onClick={() => navigate("/contact")}>
                           {t("simulator.requestFinancing")} <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                         </Button>
                       </div>
