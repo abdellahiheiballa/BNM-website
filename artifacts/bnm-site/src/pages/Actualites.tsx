@@ -18,7 +18,7 @@ export default function Actualites() {
   ];
   const [selectedCategory, setSelectedCategory] = useState("Toutes");
   const { data: actualitesResponse, isLoading } = useListActualites(
-    selectedCategory !== "Toutes" ? { categorie: selectedCategory } : {}
+    selectedCategory !== "Toutes" ? { categorie: selectedCategory, lang: i18n.language } : { lang: i18n.language }
   );
 
   return (

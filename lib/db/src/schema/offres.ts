@@ -6,8 +6,12 @@ export const offresTable = pgTable("offres" , {
 
   id: serial("id").primaryKey(),
   titre: varchar("titre", { length: 200 }).notNull(),
+  titre_fr: varchar("titre_fr", { length: 200 }),
+  titre_ar: varchar("titre_ar", { length: 200 }),
   slug: varchar("slug", { length: 200 }).unique().notNull(),
   description: text("description"),
+  description_fr: text("description_fr"),
+  description_ar: text("description_ar"),
   image: varchar("image", { length: 500 }),
   icone: varchar("icone", { length: 100 }),
   clickByBnm: boolean("click_by_bnm").default(false).notNull(),

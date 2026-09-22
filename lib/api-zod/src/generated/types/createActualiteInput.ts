@@ -10,8 +10,14 @@ export interface CreateActualiteInput {
   /** @maxLength 200 */
   titre: string;
   /** @maxLength 200 */
+  titre_fr?: string | null;
+  /** @maxLength 200 */
+  titre_ar?: string | null;
+  /** @maxLength 200 */
   slug: string;
   contenu: string;
+  contenu_fr?: string | null;
+  contenu_ar?: string | null;
   image?: string | null;
   /** @maxLength 100 */
   categorie?: string | null;

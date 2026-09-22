@@ -11,8 +11,14 @@ export interface CreateOffreInput {
   /** @maxLength 200 */
   titre: string;
   /** @maxLength 200 */
+  titre_fr?: string | null;
+  /** @maxLength 200 */
+  titre_ar?: string | null;
+  /** @maxLength 200 */
   slug: string;
   description?: string | null;
+  description_fr?: string | null;
+  description_ar?: string | null;
   image?: string | null;
   /** @maxLength 100 */
   icone?: string | null;

@@ -22,12 +22,17 @@ import { Alert } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import ImageUploadField from "@/components/admin/ImageUploadField";
+import { useTranslation } from "react-i18next";
 
 type FormState = {
   titre: string;
+  titre_fr: string;
+  titre_ar: string;
   slug: string;
   categorie: (typeof OffreCategorie)[keyof typeof OffreCategorie];
   description: string;
+  description_fr: string;
+  description_ar: string;
   image: string;
   icone: string;
   clickByBnm: boolean;
@@ -51,15 +56,20 @@ function defaultClickByBnm(titre: string, slug: string) {
 }
 
 export default function AdminOffreEdit() {
+  const { t } = useTranslation();
   const params = useParams();
   const id = params.id ? Number(params.id) : null;
   const isEdit = !!id;
   const { user } = useAuth();
   const [form, setForm] = useState<FormState>({
     titre: "",
+    titre_fr: "",
+    titre_ar: "",
     slug: "",
     categorie: "particuliers",
     description: "",
+    description_fr: "",
+    description_ar: "",
     image: "",
     icone: "",
     clickByBnm: false,
@@ -76,11 +86,11 @@ export default function AdminOffreEdit() {
   const createMutation = useAdminCreateOffre({
     mutation: {
       onSuccess: () => {
-        toast({ title: "Offre créée" });
+        toast({ title: t("admin.offersCreated") });
         navigate("/admin");
       },
       onError: (err: any) => {
-        setClientError(err?.message || "Erreur lors de la création");
+        setClientError(err?.message || t("admin.errorCreating"));
       },
     },
   });
@@ -88,11 +98,11 @@ export default function AdminOffreEdit() {
   const updateMutation = useAdminUpdateOffre({
     mutation: {
       onSuccess: () => {
-        toast({ title: "Offre mise à jour" });
+        toast({ title: t("admin.offersUpdated") });
         navigate("/admin");
       },
       onError: (err: any) => {
-        setClientError(err?.message || "Erreur lors de la mise à jour");
+        setClientError(err?.message || t("admin.errorUpdating"));
       },
     },
   });
@@ -101,9 +111,13 @@ export default function AdminOffreEdit() {
     if (isEdit && existingOffre) {
       setForm({
         titre: existingOffre.titre,
+        titre_fr: existingOffre.titre_fr || "",
+        titre_ar: existingOffre.titre_ar || "",
         slug: existingOffre.slug,
         categorie: existingOffre.categorie,
         description: existingOffre.description || "",
+        description_fr: existingOffre.description_fr || "",
+        description_ar: existingOffre.description_ar || "",
         image: existingOffre.image || "",
         icone: existingOffre.icone || "",
         clickByBnm: existingOffre.clickByBnm,
@@ -113,12 +127,12 @@ export default function AdminOffreEdit() {
   }, [isEdit, existingOffre]);
 
   const validate = () => {
-    if (!form.titre.trim()) return "Le titre est obligatoire.";
-    if (!form.slug.trim()) return "Le slug est obligatoire.";
-    if (!categories.includes(form.categorie)) return "La catégorie est invalide.";
-    if (!form.description.trim()) return "La description est obligatoire.";
-    if (form.description.trim().length < 20) return "La description semble trop courte.";
-    if (!/^\d+$/.test(form.ordre)) return "L'ordre doit être un nombre entier.";
+    if (!form.titre.trim()) return t("admin.titleRequired");
+    if (!form.slug.trim()) return t("admin.slugRequired");
+    if (!categories.includes(form.categorie)) return t("admin.invalidCategory");
+    if (!form.description.trim()) return t("admin.descriptionRequired");
+    if (form.description.trim().length < 20) return t("admin.descriptionTooShort");
+    if (!/^\d+$/.test(form.ordre)) return t("admin.orderRequired");
     return null;
   };
 
@@ -129,14 +143,18 @@ export default function AdminOffreEdit() {
     const err = validate();
     if (err) {
       setClientError(err);
-      toast({ title: "Vérifiez le formulaire", description: err });
+      toast({ title: t("admin.formError"), description: err });
       return;
     }
 
     const payload: UpdateOffreInput = {
       titre: form.titre.trim(),
+      titre_fr: form.titre_fr.trim() || null,
+      titre_ar: form.titre_ar.trim() || null,
       slug: form.slug.trim(),
       description: form.description.trim(),
+      description_fr: form.description_fr.trim() || null,
+      description_ar: form.description_ar.trim() || null,
       image: form.image.trim() ? form.image.trim() : null,
       icone: form.icone.trim() ? form.icone.trim() : null,
       clickByBnm: form.clickByBnm,
@@ -159,9 +177,9 @@ export default function AdminOffreEdit() {
         <section className="bg-primary py-10 text-white">
           <div className="container mx-auto px-4">
             <Link href="/admin" className="inline-flex items-center gap-2 text-white/90 hover:text-white mb-4">
-              <ArrowLeft className="w-4 h-4" /> Retour au tableau de bord
+              <ArrowLeft className="w-4 h-4" /> {t("admin.backToDashboard")}
             </Link>
-            <h1 className="text-3xl font-serif font-bold">Chargement...</h1>
+            <h1 className="text-3xl font-serif font-bold">{t("admin.loading")}</h1>
           </div>
         </section>
         <section className="py-8">
@@ -185,10 +203,10 @@ export default function AdminOffreEdit() {
       <section className="bg-primary py-10 text-white">
         <div className="container mx-auto px-4">
           <Link href="/admin" className="inline-flex items-center gap-2 text-white/90 hover:text-white mb-4">
-            <ArrowLeft className="w-4 h-4" /> Retour au tableau de bord
+            <ArrowLeft className="w-4 h-4" /> {t("admin.backToDashboard")}
           </Link>
           <h1 className="text-3xl font-serif font-bold">
-            {isEdit ? "Modifier l'offre" : "Nouvelle offre"}
+            {isEdit ? t("admin.offersEdited") : t("admin.offersNew")}
           </h1>
         </div>
       </section>
@@ -198,7 +216,7 @@ export default function AdminOffreEdit() {
           <Card className="rounded-none border-none shadow-sm">
             <CardHeader>
               <CardTitle className="text-2xl text-primary">
-                {isEdit ? "Modifier" : "Créer"} une offre
+                {isEdit ? t("admin.edit") : t("admin.create")} {t("admin.anOffer")}
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -210,7 +228,7 @@ export default function AdminOffreEdit() {
 
               <form onSubmit={onSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
-                  <Label className="font-semibold">Titre</Label>
+                  <Label className="font-semibold">{t("admin.offerTitle")}</Label>
                   <Input
                     className="rounded-none mt-2"
                     value={form.titre}
@@ -228,7 +246,27 @@ export default function AdminOffreEdit() {
                 </div>
 
                 <div>
-                  <Label className="font-semibold">Slug</Label>
+                  <Label className="font-semibold">{t("admin.offerTitreFr")}</Label>
+                  <Input
+                    className="rounded-none mt-2"
+                    value={form.titre_fr}
+                    onChange={(e) => setForm((s) => ({ ...s, titre_fr: e.target.value }))}
+                    placeholder={t("admin.optional")}
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-semibold">{t("admin.offerTitreAr")}</Label>
+                  <Input
+                    className="rounded-none mt-2"
+                    value={form.titre_ar}
+                    onChange={(e) => setForm((s) => ({ ...s, titre_ar: e.target.value }))}
+                    placeholder={t("admin.optional")}
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-semibold">{t("admin.offerSlug")}</Label>
                   <Input
                     className="rounded-none mt-2"
                     value={form.slug}
@@ -238,7 +276,7 @@ export default function AdminOffreEdit() {
                 </div>
 
                 <div>
-                  <Label className="font-semibold">Catégorie</Label>
+                  <Label className="font-semibold">{t("admin.offerCategorie")}</Label>
                   <Select
                     value={form.categorie}
                     onValueChange={(v) => setForm((s) => ({ ...s, categorie: v as FormState["categorie"] }))}
@@ -257,7 +295,7 @@ export default function AdminOffreEdit() {
                 </div>
 
                 <div>
-                  <Label className="font-semibold">Ordre d'affichage</Label>
+                  <Label className="font-semibold">{t("admin.offerOrdre")}</Label>
                   <Input
                     type="number"
                     className="rounded-none mt-2"
@@ -267,7 +305,7 @@ export default function AdminOffreEdit() {
                 </div>
 
                 <div>
-                  <Label className="font-semibold">Icône / identifiant court</Label>
+                  <Label className="font-semibold">{t("admin.offerIconde")}</Label>
                   <Input
                     className="rounded-none mt-2"
                     value={form.icone}
@@ -277,7 +315,7 @@ export default function AdminOffreEdit() {
                 </div>
 
                 <div className="md:col-span-2">
-                  <Label className="font-semibold">Description</Label>
+                  <Label className="font-semibold">{t("admin.offerDescription")}</Label>
                   <Textarea
                     className="rounded-none mt-2 min-h-32"
                     value={form.description}
@@ -287,11 +325,29 @@ export default function AdminOffreEdit() {
                 </div>
 
                 <div className="md:col-span-2">
+                  <Label className="font-semibold">{t("admin.offerDescriptionFr")}</Label>
+                  <Textarea
+                    className="rounded-none mt-2 min-h-32"
+                    value={form.description_fr}
+                    onChange={(e) => setForm((s) => ({ ...s, description_fr: e.target.value }))}
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <Label className="font-semibold">{t("admin.offerDescriptionAr")}</Label>
+                  <Textarea
+                    className="rounded-none mt-2 min-h-32"
+                    value={form.description_ar}
+                    onChange={(e) => setForm((s) => ({ ...s, description_ar: e.target.value }))}
+                  />
+                </div>
+
+                <div className="md:col-span-2">
                   <ImageUploadField
-                    label="Image / document de l'offre"
+                    label={t("admin.offerImage")}
                     value={form.image}
                     onChange={(image) => setForm((s) => ({ ...s, image }))}
-                    placeholder="URL ou téléverser un fichier"
+                    placeholder={t("admin.uploadPlaceholder")}
                   />
                 </div>
 
@@ -302,16 +358,16 @@ export default function AdminOffreEdit() {
                     onCheckedChange={(checked) => setForm((s) => ({ ...s, clickByBnm: checked === true }))}
                   />
                   <Label htmlFor="clickByBnm" className="cursor-pointer">
-                    Liaison automatique avec Click by BNM (portefeuille mobile)
+                    {t("admin.offerClickByBnm")}
                   </Label>
                 </div>
 
                 <div className="md:col-span-2 flex flex-col sm:flex-row gap-3 sm:justify-end">
                   <Button type="button" variant="outline" className="rounded-none" onClick={() => navigate("/admin")}>
-                    Annuler
+                    {t("admin.cancel")}
                   </Button>
                   <Button type="submit" className="rounded-none" disabled={createMutation.isPending || updateMutation.isPending}>
-                    {isEdit ? "Mettre à jour" : "Créer"} <ArrowRight className="ml-2 w-4 h-4" />
+                    {isEdit ? t("admin.edit") : t("admin.create")} <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </div>
               </form>

@@ -1,11 +1,7 @@
 import { Router } from "express";
 import { db, actualitesTable } from "@workspace/db";
 import { eq, desc, count } from "drizzle-orm";
-import {
-  ListActualitesQueryParams,
-  GetActualiteParams,
-  CreateActualiteBody,
-} from "@workspace/api-zod";
+import { ListActualitesQueryParams, GetActualiteParams, CreateActualiteBody, } from "@workspace/api-zod";
 
 
 const router = Router();
@@ -15,7 +11,7 @@ router.get("/actualites", async (req, res) => {
   if (!parsed.success) {
     return res.status(422).json({ error: "Invalid query parameters" });
   }
-  const { categorie, limit = 10, offset = 0 } = parsed.data;
+  const { categorie, limit = 10, offset = 0, lang = "fr" } = parsed.data;
 
   const where = categorie ? eq(actualitesTable.categorie, categorie) : undefined;
 
@@ -31,9 +27,13 @@ router.get("/actualites", async (req, res) => {
   return res.json({
     data: rows.map((r) => ({
       id: r.id,
-      titre: r.titre,
+      titre: lang === "ar" ? r.titre_ar || r.titre : lang === "fr" ? r.titre_fr || r.titre : r.titre,
+      titre_fr: r.titre_fr ?? null,
+      titre_ar: r.titre_ar ?? null,
       slug: r.slug,
-      contenu: r.contenu,
+      contenu: lang === "ar" ? r.contenu_ar || r.contenu : lang === "fr" ? r.contenu_fr || r.contenu : r.contenu,
+      contenu_fr: r.contenu_fr ?? null,
+      contenu_ar: r.contenu_ar ?? null,
       image: r.image ?? null,
       categorie: r.categorie ?? null,
       datePublication: r.datePublication.toISOString(),
@@ -45,6 +45,7 @@ router.get("/actualites", async (req, res) => {
 
 router.get("/actualites/:id", async (req, res) => {
   const parsed = GetActualiteParams.safeParse({ id: Number(req.params.id) });
+  const lang = req.query.lang === "ar" ? "ar" : "fr";
   if (!parsed.success) {
     return res.status(422).json({ error: "Invalid id" });
   }
@@ -59,9 +60,13 @@ router.get("/actualites/:id", async (req, res) => {
 
   return res.json({
     id: row.id,
-    titre: row.titre,
+    titre: lang === "ar" ? row.titre_ar || row.titre : row.titre_fr || row.titre,
+    titre_fr: row.titre_fr ?? null,
+    titre_ar: row.titre_ar ?? null,
     slug: row.slug,
-    contenu: row.contenu,
+    contenu: lang === "ar" ? row.contenu_ar || row.contenu : row.contenu_fr || row.contenu,
+    contenu_fr: row.contenu_fr ?? null,
+    contenu_ar: row.contenu_ar ?? null,
     image: row.image ?? null,
     categorie: row.categorie ?? null,
     datePublication: row.datePublication.toISOString(),
@@ -86,8 +91,12 @@ router.post("/actualites", async (req, res) => {
       .insert(actualitesTable)
       .values({
         titre: body.titre,
+        titre_fr: body.titre_fr ?? null,
+        titre_ar: body.titre_ar ?? null,
         slug: body.slug,
         contenu: body.contenu,
+        contenu_fr: body.contenu_fr ?? null,
+        contenu_ar: body.contenu_ar ?? null,
         image: body.image ?? null,
         categorie: body.categorie ?? null,
         // CreateActualiteBody coerces to Date, but keep a defensive conversion.

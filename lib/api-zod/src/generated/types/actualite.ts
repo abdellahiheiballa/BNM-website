@@ -9,8 +9,12 @@
 export interface Actualite {
   id: number;
   titre: string;
+  titre_fr?: string | null;
+  titre_ar?: string | null;
   slug: string;
   contenu: string;
+  contenu_fr?: string | null;
+  contenu_ar?: string | null;
   image?: string | null;
   categorie?: string | null;
   datePublication: Date;

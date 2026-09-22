@@ -190,7 +190,7 @@ function OffreContent({ offre }: { offre: SubOffre }) {
 
 export default function Particuliers() {
   const { t, i18n } = useTranslation();
-  const { data: offres, isLoading } = useListOffres({ categorie: "particuliers" });
+  const { data: offres, isLoading } = useListOffres({ categorie: "particuliers", lang: i18n.language });
   const offresArray = Array.isArray(offres) ? offres : [];
 
   const sections: Section[] = useMemo(() => [

@@ -36,7 +36,7 @@ services:
       - "443:443"
     volumes:
       - ./artifacts/bnm-site/nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./ssl:/etc/nginx/ssl:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
     depends_on:
       - backend
     restart: unless-stopped

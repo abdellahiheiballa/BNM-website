@@ -14,9 +14,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useTranslation } from "react-i18next";
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
+  const { t } = useTranslation();
   const { data: stats } = useGetStats();
   const { data: actualites, refetch } = useAdminListActualites({ query: { enabled: !!user, queryKey: getAdminListActualitesQueryKey() } });
   const { data: offres } = useAdminListOffres({ query: { enabled: !!user, queryKey: getAdminListOffresQueryKey() } });
@@ -24,7 +26,7 @@ export default function AdminDashboard() {
   const deleteMutation = useAdminDeleteActualite({
     mutation: {
       onSuccess: () => {
-        toast({ title: "Actualité supprimée" });
+        toast({ title: t("admin.newsDeleted") });
         refetch();
       },
     },
@@ -32,19 +34,19 @@ export default function AdminDashboard() {
   const deleteOffreMutation = useAdminDeleteOffre({
     mutation: {
       onSuccess: () => {
-        toast({ title: "Offre supprimée" });
+        toast({ title: t("admin.offersDeleted") });
       },
     },
   });
 
   const handleDelete = (id: number) => {
-    if (confirm("Êtes-vous sûr de vouloir supprimer cette actualité ?")) {
+    if (confirm(t("admin.confirmDeleteActualite"))) {
       deleteMutation.mutate({ id });
     }
   };
 
   const handleDeleteOffre = (id: number) => {
-    if (confirm("Êtes-vous sûr de vouloir supprimer cette offre ?")) {
+    if (confirm(t("admin.confirmDeleteOffre"))) {
       deleteOffreMutation.mutate({ id });
     }
   };
@@ -56,9 +58,9 @@ export default function AdminDashboard() {
       <section className="bg-primary py-10 text-white">
         <div className="container mx-auto px-4">
           <Link href="/" className="inline-flex items-center gap-2 text-white/90 hover:text-white mb-4">
-            <ArrowLeft className="w-4 h-4" /> Retour au site
+            <ArrowLeft className="w-4 h-4" /> {t("admin.backToSite")}
           </Link>
-          <h1 className="text-3xl font-serif font-bold">Tableau de bord</h1>
+          <h1 className="text-3xl font-serif font-bold">{t("admin.title")}</h1>
         </div>
       </section>
 
@@ -68,25 +70,25 @@ export default function AdminDashboard() {
             <Card className="rounded-none">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-primary">{stats?.totalClients?.toLocaleString('fr-FR') ?? '850 000'}</div>
-                <div className="text-sm text-muted-foreground">Clients</div>
+                <div className="text-sm text-muted-foreground">{t("admin.clients")}</div>
               </CardContent>
             </Card>
             <Card className="rounded-none">
               <CardContent className="p-6 text-center">
                 <div className="text-3xl font-bold text-primary">{stats?.totalAgences ?? 8}</div>
-                <div className="text-sm text-muted-foreground">Agences</div>
+                <div className="text-sm text-muted-foreground">{t("admin.agences")}</div>
               </CardContent>
             </Card>
             <Card className="rounded-none">
               <CardContent className="p-6 text-center">
-                <div className="text-3xl font-bold text-primary">{actualites?.length ?? 0}</div>
-                <div className="text-sm text-muted-foreground">Actualités</div>
+                <div className="text-3xl font-bold text-primary">{stats?.totalActualites ?? 0}</div>
+                <div className="text-sm text-muted-foreground">{t("admin.actualites")}</div>
               </CardContent>
             </Card>
             <Card className="rounded-none">
               <CardContent className="p-6 text-center">
-                <div className="text-3xl font-bold text-primary">{offres?.length ?? 0}</div>
-                <div className="text-sm text-muted-foreground">Offres</div>
+                <div className="text-3xl font-bold text-primary">{stats?.totalOffres ?? (offres?.length ?? 0)}</div>
+                <div className="text-sm text-muted-foreground">{t("admin.offres")}</div>
               </CardContent>
             </Card>
             <Card className="rounded-none">
@@ -96,7 +98,7 @@ export default function AdminDashboard() {
                   className="rounded-none"
                   onClick={() => logout()}
                 >
-                  Déconnexion
+                  {t("admin.logout")}
                 </Button>
               </CardContent>
             </Card>
@@ -104,11 +106,11 @@ export default function AdminDashboard() {
 
           <Card className="rounded-none mb-8">
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-xl font-serif flex items-center gap-2"><Newspaper className="w-5 h-5" /> Gestion des Actualités</CardTitle>
+              <CardTitle className="text-xl font-serif flex items-center gap-2"><Newspaper className="w-5 h-5" /> {t("admin.newsTitle")}</CardTitle>
               <Link href="/admin/actualites/new">
                 <Button className="rounded-none">
                   <Plus className="w-4 h-4 mr-2" />
-                  Nouvelle actualité
+                  {t("admin.newsNew")}
                 </Button>
               </Link>
             </CardHeader>
@@ -120,15 +122,15 @@ export default function AdminDashboard() {
                   ))}
                 </div>
               ) : actualites.length === 0 ? (
-                <p className="text-muted-foreground py-8 text-center">Aucune actualité</p>
+                <p className="text-muted-foreground py-8 text-center">{t("admin.newsEmpty")}</p>
               ) : (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Titre</TableHead>
-                      <TableHead>Catégorie</TableHead>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Actions</TableHead>
+                      <TableHead>{t("admin.newsTableHeader.titre")}</TableHead>
+                      <TableHead>{t("admin.newsTableHeader.categorie")}</TableHead>
+                      <TableHead>{t("admin.newsTableHeader.date")}</TableHead>
+                      <TableHead>{t("admin.newsTableHeader.actions")}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -166,11 +168,11 @@ export default function AdminDashboard() {
 
           <Card className="rounded-none">
             <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-xl font-serif flex items-center gap-2"><CreditCard className="w-5 h-5" /> Gestion des Offres</CardTitle>
+              <CardTitle className="text-xl font-serif flex items-center gap-2"><CreditCard className="w-5 h-5" /> {t("admin.offersTitle")}</CardTitle>
               <Link href="/admin/offres/new">
                 <Button className="rounded-none">
                   <Plus className="w-4 h-4 mr-2" />
-                  Nouvelle offre
+                  {t("admin.offersNew")}
                 </Button>
               </Link>
             </CardHeader>
@@ -182,15 +184,15 @@ export default function AdminDashboard() {
                   ))}
                 </div>
               ) : offres.length === 0 ? (
-                <p className="text-muted-foreground py-8 text-center">Aucune offre</p>
+                <p className="text-muted-foreground py-8 text-center">{t("admin.offersEmpty")}</p>
               ) : (
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Titre</TableHead>
-                      <TableHead>Catégorie</TableHead>
-                      <TableHead>Click</TableHead>
-                      <TableHead>Actions</TableHead>
+                      <TableHead>{t("admin.offersTableHeader.titre")}</TableHead>
+                      <TableHead>{t("admin.offersTableHeader.categorie")}</TableHead>
+                      <TableHead>{t("admin.offersTableHeader.click")}</TableHead>
+                      <TableHead>{t("admin.offersTableHeader.actions")}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -198,7 +200,7 @@ export default function AdminDashboard() {
                       <TableRow key={offre.id}>
                         <TableCell>{offre.titre}</TableCell>
                         <TableCell>{offre.categorie}</TableCell>
-                        <TableCell>{offre.clickByBnm ? "Oui" : "Non"}</TableCell>
+                        <TableCell>{offre.clickByBnm ? t("admin.offerColumnYes") : t("admin.offerColumnNo")}</TableCell>
                         <TableCell>
                           <div className="flex gap-2">
                             <Link href={`/admin/offres/edit/${offre.id}`}>

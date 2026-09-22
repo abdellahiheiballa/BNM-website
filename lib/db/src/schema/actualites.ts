@@ -6,8 +6,12 @@ export const actualitesTable = pgTable("actualites" , {
 
   id: serial("id").primaryKey(),
   titre: varchar("titre", { length: 200 }).notNull(),
+  titre_fr: varchar("titre_fr", { length: 200 }),
+  titre_ar: varchar("titre_ar", { length: 200 }),
   slug: varchar("slug", { length: 200 }).unique().notNull(),
   contenu: text("contenu").notNull(),
+  contenu_fr: text("contenu_fr"),
+  contenu_ar: text("contenu_ar"),
   image: varchar("image", { length: 500 }),
   categorie: varchar("categorie", { length: 100 }),
   datePublication: timestamp("date_publication").defaultNow().notNull(),

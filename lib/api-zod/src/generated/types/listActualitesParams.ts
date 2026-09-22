@@ -8,6 +8,7 @@
 
 export type ListActualitesParams = {
   categorie?: string;
+  lang?: string;
   limit?: number;
   offset?: number;
 };

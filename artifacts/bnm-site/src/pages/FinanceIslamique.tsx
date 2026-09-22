@@ -7,8 +7,8 @@ import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
 
 export default function FinanceIslamique() {
-  const { t } = useTranslation();
-  const { data: offres, isLoading } = useListOffres({ categorie: "islamique" });  const offresArray = Array.isArray(offres) ? offres : [];
+  const { t, i18n } = useTranslation();
+  const { data: offres, isLoading } = useListOffres({ categorie: "islamique", lang: i18n.language });  const offresArray = Array.isArray(offres) ? offres : [];
   const heroImage = "/assets/images/Islamique.jpg.jpeg";
 
   return (

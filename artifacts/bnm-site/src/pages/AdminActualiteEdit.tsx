@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, useLocation, useParams } from "wouter";
 import { useAdminCreateActualite, useAdminGetActualite, useAdminUpdateActualite } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
@@ -11,16 +12,20 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/contexts/AuthContext";
 import { Alert } from "@/components/ui/alert";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ArrowLeft, Calendar, AlertCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Calendar, AlertCircle } from "lucide-react";
 import ImageUploadField from "@/components/admin/ImageUploadField";
 
 const CATEGORIES = ["Banque", "Economie", "Evènements", "Communiqués"] as const;
 
 type FormState = {
   titre: string;
+  titre_fr: string;
+  titre_ar: string;
   slug: string;
   categorie: (typeof CATEGORIES)[number] | "";
   contenu: string;
+  contenu_fr: string;
+  contenu_ar: string;
   image: string;
   datePublication: string;
 };
@@ -43,15 +48,21 @@ function isValidDateInput(v: string) {
 }
 
 export default function AdminActualiteEdit() {
+  const { t } = useTranslation();
+
   const params = useParams();
   const id = params.id ? Number(params.id) : null;
   const isEdit = !!id;
   const { user } = useAuth();
   const [form, setForm] = useState<FormState>({
     titre: "",
+    titre_fr: "",
+    titre_ar: "",
     slug: "",
     categorie: "",
     contenu: "",
+    contenu_fr: "",
+    contenu_ar: "",
     image: "",
     datePublication: "",
   });
@@ -63,11 +74,11 @@ export default function AdminActualiteEdit() {
   const createMutation = useAdminCreateActualite({
     mutation: {
       onSuccess: () => {
-        toast({ title: "Actualité créée" });
+        toast({ title: t("admin.newsCreated") });
         navigate("/admin");
       },
       onError: (err: any) => {
-        setClientError(err?.message || "Erreur lors de la création");
+        setClientError(err?.message || t("admin.errorCreating"));
       },
     },
   });
@@ -75,11 +86,11 @@ export default function AdminActualiteEdit() {
   const updateMutation = useAdminUpdateActualite({
     mutation: {
       onSuccess: () => {
-        toast({ title: "Actualité mise à jour" });
+        toast({ title: t("admin.newsUpdated") });
         navigate("/admin");
       },
       onError: (err: any) => {
-        setClientError(err?.message || "Erreur lors de la mise à jour");
+        setClientError(err?.message || t("admin.errorUpdating"));
       },
     },
   });
@@ -88,9 +99,13 @@ export default function AdminActualiteEdit() {
     if (isEdit && existingActu) {
       setForm({
         titre: existingActu.titre,
+        titre_fr: existingActu.titre_fr || "",
+        titre_ar: existingActu.titre_ar || "",
         slug: existingActu.slug,
         categorie: (existingActu.categorie as (typeof CATEGORIES)[number]) || "",
         contenu: existingActu.contenu,
+        contenu_fr: existingActu.contenu_fr || "",
+        contenu_ar: existingActu.contenu_ar || "",
         image: existingActu.image || "",
         datePublication: existingActu.datePublication ? existingActu.datePublication.split("T")[0] : "",
       });
@@ -102,11 +117,11 @@ export default function AdminActualiteEdit() {
     const slug = form.slug.trim();
     const contenu = form.contenu.trim();
 
-    if (!titre) return "Le titre est obligatoire.";
-    if (!slug) return "Le slug est obligatoire.";
-    if (!contenu) return "Le contenu est obligatoire.";
-    if (contenu.length < 20) return "Le contenu semble trop court (min. ~20 caractères).";
-    if (!isValidDateInput(form.datePublication)) return "La date doit être au format AAAA-MM-JJ.";
+    if (!titre) return t("admin.titleRequired");
+    if (!slug) return t("admin.slugRequired");
+    if (!contenu) return t("admin.contentRequired");
+    if (contenu.length < 20) return t("admin.contentTooShort");
+    if (!isValidDateInput(form.datePublication)) return t("admin.invalidDate");
 
     return null;
   };
@@ -118,14 +133,18 @@ export default function AdminActualiteEdit() {
     const err = validate();
     if (err) {
       setClientError(err);
-      toast({ title: "Vérifiez le formulaire", description: err });
+      toast({ title: t("admin.formError"), description: err });
       return;
     }
 
     const payload = {
       titre: form.titre.trim(),
+      titre_fr: form.titre_fr.trim() || null,
+      titre_ar: form.titre_ar.trim() || null,
       slug: form.slug.trim(),
       contenu: form.contenu.trim(),
+      contenu_fr: form.contenu_fr.trim() || null,
+      contenu_ar: form.contenu_ar.trim() || null,
       image: form.image.trim() ? form.image.trim() : null,
       categorie: form.categorie ? form.categorie : null,
       datePublication: form.datePublication
@@ -200,23 +219,23 @@ export default function AdminActualiteEdit() {
     <div className="min-h-screen bg-muted/20">
       <section className="bg-primary py-10 text-white">
         <div className="container mx-auto px-4">
-          <Link href="/admin" className="inline-flex items-center gap-2 text-white/90 hover:text-white mb-4">
-            <ArrowLeft className="w-4 h-4" /> Retour au tableau de bord
-          </Link>
-          <h1 className="text-3xl font-serif font-bold">
-            {isEdit ? "Modifier l'actualité" : "Nouvelle actualité"}
-          </h1>
-        </div>
-      </section>
+            <Link href="/admin" className="inline-flex items-center gap-2 text-white/90 hover:text-white mb-4">
+              <ArrowLeft className="w-4 h-4" /> {t("admin.backToDashboard")}
+            </Link>
+            <h1 className="text-3xl font-serif font-bold">
+              {isEdit ? t("admin.editActualite") : t("admin.newActualite")}
+            </h1>
+          </div>
+        </section>
 
-      <section className="py-8">
-        <div className="container mx-auto px-4 max-w-4xl">
-          <Card className="rounded-none border-none shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-2xl text-primary">
-                {isEdit ? "Modifier" : "Créer"} un article
-              </CardTitle>
-            </CardHeader>
+        <section className="py-8">
+          <div className="container mx-auto px-4 max-w-4xl">
+            <Card className="rounded-none border-none shadow-sm">
+              <CardHeader>
+                <CardTitle className="text-2xl text-primary">
+                  {isEdit ? t("admin.edit") : t("admin.create")} {t("admin.anArticle")}
+                </CardTitle>
+              </CardHeader>
             <CardContent>
               {clientError && (
                 <Alert variant="destructive" className="mb-6 rounded-none">
@@ -227,7 +246,7 @@ export default function AdminActualiteEdit() {
 
               <form onSubmit={onSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
-                  <Label className="font-semibold">Titre</Label>
+                  <Label className="font-semibold">{t("admin.actualiteTitle")}</Label>
                   <Input
                     className="rounded-none mt-2"
                     value={form.titre}
@@ -244,7 +263,27 @@ export default function AdminActualiteEdit() {
                 </div>
 
                 <div>
-                  <Label className="font-semibold">Slug</Label>
+                  <Label className="font-semibold">{t("admin.actualiteTitreFr")}</Label>
+                  <Input
+                    className="rounded-none mt-2"
+                    value={form.titre_fr}
+                    onChange={(e) => setForm((s) => ({ ...s, titre_fr: e.target.value }))}
+                    placeholder={t("admin.optional")}
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-semibold">{t("admin.actualiteTitreAr")}</Label>
+                  <Input
+                    className="rounded-none mt-2"
+                    value={form.titre_ar}
+                    onChange={(e) => setForm((s) => ({ ...s, titre_ar: e.target.value }))}
+                    placeholder={t("admin.optional")}
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-semibold">{t("admin.actualiteSlug")}</Label>
                   <Input
                     className="rounded-none mt-2"
                     value={form.slug}
@@ -254,16 +293,16 @@ export default function AdminActualiteEdit() {
                 </div>
 
                 <div>
-                  <Label className="font-semibold">Catégorie</Label>
+                  <Label className="font-semibold">{t("admin.actualiteCategorie")}</Label>
                   <Select
                     value={form.categorie || ""}
                     onValueChange={(v) => setForm((s) => ({ ...s, categorie: v === "" ? "" : (v as FormState["categorie"]) }))}
                   >
                     <SelectTrigger className="rounded-none mt-2">
-                      <SelectValue placeholder="Choisir" />
+                      <SelectValue placeholder={t("admin.choose")} />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="none">Aucune</SelectItem>
+                      <SelectItem value="none">{t("admin.none")}</SelectItem>
                       {CATEGORIES.map((c) => (
                         <SelectItem key={c} value={c}>
                           {c}
@@ -274,13 +313,33 @@ export default function AdminActualiteEdit() {
                 </div>
 
                 <div className="md:col-span-2">
-                  <Label className="font-semibold">Contenu</Label>
+                  <Label className="font-semibold">{t("admin.actualiteContenu")}</Label>
                   <Textarea
                     className="rounded-none mt-2"
                     value={form.contenu}
                     onChange={(e) => setForm((s) => ({ ...s, contenu: e.target.value }))}
                     required
-                    placeholder="Écrivez le contenu..."
+                    placeholder={t("admin.writeContent")}
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <Label className="font-semibold">{t("admin.actualiteContenuFr")}</Label>
+                  <Textarea
+                    className="rounded-none mt-2"
+                    value={form.contenu_fr}
+                    onChange={(e) => setForm((s) => ({ ...s, contenu_fr: e.target.value }))}
+                    placeholder={t("admin.writeContentFr")}
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <Label className="font-semibold">{t("admin.actualiteContenuAr")}</Label>
+                  <Textarea
+                    className="rounded-none mt-2"
+                    value={form.contenu_ar}
+                    onChange={(e) => setForm((s) => ({ ...s, contenu_ar: e.target.value }))}
+                    placeholder={t("admin.writeContentAr")}
                   />
                 </div>
 
@@ -294,7 +353,7 @@ export default function AdminActualiteEdit() {
 
                 <div className="md:col-span-2">
                   <Label className="font-semibold inline-flex items-center gap-2">
-                    <Calendar className="w-4 h-4" /> Date de publication
+                    <Calendar className="w-4 h-4" /> {t("admin.actualiteDate")}
                   </Label>
                   <Input
                     type="date"
@@ -306,10 +365,10 @@ export default function AdminActualiteEdit() {
 
                 <div className="md:col-span-2 flex flex-col sm:flex-row gap-3 sm:justify-end">
                   <Button type="button" variant="outline" className="rounded-none" onClick={() => navigate("/admin")}>
-                    Annuler
+                    {t("admin.cancel")}
                   </Button>
-                  <Button type="submit" className="rounded-none">
-                    {isEdit ? "Mettre à jour" : "Créer"}
+                  <Button type="submit" className="rounded-none" disabled={createMutation.isPending || updateMutation.isPending}>
+                    {isEdit ? t("admin.update") : t("admin.create")} <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </div>
               </form>

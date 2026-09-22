@@ -307,22 +307,26 @@ export const useCreateActualite = <
 /**
  * @summary Get a single news article
  */
-export const getGetActualiteUrl = (id: number) => {
-  return `/api/actualites/${id}`;
+export const getGetActualiteUrl = (id: number, lang?: string) => {
+  const params = new URLSearchParams();
+  if (lang) params.set("lang", lang);
+  const qs = params.toString();
+  return `/api/actualites/${id}${qs ? `?${qs}` : ""}`;
 };
 
 export const getActualite = async (
   id: number,
   options?: RequestInit,
+  lang?: string,
 ): Promise<Actualite> => {
-  return customFetch<Actualite>(getGetActualiteUrl(id), {
+  return customFetch<Actualite>(getGetActualiteUrl(id, lang), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetActualiteQueryKey = (id: number) => {
-  return [`/api/actualites/${id}`] as const;
+export const getGetActualiteQueryKey = (id: number, lang?: string) => {
+  return [`/api/actualites/${id}`, lang] as const;
 };
 
 export const getGetActualiteQueryOptions = <
@@ -330,6 +334,7 @@ export const getGetActualiteQueryOptions = <
   TError = ErrorType<void>,
 >(
   id: number,
+  lang?: string,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getActualite>>,
@@ -341,11 +346,11 @@ export const getGetActualiteQueryOptions = <
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetActualiteQueryKey(id);
+  const queryKey = queryOptions?.queryKey ?? getGetActualiteQueryKey(id, lang);
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getActualite>>> = ({
     signal,
-  }) => getActualite(id, { signal, ...requestOptions });
+  }) => getActualite(id, { signal, ...requestOptions }, lang);
 
   return {
     queryKey,
@@ -373,6 +378,7 @@ export function useGetActualite<
   TError = ErrorType<void>,
 >(
   id: number,
+  lang?: string,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getActualite>>,
@@ -382,7 +388,7 @@ export function useGetActualite<
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetActualiteQueryOptions(id, options);
+  const queryOptions = getGetActualiteQueryOptions(id, lang, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

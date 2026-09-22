@@ -11,4 +11,5 @@ export interface Stats {
   totalAgences: number;
   anneesExperience: number;
   totalActualites: number;
+  totalOffres: number;
 }

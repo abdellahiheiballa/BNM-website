@@ -419,8 +419,8 @@ function OffreContent({ offre }: { offre: SubOffre }) {
 }
 
 export default function Professionnels() {
-  const { t } = useTranslation();
-  const { data: offres, isLoading } = useListOffres({ categorie: "professionnels" });
+  const { t, i18n } = useTranslation();
+  const { data: offres, isLoading } = useListOffres({ categorie: "professionnels", lang: i18n.language });
   const offresArray = Array.isArray(offres) ? offres : [];
   const [activeSection, setActiveSection] = useState<string>(sections[0].id);
   const [activeSubOffre, setActiveSubOffre] = useState<string>(sections[0].subOffres[0].id);

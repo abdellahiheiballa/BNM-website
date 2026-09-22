@@ -10,11 +10,11 @@ export default function ActualiteDetail() {
   const { t, i18n } = useTranslation();
   const params = useParams();
   const id = parseInt(params.id || "0", 10);
-  const { data: actu, isLoading, error } = useGetActualite(id, {
+  const currentLang = i18n.language;
+  const { data: actu, isLoading, error } = useGetActualite(id, currentLang, {
     query: {
       enabled: !!id,
-      queryKey: ["/api/actualites", id],
-
+      queryKey: ["/api/actualites", id, currentLang],
     },
   });
 

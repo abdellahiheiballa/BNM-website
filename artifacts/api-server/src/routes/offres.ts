@@ -11,7 +11,7 @@ router.get("/offres", async (req, res) => {
     return res.status(422).json({ error: "Invalid query parameters" });
   }
 
-  const { categorie } = parsed.data;
+  const { categorie, lang = "fr" } = parsed.data;
   const where = categorie ? eq(offresTable.categorie, categorie) : undefined;
 
   const rows = await db.select().from(offresTable)
@@ -20,9 +20,13 @@ router.get("/offres", async (req, res) => {
 
   return res.json(rows.map((r) => ({
     id: r.id,
-    titre: r.titre,
+    titre: lang === "ar" ? r.titre_ar || r.titre : r.titre_fr || r.titre,
+    titre_fr: r.titre_fr ?? null,
+    titre_ar: r.titre_ar ?? null,
     slug: r.slug,
-    description: r.description ?? null,
+    description: lang === "ar" ? r.description_ar || r.description : r.description_fr || r.description,
+    description_fr: r.description_fr ?? null,
+    description_ar: r.description_ar ?? null,
     image: r.image ?? null,
     icone: r.icone ?? null,
     clickByBnm: r.clickByBnm,

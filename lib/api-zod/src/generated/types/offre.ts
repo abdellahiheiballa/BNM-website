@@ -10,8 +10,12 @@ import type { OffreCategorie } from "./offreCategorie";
 export interface Offre {
   id: number;
   titre: string;
+  titre_fr?: string | null;
+  titre_ar?: string | null;
   slug: string;
   description?: string | null;
+  description_fr?: string | null;
+  description_ar?: string | null;
   image?: string | null;
   icone?: string | null;
   clickByBnm: boolean;

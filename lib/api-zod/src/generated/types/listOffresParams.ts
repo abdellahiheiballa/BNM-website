@@ -9,4 +9,5 @@ import type { ListOffresCategorie } from "./listOffresCategorie";
 
 export type ListOffresParams = {
   categorie?: ListOffresCategorie;
+  lang?: string;
 };

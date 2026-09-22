@@ -8,10 +8,10 @@ import { useTranslation } from "react-i18next";
 import { formatDate, formatNumber } from "@/i18n";
 
 export default function Home() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { data: stats, isLoading: statsLoading } = useGetStats();
-  const { data: offres, isLoading: offresLoading } = useListOffres();
-  const { data: actualites, isLoading: actualitesLoading } = useListActualites({ limit: 3 });
+  const { data: offres, isLoading: offresLoading } = useListOffres({ lang: i18n.language });
+  const { data: actualites, isLoading: actualitesLoading } = useListActualites({ limit: 3, lang: i18n.language });
 
   const heroImage = "/assets/images/min-h-screen.jpg";
 

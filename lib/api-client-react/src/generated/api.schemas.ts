@@ -12,8 +12,12 @@ export interface HealthStatus {
 export interface Actualite {
   id: number;
   titre: string;
+  titre_fr?: string | null;
+  titre_ar?: string | null;
   slug: string;
   contenu: string;
+  contenu_fr?: string | null;
+  contenu_ar?: string | null;
   image?: string | null;
   categorie?: string | null;
   datePublication: string;
@@ -24,8 +28,14 @@ export interface CreateActualiteInput {
   /** @maxLength 200 */
   titre: string;
   /** @maxLength 200 */
+  titre_fr?: string | null;
+  /** @maxLength 200 */
+  titre_ar?: string | null;
+  /** @maxLength 200 */
   slug: string;
   contenu: string;
+  contenu_fr?: string | null;
+  contenu_ar?: string | null;
   image?: string | null;
   /** @maxLength 100 */
   categorie?: string | null;
@@ -45,8 +55,12 @@ export const OffreCategorie = {
 export interface Offre {
   id: number;
   titre: string;
+  titre_fr?: string | null;
+  titre_ar?: string | null;
   slug: string;
   description?: string | null;
+  description_fr?: string | null;
+  description_ar?: string | null;
   image?: string | null;
   icone?: string | null;
   clickByBnm: boolean;
@@ -68,8 +82,14 @@ export interface CreateOffreInput {
   /** @maxLength 200 */
   titre: string;
   /** @maxLength 200 */
+  titre_fr?: string | null;
+  /** @maxLength 200 */
+  titre_ar?: string | null;
+  /** @maxLength 200 */
   slug: string;
   description?: string | null;
+  description_fr?: string | null;
+  description_ar?: string | null;
   image?: string | null;
   /** @maxLength 100 */
   icone?: string | null;
@@ -92,8 +112,14 @@ export interface UpdateOffreInput {
   /** @maxLength 200 */
   titre?: string;
   /** @maxLength 200 */
+  titre_fr?: string | null;
+  /** @maxLength 200 */
+  titre_ar?: string | null;
+  /** @maxLength 200 */
   slug?: string;
   description?: string | null;
+  description_fr?: string | null;
+  description_ar?: string | null;
   image?: string | null;
   /** @maxLength 100 */
   icone?: string | null;
@@ -238,6 +264,7 @@ export interface Stats {
   totalAgences: number;
   anneesExperience: number;
   totalActualites: number;
+  totalOffres: number;
 }
 
 export interface AdminLoginInput {
@@ -264,6 +291,7 @@ export interface SuccessResponse {
 
 export type ListActualitesParams = {
   categorie?: string;
+  lang?: string;
   limit?: number;
   offset?: number;
 };
@@ -275,6 +303,7 @@ export type ListActualites200 = {
 
 export type ListOffresParams = {
   categorie?: ListOffresCategorie;
+  lang?: string;
 };
 
 export type ListOffresCategorie =
