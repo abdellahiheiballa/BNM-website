@@ -1,33 +1,33 @@
 # BNM Website i18n TODO
 
-**Languages:** French (`fr`) and Arabic (`ar`)  
+**Languages:** French (`fr`), Arabic (`ar`), and English (`en`)  
 **Default language:** French  
-**Direction:** French `ltr`, Arabic `rtl`  
+**Direction:** French `ltr`, Arabic `rtl`, English `ltr`  
 **Scope:** Public website, admin area, API-driven content, validation messages, metadata, and shared layout
 
 ## Definition of done
 
-- [ ] Every visible user-facing string is translated in French and Arabic.
+- [ ] Every visible user-facing string is translated in French, Arabic, and English.
 - [ ] Language selection persists across refreshes and navigation.
-- [ ] Arabic switches the document direction to `rtl`; French switches it to `ltr`.
+- [ ] Arabic switches the document direction to `rtl`; French and English switch it to `ltr`.
 - [ ] Layouts, tables, forms, maps, charts, icons, drawers, dialogs, and pagination work in both directions.
 - [ ] Dates, numbers, currencies, pluralization, validation messages, loading states, empty states, and API errors use the active locale.
 - [ ] Dynamic article and offer content has a defined translation policy: translated fields, fallback language, or explicitly marked untranslated content.
 - [ ] Browser title, description, Open Graph metadata, accessible labels, and image alt text are localized.
 - [ ] Automated tests cover language switching, persistence, RTL, route navigation, and representative forms.
-- [ ] French and Arabic builds pass typecheck and production build.
+- [ ] French, Arabic, and English builds pass typecheck and production build.
 
 ## Foundation and architecture
 
 - [x] Choose and lock `i18next` + `react-i18next` as the frontend i18n library.
-- [x] Create `src/i18n/` with French and Arabic locale resources.
+- [x] Create `src/i18n/` with French, Arabic, and English locale resources.
 - [x] Create translation namespaces: `common`, `navigation`, `home`, `products`, `news`, `forms`, `contact`, `agencies`, `simulator`, `admin`, `errors`, `accessibility`, and `metadata`.
 - [x] Add typed i18next resource declarations so translation keys are checked during development.
 - [x] Add `I18nextProvider` and locale synchronization at the application root.
-- [x] Detect the saved language and default to French when no Arabic preference exists.
+- [x] Detect the saved language and default to French when no Arabic/English preference exists.
 - [x] Persist the active language in `localStorage` using the versioned `bnm-language-v1` key.
 - [x] Update `<html lang>` and `<html dir>` whenever the language changes.
-- [x] Add an accessible desktop language switcher with `Français` and `العربية`, current-state indication, and keyboard support.
+- [x] Add an accessible desktop language switcher with `Français`, `English`, and `العربية`, current-state indication, and keyboard support.
 - [x] Ensure language changes do not reset form state or lose the current route.
 - [x] Add locale helpers for `Intl.NumberFormat`, `Intl.DateTimeFormat`, currency, and pluralization.
 - [x] Define Arabic font and typography requirements; verify Arabic glyph coverage and line height.
@@ -45,7 +45,7 @@
 - [x] Translate the bank tagline.
 - [x] Translate mobile menu labels and add mobile language controls.
 - [x] Mirror menu alignment, spacing, icons, and active states in RTL.
-- [x] Localize language switcher labels and selected state.
+- [x] Localize language switcher labels and selected state (French, English, Arabic).
 
 ### Footer: `src/components/layout/Footer.tsx`
 
@@ -211,13 +211,14 @@
 
 - [ ] Test every route in French at desktop, tablet, and mobile widths.
 - [ ] Test every route in Arabic at desktop, tablet, and mobile widths.
+- [ ] Test every route in English at desktop, tablet, and mobile widths.
 - [ ] Test direct navigation, refresh, back/forward, protected admin routes, and deep links.
 - [ ] Test language persistence after refresh and logout/login.
 - [ ] Test forms, uploads, validation, toasts, dialogs, maps, tables, sliders, and API errors in both locales.
 - [ ] Check screenshots for overflow, clipped Arabic text, incorrect alignment, and mirrored icons.
 - [ ] Run accessibility checks for language, direction, labels, focus order, and contrast.
-- [ ] Run frontend typecheck and production build for both locale configurations.
-- [ ] Add automated tests for translation key completeness between `fr` and `ar`.
-- [ ] Have BNM communications/legal/product owners approve French and Arabic wording.
+- [ ] Run frontend typecheck and production build for all locale configurations.
+- [ ] Add automated tests for translation key completeness between `fr`, `ar`, and `en`.
+- [ ] Have BNM communications/legal/product owners approve French, Arabic, and English wording.
 - [ ] Update deployment, support, analytics, SEO, and content-entry documentation.
-- [ ] Release to pre-production, obtain sign-off, then enable Arabic in production.
+- [ ] Release to pre-production, obtain sign-off, then enable Arabic and English in production.

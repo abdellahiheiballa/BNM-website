@@ -735,7 +735,7 @@ export default function Professionnels() {
                       <p className="text-sm text-muted-foreground leading-relaxed flex-1 mb-4 line-clamp-3">
                         {offre.description || t("professionals.tailoredOffer")}
                       </p>
-                      <Link href="/contact" className="inline-flex items-center text-sm font-semibold text-primary group-hover:text-secondary transition-colors mt-auto">
+                      <Link href={`/offres/${offre.slug}`} className="inline-flex items-center text-sm font-semibold text-primary group-hover:text-secondary transition-colors mt-auto">
                         {t("professionals.learnMore")} <ArrowRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </Link>
                     </div>

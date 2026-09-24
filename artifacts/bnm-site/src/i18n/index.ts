@@ -1,9 +1,10 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import ar, { products as productsAr, admin as adminAr } from "./locales/ar";
+import en, { products as productsEn, admin as adminEn } from "./locales/en";
 import fr, { products as productsFr, admin as adminFr } from "./locales/fr";
 
-export const supportedLanguages = ["fr", "ar"] as const;
+export const supportedLanguages = ["fr", "ar", "en"] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
 
 export const languageStorageKey = "bnm-language-v1";
@@ -11,12 +12,18 @@ export const languageStorageKey = "bnm-language-v1";
 export const resources = {
   fr: { translation: { ...fr, products: productsFr, admin: adminFr } },
   ar: { translation: { ...ar, products: productsAr, admin: adminAr } },
+  en: { translation: { ...en, products: productsEn, admin: adminEn } },
 } as const;
 
 const getInitialLanguage = (): SupportedLanguage => {
   if (typeof window === "undefined") return "fr";
   const savedLanguage = window.localStorage.getItem(languageStorageKey);
-  return savedLanguage === "ar" ? "ar" : "fr";
+  if (savedLanguage === "ar" || savedLanguage === "en") return savedLanguage;
+  return "fr";
+};
+
+export const getDir = (lang: SupportedLanguage): "ltr" | "rtl" => {
+  return lang === "ar" ? "rtl" : "ltr";
 };
 
 export const getCurrentLocale = () => i18n.resolvedLanguage || i18n.language || "fr";

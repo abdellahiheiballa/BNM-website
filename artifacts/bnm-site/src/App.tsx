@@ -15,6 +15,7 @@ import Entreprises from "./pages/Entreprises";
 import FinanceIslamique from "./pages/FinanceIslamique";
 import Actualites from "./pages/Actualites";
 import ActualiteDetail from "./pages/ActualiteDetail";
+import OffreDetail from "./pages/OffreDetail";
 import DevenirClient from "./pages/DevenirClient";
 import Contact from "./pages/Contact";
 import APropos from "./pages/APropos";
@@ -73,6 +74,7 @@ function Router() {
         <Route path="/finance-islamique" component={FinanceIslamique} />
         <Route path="/actualites" component={Actualites} />
         <Route path="/actualites/:id" component={ActualiteDetail} />
+        <Route path="/offres/:slug" component={OffreDetail} />
         <Route path="/devenir-client" component={DevenirClient} />
         <Route path="/contact" component={Contact} />
         <Route path="/a-propos" component={APropos} />

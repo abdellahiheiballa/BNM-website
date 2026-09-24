@@ -53,45 +53,64 @@ export default function Home() {
         <div className="container mx-auto px-4">
           {statsLoading ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {[1, 2, 3, 4].map(i => <Skeleton key={i} className="h-32 w-full" />)}
+              {[1, 2, 3, 4, 5, 6, 7].map(i => <Skeleton key={i} className="h-32 w-full" />)}
             </div>
           ) : stats ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 divide-x border rounded-lg bg-background shadow-sm">
-              <div className="p-8 text-center space-y-2">
-                <Bot className="w-8 h-8 mx-auto text-secondary mb-4" />
-                <div className="text-2xl font-bold text-primary">{t("home.aiChat")}</div>
-                <div className="text-sm font-medium text-muted-foreground">{t("home.availability")}</div>
-                <a
-                  href="https://wa.me/22242440036"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-sm font-semibold text-primary hover:text-secondary transition-colors"
-                >
-                  {t("home.whatsapp")}
-                </a>
+            <div className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 divide-y sm:divide-y-0 sm:divide-x border rounded-lg bg-background shadow-sm">
+                <div className="p-8 text-center space-y-2">
+                  <Users className="w-8 h-8 mx-auto text-secondary mb-4" />
+                  <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalClients)}</div>
+                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.satisfiedClients")}</div>
+                </div>
+                <div className="p-8 text-center space-y-2">
+                  <Building2 className="w-8 h-8 mx-auto text-secondary mb-4" />
+                  <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalAgences)}</div>
+                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.agencies")}</div>
+                </div>
+                <div className="p-8 text-center space-y-2">
+                  <Calendar className="w-8 h-8 mx-auto text-secondary mb-4" />
+                  <div className="text-4xl font-bold text-primary">{formatNumber(stats.anneesExperience)}</div>
+                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.experienceYears")}</div>
+                </div>
+                <div className="p-8 text-center space-y-2">
+                  <Newspaper className="w-8 h-8 mx-auto text-secondary mb-4" />
+                  <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalActualites)}</div>
+                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.publishedNews")}</div>
+                </div>
+                <div className="p-8 text-center space-y-2">
+                  <Landmark className="w-8 h-8 mx-auto text-secondary mb-4" />
+                  <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalOffres)}</div>
+                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.totalOffers")}</div>
+                </div>
               </div>
-              <div className="p-8 text-center space-y-2">
-                <Calendar className="w-8 h-8 mx-auto text-secondary mb-4" />
-                <div className="text-4xl font-bold text-primary">{formatNumber(stats.anneesExperience)}</div>
-                <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.experienceYears")}</div>
-              </div>
-              <div className="p-8 text-center space-y-2">
-                <Newspaper className="w-8 h-8 mx-auto text-secondary mb-4" />
-                <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalActualites)}</div>
-                <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.publishedNews")}</div>
-              </div>
-              <div className="p-8 text-center space-y-2">
-                <Wallet className="w-8 h-8 mx-auto text-secondary mb-4" />
-                <div className="text-2xl font-bold text-primary">{t("home.clickCardTitle")}</div>
-                <div className="text-sm font-medium text-muted-foreground">{t("home.clickCardDescription")}</div>
-                <a
-                  href="https://www.click.mr/"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-sm font-semibold text-primary hover:text-secondary transition-colors"
-                >
-                  {t("home.clickCardLink")}
-                </a>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <div className="border rounded-lg bg-background shadow-sm p-8 text-center space-y-2">
+                  <Bot className="w-8 h-8 mx-auto text-secondary mb-4" />
+                  <div className="text-2xl font-bold text-primary">{t("home.aiChat")}</div>
+                  <div className="text-sm font-medium text-muted-foreground">{t("home.availability")}</div>
+                  <a
+                    href="https://wa.me/22242440036"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm font-semibold text-primary hover:text-secondary transition-colors"
+                  >
+                    {t("home.whatsapp")}
+                  </a>
+                </div>
+                <div className="border rounded-lg bg-background shadow-sm p-8 text-center space-y-2">
+                  <Wallet className="w-8 h-8 mx-auto text-secondary mb-4" />
+                  <div className="text-2xl font-bold text-primary">{t("home.clickCardTitle")}</div>
+                  <div className="text-sm font-medium text-muted-foreground">{t("home.clickCardDescription")}</div>
+                  <a
+                    href="https://www.click.mr/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-sm font-semibold text-primary hover:text-secondary transition-colors"
+                  >
+                    {t("home.clickCardLink")}
+                  </a>
+                </div>
               </div>
             </div>
           ) : null}

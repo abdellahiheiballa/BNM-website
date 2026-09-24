@@ -4,6 +4,7 @@ const fr = {
     language: "Français",
     languageFrench: "Français",
     languageArabic: "العربية",
+    languageEnglish: "English",
     loading: "Chargement...",
     error: "Une erreur est survenue.",
     search: "Rechercher",
@@ -53,6 +54,7 @@ const fr = {
     agencies: "Agences au pays",
     experienceYears: "Années d'expérience",
     publishedNews: "Actualités publiées",
+    totalOffers: "Offres proposées",
     solutionsTitle: "Des solutions pour chaque étape",
     solutionsDescription: "Que vous soyez un particulier, un professionnel ou une grande entreprise, nous avons conçu des offres sur mesure.",
     individualsDescription: "Gérez votre argent au quotidien, épargnez pour vos projets et financez vos rêves avec nos solutions dédiées.",
@@ -169,6 +171,7 @@ const fr = {
     estimateTitle: "Estimez votre financement",
     estimateDescription: "Calculez les mensualités de votre financement Mourabaha en quelques secondes.",
     simulator: "Simulateur Murabaha",
+    learnMore: "En savoir plus",
   },
   news: {
     title: "Actualités",
@@ -455,7 +458,7 @@ const admin = {
   offerDescriptionFr: "Description (Français)",
   offerDescriptionAr: "Description (Arabe)",
   offerImage: "Image / document de l'offre",
-  offerIconde: "Icône / identifiant court",
+  offerIcone: "Icône / identifiant court",
   offerOrdre: "Ordre d'affichage",
   offerClickByBnm: "Liaison automatique avec Click by BNM (portefeuille mobile)",
   descriptionRequired: "La description est obligatoire.",
@@ -469,6 +472,10 @@ const admin = {
   loading: "Chargement...",
   invalidCategory: "La catégorie est invalide.",
   anOffer: "une offre",
+  offreNotFoundTitle: "Offre non trouvée",
+  offreNotFoundDescription: "L'offre que vous recherchez est introuvable.",
+  offreBackToOffers: "Retour aux offres",
+  offreNoDescription: "Aucune description disponible.",
 };
 
 const products = {
@@ -522,7 +529,7 @@ const products = {
       transferts: { title: "Transferts", description: "La Banque Nationale de Mauritanie vous fait bénéficier de son savoir-faire à l'international.", advantages: ["Chez la Banque Nationale de Mauritanie, évoluer dans un climat de confiance avec son large réseau de partenaires étrangers est un travail au quotidien. Elle propose à sa clientèle Entreprise le transfert international, un moyen de paiement simple et rapide."], documents: ["Pour accéder à ces services, vous devez émettre une demande auprès de votre conseiller clientèle."] },
       credoc: { title: "Crédit documentaire (CREDOC)", description: "La Banque Nationale de Mauritanie vous fait bénéficier de son savoir-faire à l'international.", advantages: ["Vous faites de l'import-export, bénéficiez des avantages d'un crédit documentaire pour sécuriser vos échanges commerciaux internationaux.", "Réduction des risques entre acheteurs et fournisseurs", "Facilitez vos opérations commerciales avec une solution bancaire structurée"], documents: ["Pour accéder à ces services, vous devrez émettre une demande à votre conseiller clientèle."] },
     },
-    contactLink: "Contactez un conseiller clientèle dans https://localhost/entreprises"
+    contactLink: "Contactez un conseiller clientèle dans /entreprises"
   },
   professionnels: {
     sections: {

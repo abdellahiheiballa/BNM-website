@@ -305,7 +305,7 @@ export default function AdminOffreEdit() {
                 </div>
 
                 <div>
-                  <Label className="font-semibold">{t("admin.offerIconde")}</Label>
+                  <Label className="font-semibold">{t("admin.offerIcone")}</Label>
                   <Input
                     className="rounded-none mt-2"
                     value={form.icone}

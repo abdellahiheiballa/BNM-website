@@ -542,7 +542,7 @@ export default function Entreprises() {
                         <CardDescription className="text-base mb-6 text-foreground/80 leading-relaxed">
                           {offre.description || t("businesses.corporateFallback")}
                         </CardDescription>
-                        <Link href="/contact" className="inline-flex items-center text-primary font-semibold hover:text-secondary mt-auto w-fit transition-colors group-hover:translate-x-2 duration-300">
+                        <Link href={`/offres/${offre.slug}`} className="inline-flex items-center text-primary font-semibold hover:text-secondary mt-auto w-fit transition-colors group-hover:translate-x-2 duration-300">
                           {t("businesses.corporateContact")} <ArrowRight className="ml-2 w-4 h-4" />
                         </Link>
                       </CardContent>

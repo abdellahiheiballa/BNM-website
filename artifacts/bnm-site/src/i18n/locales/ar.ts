@@ -4,6 +4,7 @@ const ar = {
     language: "العربية",
     languageFrench: "Français",
     languageArabic: "العربية",
+    languageEnglish: "English",
     loading: "جار التحميل...",
     error: "حدث خطأ.",
     search: "بحث",
@@ -53,6 +54,7 @@ const ar = {
     agencies: "وكالات في البلاد",
     experienceYears: "سنوات من الخبرة",
     publishedNews: "أخبار منشورة",
+    totalOffers: "عروض مقدمة",
     solutionsTitle: "حلول لكل مرحلة",
     solutionsDescription: "سواء كنتم أفراداً أو مهنيين أو شركات كبرى، صممنا عروضاً مناسبة لاحتياجاتكم.",
     individualsDescription: "أديروا أموالكم يومياً، وادخروا لمشاريعكم، ومولوا أحلامكم مع حلولنا المتخصصة.",
@@ -74,7 +76,7 @@ const ar = {
     newsDescription: "ابقوا على اطلاع بآخر أخبار البنك الوطني الموريتاني والاقتصاد.",
     allNews: "جميع الأخبار",
     newsCategory: "خبر",
-    aiChat: "AiChat ",
+    aiChat: "AiChat",
     availability: "متاح 24 ساعة طوال أيام الأسبوع.",
     whatsapp: "واتساب",
     clickCardTitle: "Click",
@@ -169,6 +171,7 @@ const ar = {
     estimateTitle: "قدّروا تمويلكم",
     estimateDescription: "احسبوا أقساط تمويل المرابحة خلال ثوانٍ.",
     simulator: "محاكي المرابحة",
+    learnMore: "لمزيد من المعلومات",
   },
   news: {
     title: "الأخبار",
@@ -455,7 +458,7 @@ const admin = {
   offerDescriptionFr: "الوصف (فرنسي)",
   offerDescriptionAr: "الوصف (عربي)",
   offerImage: "صورة / مستند العرض",
-  offerIconde: "الأيقونة / المعرف المختصر",
+  offerIcone: "الأيقونة / المعرف المختصر",
   offerOrdre: "ترتيب العرض",
   offerClickByBnm: "ربط تلقائي مع Click by BNM (محفظة إلكترونية)",
   descriptionRequired: "الوصف مطلوب.",
@@ -469,6 +472,10 @@ const admin = {
   loading: "جار التحميل...",
   invalidCategory: "الفئة غير صالحة.",
   anOffer: "عرضاً",
+  offreNotFoundTitle: "عرض غير موجود",
+  offreNotFoundDescription: "العرض الذي تبحث عنه غير موجود.",
+  offreBackToOffers: "العودة إلى العروض",
+  offreNoDescription: "لا يتوفر أي وصف.",
 };
 
 const products = {
@@ -522,7 +529,7 @@ const products = {
       transferts: { title: "التحويلات", description: "يضع البنك الوطني الموريتاني خبرته الدولية تحت تصرفكم.", advantages: ["نرافق مؤسساتكم يومياً ضمن مناخ من الثقة وبفضل شبكتنا الواسعة من الشركاء الأجانب، ونوفر لكم تحويلاً دولياً بسيطاً وسريعاً."], documents: ["للوصول إلى هذه الخدمات، قدموا طلباً لدى مستشار العملاء."] },
       credoc: { title: "الاعتماد المستندي (CREDOC)", description: "يضع البنك الوطني الموريتاني خبرته الدولية تحت تصرفكم.", advantages: ["إذا كنتم تعملون في الاستيراد والتصدير، استفيدوا من مزايا الاعتماد المستندي لتأمين مبادلاتكم التجارية الدولية.", "تقليل المخاطر بين المشترين والموردين", "تسهيل عملياتكم التجارية بحل مصرفي منظم"], documents: ["للوصول إلى هذه الخدمات، قدموا طلباً لدى مستشار العملاء."] },
     },
-    contactLink: "اتصلوا بمستشار عملاء في https://localhost/entreprises"
+    contactLink: "اتصلوا بمستشار عملاء في /entreprises"
   },
   professionnels: {
     sections: {

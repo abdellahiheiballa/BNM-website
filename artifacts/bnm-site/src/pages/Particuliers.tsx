@@ -703,7 +703,7 @@ export default function Particuliers() {
                           {t("individuals.clickLink")}
                         </div>
                       )}
-                      <Link href="/contact" className="inline-flex items-center text-sm font-semibold text-primary group-hover:text-secondary transition-colors mt-auto">
+                      <Link href={`/offres/${offre.slug}`} className="inline-flex items-center text-sm font-semibold text-primary group-hover:text-secondary transition-colors mt-auto">
                         {t("individuals.learnMore")} <ArrowRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
                       </Link>
                     </div>

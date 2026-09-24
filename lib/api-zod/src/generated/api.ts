@@ -125,6 +125,22 @@ export const ListOffresResponseItem = zod.object({
 });
 export const ListOffresResponse = zod.array(ListOffresResponseItem);
 
+export const GetOffreResponse = zod.object({
+  id: zod.number(),
+  titre: zod.string(),
+  titre_fr: zod.string().nullish(),
+  titre_ar: zod.string().nullish(),
+  slug: zod.string(),
+  description: zod.string().nullish(),
+  description_fr: zod.string().nullish(),
+  description_ar: zod.string().nullish(),
+  image: zod.string().nullish(),
+  icone: zod.string().nullish(),
+  clickByBnm: zod.boolean(),
+  categorie: zod.enum(["particuliers", "professionnels", "entreprises", "islamique"]),
+  ordre: zod.number(),
+});
+
 /**
  * @summary Submit a contact form message
  */

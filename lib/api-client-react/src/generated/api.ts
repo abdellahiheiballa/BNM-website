@@ -31,6 +31,7 @@ import type {
   MurabahaResult,
   NewsletterInput,
   Offre,
+  OffreCategorie,
   SimulateClassicInput,
   SimulateMurabahaInput,
   SimulationResult,
@@ -483,6 +484,101 @@ export function useListOffres<
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
   const queryOptions = getListOffresQueryOptions(params, options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  return { ...query, queryKey: queryOptions.queryKey };
+}
+
+/**
+ * @summary Get a single offer by its slug
+ *
+ */
+export const getGetOffreUrl = (slug: string, lang?: string) => {
+  const params = new URLSearchParams();
+  if (lang) params.set("lang", lang);
+  const qs = params.toString();
+  return `/api/offres/${slug}${qs ? `?${qs}` : ""}`;
+};
+
+export const getOffre = async (
+  slug: string,
+  options?: RequestInit,
+  lang?: string,
+): Promise<Offre> => {
+  return customFetch<Offre>(getGetOffreUrl(slug, lang), {
+    ...options,
+    method: "GET",
+  });
+};
+
+export const getGetOffreQueryKey = (slug: string, lang?: string) => {
+  return [`/api/offres/${slug}`, lang] as const;
+};
+
+export const getGetOffreQueryOptions = <
+  TData = Awaited<ReturnType<typeof getOffre>>,
+  TError = ErrorType<unknown>,
+>(
+  slug: string,
+  lang?: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getOffre>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+) => {
+  const { query: queryOptions, request: requestOptions } = options ?? {};
+
+  const queryKey = queryOptions?.queryKey ?? getGetOffreQueryKey(slug, lang);
+
+  const queryFn: QueryFunction<Awaited<ReturnType<typeof getOffre>>> = ({
+    signal,
+  }) => getOffre(slug, { signal, ...requestOptions }, lang);
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!slug,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<ReturnType<typeof getOffre>>,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetOffreQueryResult = NonNullable<
+  Awaited<ReturnType<typeof getOffre>>
+>;
+export type GetOffreQueryError = ErrorType<unknown>;
+
+/**
+ * @summary Get a single offer by its slug
+ *
+ */
+
+export function useGetOffre<
+  TData = Awaited<ReturnType<typeof getOffre>>,
+  TError = ErrorType<unknown>,
+>(
+  slug: string,
+  lang?: string,
+  options?: {
+    query?: UseQueryOptions<
+      Awaited<ReturnType<typeof getOffre>>,
+      TError,
+      TData
+    >;
+    request?: SecondParameter<typeof customFetch>;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
+  const queryOptions = getGetOffreQueryOptions(slug, lang, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

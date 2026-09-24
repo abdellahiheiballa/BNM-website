@@ -166,6 +166,34 @@ paths:
                 items:
                   $ref: "#/components/schemas/Offre"
 
+  /offres/{slug}:
+    get:
+      operationId: getOffre
+      tags: [offres]
+      summary: Get a single offer by slug
+      parameters:
+        - name: slug
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: lang
+          in: query
+          schema:
+            type: string
+            enum: [fr, ar]
+            default: fr
+          description: Language for content localization
+      responses:
+        "200":
+          description: Offer
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Offre"
+        "404":
+          description: Not found
+
   /devenir-client:
     post:
       operationId: submitDevenirClient

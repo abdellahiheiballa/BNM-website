@@ -306,6 +306,22 @@ export type ListOffresParams = {
   lang?: string;
 };
 
+export type GetOffreResponse = {
+  id: number;
+  titre: string;
+  titre_fr?: string | null;
+  titre_ar?: string | null;
+  slug: string;
+  description?: string | null;
+  description_fr?: string | null;
+  description_ar?: string | null;
+  image?: string | null;
+  icone?: string | null;
+  clickByBnm: boolean;
+  categorie: OffreCategorie;
+  ordre: number;
+};
+
 export type ListOffresCategorie =
   (typeof ListOffresCategorie)[keyof typeof ListOffresCategorie];
 

@@ -35,4 +35,33 @@ router.get("/offres", async (req, res) => {
   })));
 });
 
+router.get("/offres/:slug", async (req, res) => {
+  const lang = req.query.lang === "ar" ? "ar" : "fr";
+  const slug = req.params.slug;
+
+  const [row] = await db
+    .select()
+    .from(offresTable)
+    .where(eq(offresTable.slug, slug));
+  if (!row) {
+    return res.status(404).json({ error: "Not found" });
+  }
+
+  return res.json({
+    id: row.id,
+    titre: lang === "ar" ? row.titre_ar || row.titre : row.titre_fr || row.titre,
+    titre_fr: row.titre_fr ?? null,
+    titre_ar: row.titre_ar ?? null,
+    slug: row.slug,
+    description: lang === "ar" ? row.description_ar || row.description : row.description_fr || row.description,
+    description_fr: row.description_fr ?? null,
+    description_ar: row.description_ar ?? null,
+    image: row.image ?? null,
+    icone: row.icone ?? null,
+    clickByBnm: row.clickByBnm,
+    categorie: row.categorie as "particuliers" | "professionnels" | "entreprises" | "islamique",
+    ordre: row.ordre,
+  });
+});
+
 export default router;

@@ -57,7 +57,7 @@ export default function Header() {
     { href: "/devenir-client", label: t("navigation.becomeClient") },
   ];
 
-  const changeLanguage = (language: "fr" | "ar") => {
+  const changeLanguage = (language: "fr" | "ar" | "en") => {
     void i18n.changeLanguage(language);
   };
 
@@ -73,6 +73,8 @@ export default function Header() {
           ))}
           <div className={`flex items-center gap-2 ${isRtl ? "border-r pr-6" : "border-l pl-6"}`}>
             <button type="button" className="hover:text-primary" onClick={() => changeLanguage("fr")} aria-label={t("common.languageFrench")} aria-pressed={i18n.language === "fr"}>FR</button>
+            <span className="text-muted-foreground/30">|</span>
+            <button type="button" className="hover:text-primary" onClick={() => changeLanguage("en")} aria-label={t("common.languageEnglish")} aria-pressed={i18n.language === "en"}>EN</button>
             <span className="text-muted-foreground/30">|</span>
             <button type="button" className="hover:text-primary" onClick={() => changeLanguage("ar")} aria-label={t("common.languageArabic")} aria-pressed={i18n.language === "ar"}>AR</button>
           </div>
@@ -179,6 +181,8 @@ export default function Header() {
           </nav>
           <div className="flex items-center gap-3 border-t pt-4 text-sm">
             <button type="button" className="hover:text-primary" onClick={() => changeLanguage("fr")} aria-label={t("common.languageFrench")} aria-pressed={i18n.language === "fr"}>{t("common.languageFrench")}</button>
+            <span className="text-muted-foreground/30">|</span>
+            <button type="button" className="hover:text-primary" onClick={() => changeLanguage("en")} aria-label={t("common.languageEnglish")} aria-pressed={i18n.language === "en"}>{t("common.languageEnglish")}</button>
             <span className="text-muted-foreground/30">|</span>
             <button type="button" className="hover:text-primary" onClick={() => changeLanguage("ar")} aria-label={t("common.languageArabic")} aria-pressed={i18n.language === "ar"}>{t("common.languageArabic")}</button>
           </div>

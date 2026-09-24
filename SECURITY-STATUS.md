@@ -1,4 +1,4 @@
-# Pre-production Security Status
+﻿# Pre-production Security Status
 
 **Project:** BNM Website  
 **Report reviewed:** OWASP ZAP pre-production report, 2 September 2026  
@@ -29,7 +29,7 @@ The application is not yet fully closed against the report because the trusted d
 | Google Fonts removal | Partially done | Google font links were removed from `index.html`; Inter still needs to be supplied as local `.woff2` files and declared with `@font-face`. |
 | External dependency audit | Open | Review social links, Click services, OpenStreetMap tiles, APIs, scripts, CSS, and icons against institutional policy. Localize required dependencies where required. |
 | SRI | Open / conditional | Local bundled scripts and styles do not need SRI. Add SHA-384 `integrity` and `crossorigin="anonymous"` to any unavoidable external script or stylesheet. |
-| Database/API exposure | Open | The active server output still publishes ports 3000 and 5432. Remove them from the active Compose configuration and verify again. |
+| Database/API exposure | Done | Ports 3000 (backend) and 5432 (db) are no longer published in the active Compose configuration. Backend is reachable only via the Nginx proxy (`proxy_pass http://backend:3000`). |
 | Final ZAP scan | Open | Existing scan had `FAIL-NEW: 0` but 8 warnings and was run before all latest corrections. Run a new scan after deployment. |
 
 ## Remaining production blockers
@@ -37,15 +37,15 @@ The application is not yet fully closed against the report because the trusted d
 - [x] Identify Nginx version, upgrade to `nginx:stable-alpine`, and hide the version. Current observed version: `1.30.4`; image digest: `sha256:02b1b2a0445514891a14aa371845f6085d5d9d10d385b30d6aad606a50a29a05`.
 - [ ] Obtain security-owner confirmation that Nginx 1.30.4 and the pinned digest have no unacceptable known CVEs.
 - [ ] Configure public DNS for `bnm.mr` and router forwarding of TCP 80/443 to `192.168.1.200`.
-- [ ] Obtain and install a trusted Let’s Encrypt certificate for `bnm.mr`.
-- [ ] Replace the self-signed certificate mounts with the successful Let’s Encrypt certificate paths.
+- [ ] Obtain and install a trusted Let's Encrypt certificate for `bnm.mr`.
+- [ ] Replace the self-signed certificate mounts with the successful Let's Encrypt certificate paths.
 - [ ] Add HSTS after trusted HTTPS is confirmed.
 - [x] Configure CSP in `Content-Security-Policy-Report-Only` mode.
 - [ ] Review CSP report-only violations and switch to enforcing CSP.
 - [ ] Add local Inter font files and confirm there are no requests to `fonts.googleapis.com` or `fonts.gstatic.com`.
 - [ ] Complete the external dependency and SRI review.
 - [ ] Run and review a fresh OWASP ZAP scan over the production-like HTTPS URL.
-- [ ] Remove public ports 3000 and 5432 from the active server Compose configuration.
+- [x] Remove public ports 3000 and 5432 from the active server Compose configuration.
 - [ ] Close all High and Medium findings and obtain production approval.
 
 ## Completed work
@@ -80,12 +80,19 @@ done
 curl -k -sI https://127.0.0.1 | \
   grep -Ei '^(server|content-security|x-frame|x-content|referrer-policy|strict-transport):'
 
+# Verify no ports are unintentionally published (3000, 5432 must not be in the list)
+docker compose ps --format "table {{.Name}}\t{{.Ports}}"
+
 # Source and built output must contain no Google Fonts references
 grep -RniE 'fonts\.googleapis|fonts\.gstatic' \
   artifacts/bnm-site/src artifacts/bnm-site/public || true
 
 docker compose exec frontend sh -c \
   "grep -RniE 'fonts\\.googleapis|fonts\\.gstatic' /usr/share/nginx/html || true"
+
+# Verify sensitive routes return 404 (not proxied to backend)
+curl -k -s -o /dev/null -w "/api/debug HTTP %{http_code}\n" \
+  "https://127.0.0.1/api/debug"
 
 # Final ZAP report
 mkdir -p zap-results

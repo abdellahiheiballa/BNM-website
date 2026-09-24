@@ -8,7 +8,8 @@ import { useTranslation } from "react-i18next";
 
 export default function FinanceIslamique() {
   const { t, i18n } = useTranslation();
-  const { data: offres, isLoading } = useListOffres({ categorie: "islamique", lang: i18n.language });  const offresArray = Array.isArray(offres) ? offres : [];
+  const { data: offres, isLoading } = useListOffres({ categorie: "islamique", lang: i18n.language });
+  const offresArray = Array.isArray(offres) ? offres : [];
   const heroImage = "/assets/images/Islamique.jpg.jpeg";
 
   return (
@@ -61,7 +62,7 @@ export default function FinanceIslamique() {
                 ) : offresArray.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                     {offresArray.map(offre => (
-                      <Card key={offre.id} className="group hover:border-secondary transition-colors duration-300 rounded-none shadow-sm hover:shadow-md">
+                       <Card key={offre.id} className="group hover:border-secondary transition-colors duration-300 rounded-none shadow-sm hover:shadow-md">
                         <CardHeader>
                           <div className="flex items-center gap-3 mb-3">
                             <div className="text-secondary group-hover:text-primary transition-colors">
@@ -76,6 +77,9 @@ export default function FinanceIslamique() {
                           <CardDescription className="text-base text-foreground/80">
                             {offre.description || t("islamicFinance.productFallback")}
                           </CardDescription>
+                          <Link href={`/offres/${offre.slug}`} className="inline-flex items-center text-sm font-semibold text-secondary group-hover:text-primary transition-colors mt-2">
+                            {t("islamicFinance.learnMore")} <ArrowRight className="ml-1 w-4 h-4" />
+                          </Link>
                         </CardHeader>
                       </Card>
                     ))}

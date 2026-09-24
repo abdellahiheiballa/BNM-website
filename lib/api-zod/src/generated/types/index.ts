@@ -16,6 +16,7 @@ export * from "./createActualiteInput";
 export * from "./createOffreInput";
 export * from "./createOffreInputCategorie";
 export * from "./devenirClientInput";
+export * from "./getOffreResponse";
 export * from "./healthStatus";
 export * from "./listActualites200";
 export * from "./listActualitesParams";
