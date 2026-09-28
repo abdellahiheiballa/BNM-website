@@ -30,6 +30,7 @@ services:
     build:
       context: .
       dockerfile: artifacts/bnm-site/Dockerfile
+    image: bnm-website-frontend:latest
     ports:
       - "80:80"
       - "443:443"

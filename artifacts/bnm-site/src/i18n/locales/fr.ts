@@ -50,7 +50,6 @@ const fr = {
     heroDescription: "Depuis des décennies, la Banque Nationale de Mauritanie accompagne le développement économique du pays. Nous offrons des solutions financières modernes, sécurisées et adaptées à vos ambitions.",
     becomeClient: "Devenir client",
     discoverOffers: "Découvrir nos offres",
-    satisfiedClients: "Clients satisfaits",
     agencies: "Agences au pays",
     experienceYears: "Années d'expérience",
     publishedNews: "Actualités publiées",

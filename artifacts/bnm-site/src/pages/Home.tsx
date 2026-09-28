@@ -53,16 +53,11 @@ export default function Home() {
         <div className="container mx-auto px-4">
           {statsLoading ? (
             <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-              {[1, 2, 3, 4, 5, 6, 7].map(i => <Skeleton key={i} className="h-32 w-full" />)}
+              {[1, 2, 3, 4, 5, 6].map(i => <Skeleton key={i} className="h-32 w-full" />)}
             </div>
           ) : stats ? (
             <div className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-8 divide-y sm:divide-y-0 sm:divide-x border rounded-lg bg-background shadow-sm">
-                <div className="p-8 text-center space-y-2">
-                  <Users className="w-8 h-8 mx-auto text-secondary mb-4" />
-                  <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalClients)}</div>
-                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.satisfiedClients")}</div>
-                </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 divide-y sm:divide-y-0 sm:divide-x border rounded-lg bg-background shadow-sm">
                 <div className="p-8 text-center space-y-2">
                   <Building2 className="w-8 h-8 mx-auto text-secondary mb-4" />
                   <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalAgences)}</div>

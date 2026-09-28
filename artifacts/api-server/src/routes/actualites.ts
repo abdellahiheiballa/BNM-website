@@ -45,7 +45,7 @@ router.get("/actualites", async (req, res) => {
 
 router.get("/actualites/:id", async (req, res) => {
   const parsed = GetActualiteParams.safeParse({ id: Number(req.params.id) });
-  const lang = req.query.lang === "ar" ? "ar" : "fr";
+  const lang = req.query.lang === "ar" ? "ar" : req.query.lang === "en" ? "en" : "fr";
   if (!parsed.success) {
     return res.status(422).json({ error: "Invalid id" });
   }

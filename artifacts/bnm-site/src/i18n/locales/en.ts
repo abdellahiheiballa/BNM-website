@@ -49,7 +49,6 @@ const en = {
     heroDescription: "For decades, the National Bank of Mauritania has supported the country's economic development. We offer modern, secure financial solutions adapted to your ambitions.",
     becomeClient: "Become a client",
     discoverOffers: "Discover our offers",
-    satisfiedClients: "Satisfied clients",
     agencies: "Agencies in the country",
     experienceYears: "Years of experience",
     publishedNews: "Published news",

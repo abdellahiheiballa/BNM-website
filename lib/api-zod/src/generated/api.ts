@@ -22,7 +22,7 @@ export const listActualitesQueryOffsetDefault = 0;
 
 export const ListActualitesQueryParams = zod.object({
   categorie: zod.coerce.string().optional(),
-  lang: zod.enum(["fr", "ar"]).optional(),
+  lang: zod.enum(["fr", "ar", "en"]).optional(),
   limit: zod.coerce.number().default(listActualitesQueryLimitDefault),
   offset: zod.coerce.number().default(listActualitesQueryOffsetDefault),
 });
@@ -98,7 +98,7 @@ export const ListOffresQueryParams = zod.object({
   categorie: zod
     .enum(["particuliers", "professionnels", "entreprises", "islamique"])
     .optional(),
-  lang: zod.enum(["fr", "ar"]).optional(),
+  lang: zod.enum(["fr", "ar", "en"]).optional(),
 });
 
 export const listOffresResponseClickByBnmDefault = false;

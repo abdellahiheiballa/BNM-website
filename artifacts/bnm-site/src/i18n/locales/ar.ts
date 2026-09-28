@@ -50,7 +50,6 @@ const ar = {
     heroDescription: "منذ عقود، يرافق البنك الوطني الموريتاني التنمية الاقتصادية للبلاد. ونقدم حلولاً مالية حديثة وآمنة ومناسبة لطموحاتكم.",
     becomeClient: "كن عميلاً",
     discoverOffers: "اكتشف عروضنا",
-    satisfiedClients: "عملاء راضون",
     agencies: "وكالات في البلاد",
     experienceYears: "سنوات من الخبرة",
     publishedNews: "أخبار منشورة",
