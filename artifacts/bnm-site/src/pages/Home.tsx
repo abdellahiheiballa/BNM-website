@@ -59,6 +59,21 @@ export default function Home() {
             <div className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 divide-y sm:divide-y-0 sm:divide-x border rounded-lg bg-background shadow-sm">
                 <div className="p-8 text-center space-y-2">
+                  <Calendar className="w-8 h-8 mx-auto text-secondary mb-4" />
+                  <div className="text-4xl font-bold text-primary">{formatNumber(stats.anneesExperience)}</div>
+                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.experienceYears")}</div>
+                </div>
+                <Link href="/offres" className="block p-8 text-center space-y-2 transition-colors hover:bg-muted/50">
+                  <Landmark className="w-8 h-8 mx-auto text-secondary mb-4" />
+                  <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalOffres)}</div>
+                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.totalOffers")}</div>
+                </Link>
+                <div className="p-8 text-center space-y-2">
+                  <Newspaper className="w-8 h-8 mx-auto text-secondary mb-4" />
+                  <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalActualites)}</div>
+                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.publishedNews")}</div>
+                </div>
+                <div className="p-8 text-center space-y-2">
                   <Smartphone className="w-8 h-8 mx-auto text-secondary mb-4" />
                   <div className="text-2xl font-bold text-primary">{t("home.ebnmApp")}</div>
                   <div className="text-sm font-medium text-muted-foreground">{t("home.ebnmAppDescription")}</div>
@@ -81,21 +96,6 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
-                <div className="p-8 text-center space-y-2">
-                  <Calendar className="w-8 h-8 mx-auto text-secondary mb-4" />
-                  <div className="text-4xl font-bold text-primary">{formatNumber(stats.anneesExperience)}</div>
-                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.experienceYears")}</div>
-                </div>
-                <div className="p-8 text-center space-y-2">
-                  <Newspaper className="w-8 h-8 mx-auto text-secondary mb-4" />
-                  <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalActualites)}</div>
-                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.publishedNews")}</div>
-                </div>
-                <Link href="/offres" className="block p-8 text-center space-y-2 transition-colors hover:bg-muted/50">
-                  <Landmark className="w-8 h-8 mx-auto text-secondary mb-4" />
-                  <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalOffres)}</div>
-                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.totalOffers")}</div>
-                </Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="border rounded-lg bg-background shadow-sm p-8 text-center space-y-2">
