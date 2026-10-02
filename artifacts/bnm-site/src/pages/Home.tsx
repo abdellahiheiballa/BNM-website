@@ -2,7 +2,7 @@ import { useGetStats, useListOffres, useListActualites } from "@workspace/api-cl
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
-import { ArrowRight, Bot, Building2, Users, Calendar, Newspaper, Landmark, Briefcase, ChevronRight, ExternalLink, Wallet } from "lucide-react";
+import { ArrowRight, Bot, Building2, Users, Calendar, Newspaper, Landmark, Briefcase, ChevronRight, ExternalLink, Wallet, Smartphone, Apple, Play } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTranslation } from "react-i18next";
 import { formatDate, formatNumber, toLangCode } from "@/i18n";
@@ -59,9 +59,27 @@ export default function Home() {
             <div className="space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 divide-y sm:divide-y-0 sm:divide-x border rounded-lg bg-background shadow-sm">
                 <div className="p-8 text-center space-y-2">
-                  <Building2 className="w-8 h-8 mx-auto text-secondary mb-4" />
-                  <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalAgences)}</div>
-                  <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.agencies")}</div>
+                  <Smartphone className="w-8 h-8 mx-auto text-secondary mb-4" />
+                  <div className="text-2xl font-bold text-primary">{t("home.ebnmApp")}</div>
+                  <div className="text-sm font-medium text-muted-foreground">{t("home.ebnmAppDescription")}</div>
+                  <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+                    <a
+                      href="https://apps.apple.com/mr/app/ebnm/id1407240924"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 border border-primary/20 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary hover:text-secondary transition-colors"
+                    >
+                      <Apple className="w-4 h-4" /> {t("home.appStore")}
+                    </a>
+                    <a
+                      href="https://play.google.com/store/apps/details?id=bnm.net.mr&hl=en_GB"
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-2 border border-primary/20 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary hover:text-secondary transition-colors"
+                    >
+                      <Play className="w-4 h-4" /> {t("home.googlePlay")}
+                    </a>
+                  </div>
                 </div>
                 <div className="p-8 text-center space-y-2">
                   <Calendar className="w-8 h-8 mx-auto text-secondary mb-4" />
@@ -73,11 +91,11 @@ export default function Home() {
                   <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalActualites)}</div>
                   <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.publishedNews")}</div>
                 </div>
-                <div className="p-8 text-center space-y-2">
+                <Link href="/offres" className="block p-8 text-center space-y-2 transition-colors hover:bg-muted/50">
                   <Landmark className="w-8 h-8 mx-auto text-secondary mb-4" />
                   <div className="text-4xl font-bold text-primary">{formatNumber(stats.totalOffres)}</div>
                   <div className="text-sm font-medium text-muted-foreground uppercase tracking-wider">{t("home.totalOffers")}</div>
-                </div>
+                </Link>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div className="border rounded-lg bg-background shadow-sm p-8 text-center space-y-2">

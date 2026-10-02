@@ -2,8 +2,8 @@ const en = {
   common: {
     bankName: "The National Bank of Mauritania",
     language: "English",
-    languageFrench: "Français",
-    languageArabic: "العربية",
+    languageFrench: "Fran�ais",
+    languageArabic: "???????",
     loading: "Loading...",
     error: "An error occurred.",
     search: "Search",
@@ -53,6 +53,10 @@ const en = {
     experienceYears: "Years of experience",
     publishedNews: "Published news",
     totalOffers: "Offers available",
+    ebnmApp: "eBNM App",
+    ebnmAppDescription: "Your bank in your pocket",
+    appStore: "App Store",
+    googlePlay: "Google Play",
     solutionsTitle: "Solutions for every stage",
     solutionsDescription: "Whether you are an individual, a professional, or a large company, we have designed tailored offers.",
     individualsDescription: "Manage your daily money, save for your projects, and finance your dreams with our dedicated solutions.",
@@ -109,7 +113,7 @@ const en = {
   professionals: {
     badge: "Professional Banking",
     heroTitle: "Your success, our business",
-    heroDescription: "Artisans, merchants, liberal professions — we build together the banking solutions that accelerate your growth.",
+    heroDescription: "Artisans, merchants, liberal professions � we build together the banking solutions that accelerate your growth.",
     start: "Shall we start?",
     explore: "Explore",
     navigation: "Navigation",
@@ -188,6 +192,23 @@ const en = {
     emptyTitle: "No news found",
     emptyDescription: "There are no articles in this category at the moment.",
     showAll: "View all news",
+  },
+  offersPage: {
+    title: "Our offers",
+    description: "Discover the full range of products and services offered by the National Bank of Mauritania.",
+    all: "All",
+    particuliers: "Individuals",
+    professionnels: "Professionals",
+    entreprises: "Businesses",
+    islamique: "Islamic finance",
+    discover: "Discover",
+    emptyTitle: "No offers found",
+    emptyDescription: "There are no offers in this category at the moment.",
+    showAll: "View all offers",
+    category_particuliers: "Individuals",
+    category_professionnels: "Professionals",
+    category_entreprises: "Businesses",
+    category_islamique: "Islamic finance",
   },
   contact: {
     title: "Contact us",
@@ -419,7 +440,7 @@ const admin = {
   actualiteDate: "Publication date",
   writeContent: "Write the content...",
   writeContentFr: "Write the content in French...",
-  writeContentAr: "اكتبوا المحتوى بالعربية...",
+  writeContentAr: "?????? ??????? ????????...",
     writeContentEn: "Write the content in English...",
   titleRequired: "Title is required.",
   slugRequired: "Slug is required.",
@@ -628,9 +649,9 @@ const products = {
       stats: [{ label: "Max amount", value: "Up to 10M MRU" }, { label: "Duration", value: "12-60 months" }, { label: "Rate", value: "From 5.5%" }],
     },
     creditOxygene: {
-      title: "Oxygène Credit", subtitle: "Good times can't be anticipated",
-      description: "Back to school, Ramadan, religious holidays: breathe with our Oxygène one-time credits, designed for the important moments of the year.",
-      cta: "Breathe with Oxygène",
+      title: "Oxyg�ne Credit", subtitle: "Good times can't be anticipated",
+      description: "Back to school, Ramadan, religious holidays: breathe with our Oxyg�ne one-time credits, designed for the important moments of the year.",
+      cta: "Breathe with Oxyg�ne",
       advantages: ["One-time credits for the key moments of the year", "Prepare for your children's back-to-school", "Share religious holidays and Ramadan with family"],
       documents: ["Make a request to your financial customer advisor"],
       stats: [{ label: "Interest-free", value: "Possible" }, { label: "Fast response", value: "48h" }, { label: "Seasons", value: "4/year" }],
@@ -691,8 +712,8 @@ const products = {
         documents: ["Make a request and sign an agreement"],
         stats: [
           { label: "Card", value: "Business" },
-          { label: "Withdrawal", value: "€500/day" },
-          { label: "Payment", value: "€8,000/day" }
+          { label: "Withdrawal", value: "�500/day" },
+          { label: "Payment", value: "�8,000/day" }
         ]
       },
       classic: {
@@ -709,8 +730,8 @@ const products = {
         documents: ["Make a request and sign an agreement"],
         stats: [
           { label: "Card", value: "Classic" },
-          { label: "Withdrawal", value: "€350/day" },
-          { label: "Payment", value: "€3,000/day" }
+          { label: "Withdrawal", value: "�350/day" },
+          { label: "Payment", value: "�3,000/day" }
         ]
       },
       platinum: {
@@ -727,8 +748,8 @@ const products = {
         documents: ["Make a request and sign an agreement"],
         stats: [
           { label: "Card", value: "Platinum" },
-          { label: "Withdrawal", value: "€2,000/day" },
-          { label: "Payment", value: "€20,000/day" }
+          { label: "Withdrawal", value: "�2,000/day" },
+          { label: "Payment", value: "�20,000/day" }
         ]
       },
       travel: {
@@ -901,7 +922,7 @@ const products = {
         title: "Holiday and Back-to-School Credit",
         subtitle: "Short-term credit",
         description: "This facility is granted on the occasion of religious holidays (Eid El-Fitr, Eid El-Adha, and Ramadan) as well as at the start of the school year. The loan amount is limited to one (1) month of salary, with a cap of 50,000 MRU, repayable over a maximum period of 10 months, at a rate of 0%.",
-        cta: "Breathe with Oxygène",
+        cta: "Breathe with Oxyg�ne",
         advantages: [
           "A facility dedicated to religious holidays and back-to-school",
           "Amount limited to one month of salary with a cap of 50,000 MRU",
