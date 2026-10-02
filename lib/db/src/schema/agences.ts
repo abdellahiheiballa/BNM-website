@@ -9,6 +9,7 @@ export const agencesTable = pgTable("agences" , {
   adresse: text("adresse"),
   ville: varchar("ville", { length: 100 }),
   telephone: varchar("telephone", { length: 50 }),
+  email: varchar("email", { length: 200 }),
   latitude: decimal("latitude", { precision: 10, scale: 8 }),
   longitude: decimal("longitude", { precision: 11, scale: 8 }),
   horaires: text("horaires"),

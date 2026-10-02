@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Link, useSearch } from "wouter";
 import { Calendar, ChevronRight } from "lucide-react";
 import { useState } from "react";
+import { toLangCode } from "@/i18n";
 import { useTranslation } from "react-i18next";
 
 export default function Actualites() {
@@ -18,7 +19,7 @@ export default function Actualites() {
   ];
   const [selectedCategory, setSelectedCategory] = useState("Toutes");
   const { data: actualitesResponse, isLoading } = useListActualites(
-    selectedCategory !== "Toutes" ? { categorie: selectedCategory, lang: i18n.language } : { lang: i18n.language }
+    selectedCategory !== "Toutes" ? { categorie: selectedCategory, lang: toLangCode(i18n.language) } : { lang: toLangCode(i18n.language) }
   );
 
   return (

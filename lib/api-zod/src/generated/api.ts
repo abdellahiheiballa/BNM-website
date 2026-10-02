@@ -17,12 +17,13 @@ export const HealthCheckResponse = zod.object({
 /**
  * @summary List all news articles
  */
+export const listActualitesQueryLangDefault = `fr`;
 export const listActualitesQueryLimitDefault = 10;
 export const listActualitesQueryOffsetDefault = 0;
 
 export const ListActualitesQueryParams = zod.object({
+  lang: zod.enum(["fr", "ar", "en"]).default(listActualitesQueryLangDefault),
   categorie: zod.coerce.string().optional(),
-  lang: zod.enum(["fr", "ar", "en"]).optional(),
   limit: zod.coerce.number().default(listActualitesQueryLimitDefault),
   offset: zod.coerce.number().default(listActualitesQueryOffsetDefault),
 });
@@ -34,10 +35,12 @@ export const ListActualitesResponse = zod.object({
       titre: zod.string(),
       titre_fr: zod.string().nullish(),
       titre_ar: zod.string().nullish(),
+      titre_en: zod.string().nullish(),
       slug: zod.string(),
       contenu: zod.string(),
       contenu_fr: zod.string().nullish(),
       contenu_ar: zod.string().nullish(),
+      contenu_en: zod.string().nullish(),
       image: zod.string().nullish(),
       categorie: zod.string().nullish(),
       datePublication: zod.coerce.date(),
@@ -52,18 +55,26 @@ export const ListActualitesResponse = zod.object({
  */
 export const createActualiteBodyTitreMax = 200;
 
+export const createActualiteBodyTitreFrMax = 200;
+
+export const createActualiteBodyTitreArMax = 200;
+
+export const createActualiteBodyTitreEnMax = 200;
+
 export const createActualiteBodySlugMax = 200;
 
 export const createActualiteBodyCategorieMax = 100;
 
 export const CreateActualiteBody = zod.object({
   titre: zod.string().max(createActualiteBodyTitreMax),
-  titre_fr: zod.string().max(createActualiteBodyTitreMax).nullish(),
-  titre_ar: zod.string().max(createActualiteBodyTitreMax).nullish(),
+  titre_fr: zod.string().max(createActualiteBodyTitreFrMax).nullish(),
+  titre_ar: zod.string().max(createActualiteBodyTitreArMax).nullish(),
+  titre_en: zod.string().max(createActualiteBodyTitreEnMax).nullish(),
   slug: zod.string().max(createActualiteBodySlugMax),
   contenu: zod.string(),
   contenu_fr: zod.string().nullish(),
   contenu_ar: zod.string().nullish(),
+  contenu_en: zod.string().nullish(),
   image: zod.string().nullish(),
   categorie: zod.string().max(createActualiteBodyCategorieMax).nullish(),
   datePublication: zod.coerce.date().nullish(),
@@ -76,15 +87,23 @@ export const GetActualiteParams = zod.object({
   id: zod.coerce.number(),
 });
 
+export const getActualiteQueryLangDefault = `fr`;
+
+export const GetActualiteQueryParams = zod.object({
+  lang: zod.enum(["fr", "ar", "en"]).default(getActualiteQueryLangDefault),
+});
+
 export const GetActualiteResponse = zod.object({
   id: zod.number(),
   titre: zod.string(),
   titre_fr: zod.string().nullish(),
   titre_ar: zod.string().nullish(),
+  titre_en: zod.string().nullish(),
   slug: zod.string(),
   contenu: zod.string(),
   contenu_fr: zod.string().nullish(),
   contenu_ar: zod.string().nullish(),
+  contenu_en: zod.string().nullish(),
   image: zod.string().nullish(),
   categorie: zod.string().nullish(),
   datePublication: zod.coerce.date(),
@@ -94,11 +113,13 @@ export const GetActualiteResponse = zod.object({
 /**
  * @summary List offers, optionally filtered by category
  */
+export const listOffresQueryLangDefault = `fr`;
+
 export const ListOffresQueryParams = zod.object({
+  lang: zod.enum(["fr", "ar", "en"]).default(listOffresQueryLangDefault),
   categorie: zod
     .enum(["particuliers", "professionnels", "entreprises", "islamique"])
     .optional(),
-  lang: zod.enum(["fr", "ar", "en"]).optional(),
 });
 
 export const listOffresResponseClickByBnmDefault = false;
@@ -108,10 +129,12 @@ export const ListOffresResponseItem = zod.object({
   titre: zod.string(),
   titre_fr: zod.string().nullish(),
   titre_ar: zod.string().nullish(),
+  titre_en: zod.string().nullish(),
   slug: zod.string(),
   description: zod.string().nullish(),
   description_fr: zod.string().nullish(),
   description_ar: zod.string().nullish(),
+  description_en: zod.string().nullish(),
   image: zod.string().nullish(),
   icone: zod.string().nullish(),
   clickByBnm: zod.boolean().default(listOffresResponseClickByBnmDefault),
@@ -125,19 +148,41 @@ export const ListOffresResponseItem = zod.object({
 });
 export const ListOffresResponse = zod.array(ListOffresResponseItem);
 
+/**
+ * @summary Get a single offer by slug
+ */
+export const GetOffreParams = zod.object({
+  slug: zod.coerce.string(),
+});
+
+export const getOffreQueryLangDefault = `fr`;
+
+export const GetOffreQueryParams = zod.object({
+  lang: zod.enum(["fr", "ar", "en"]).default(getOffreQueryLangDefault),
+});
+
+export const getOffreResponseClickByBnmDefault = false;
+
 export const GetOffreResponse = zod.object({
   id: zod.number(),
   titre: zod.string(),
   titre_fr: zod.string().nullish(),
   titre_ar: zod.string().nullish(),
+  titre_en: zod.string().nullish(),
   slug: zod.string(),
   description: zod.string().nullish(),
   description_fr: zod.string().nullish(),
   description_ar: zod.string().nullish(),
+  description_en: zod.string().nullish(),
   image: zod.string().nullish(),
   icone: zod.string().nullish(),
-  clickByBnm: zod.boolean(),
-  categorie: zod.enum(["particuliers", "professionnels", "entreprises", "islamique"]),
+  clickByBnm: zod.boolean().default(getOffreResponseClickByBnmDefault),
+  categorie: zod.enum([
+    "particuliers",
+    "professionnels",
+    "entreprises",
+    "islamique",
+  ]),
   ordre: zod.number(),
 });
 
@@ -282,6 +327,7 @@ export const ListAgencesResponseItem = zod.object({
   adresse: zod.string().nullish(),
   ville: zod.string().nullish(),
   telephone: zod.string().nullish(),
+  email: zod.string().nullish(),
   latitude: zod.number().nullish(),
   longitude: zod.number().nullish(),
   horaires: zod.string().nullish(),
@@ -335,10 +381,12 @@ export const AdminListActualitesResponseItem = zod.object({
   titre: zod.string(),
   titre_fr: zod.string().nullish(),
   titre_ar: zod.string().nullish(),
+  titre_en: zod.string().nullish(),
   slug: zod.string(),
   contenu: zod.string(),
   contenu_fr: zod.string().nullish(),
   contenu_ar: zod.string().nullish(),
+  contenu_en: zod.string().nullish(),
   image: zod.string().nullish(),
   categorie: zod.string().nullish(),
   datePublication: zod.coerce.date(),
@@ -353,18 +401,26 @@ export const AdminListActualitesResponse = zod.array(
  */
 export const adminCreateActualiteBodyTitreMax = 200;
 
+export const adminCreateActualiteBodyTitreFrMax = 200;
+
+export const adminCreateActualiteBodyTitreArMax = 200;
+
+export const adminCreateActualiteBodyTitreEnMax = 200;
+
 export const adminCreateActualiteBodySlugMax = 200;
 
 export const adminCreateActualiteBodyCategorieMax = 100;
 
 export const AdminCreateActualiteBody = zod.object({
   titre: zod.string().max(adminCreateActualiteBodyTitreMax),
-  titre_fr: zod.string().max(adminCreateActualiteBodyTitreMax).nullish(),
-  titre_ar: zod.string().max(adminCreateActualiteBodyTitreMax).nullish(),
+  titre_fr: zod.string().max(adminCreateActualiteBodyTitreFrMax).nullish(),
+  titre_ar: zod.string().max(adminCreateActualiteBodyTitreArMax).nullish(),
+  titre_en: zod.string().max(adminCreateActualiteBodyTitreEnMax).nullish(),
   slug: zod.string().max(adminCreateActualiteBodySlugMax),
   contenu: zod.string(),
   contenu_fr: zod.string().nullish(),
   contenu_ar: zod.string().nullish(),
+  contenu_en: zod.string().nullish(),
   image: zod.string().nullish(),
   categorie: zod.string().max(adminCreateActualiteBodyCategorieMax).nullish(),
   datePublication: zod.coerce.date().nullish(),
@@ -382,10 +438,12 @@ export const AdminGetActualiteResponse = zod.object({
   titre: zod.string(),
   titre_fr: zod.string().nullish(),
   titre_ar: zod.string().nullish(),
+  titre_en: zod.string().nullish(),
   slug: zod.string(),
   contenu: zod.string(),
   contenu_fr: zod.string().nullish(),
   contenu_ar: zod.string().nullish(),
+  contenu_en: zod.string().nullish(),
   image: zod.string().nullish(),
   categorie: zod.string().nullish(),
   datePublication: zod.coerce.date(),
@@ -401,18 +459,26 @@ export const AdminUpdateActualiteParams = zod.object({
 
 export const adminUpdateActualiteBodyTitreMax = 200;
 
+export const adminUpdateActualiteBodyTitreFrMax = 200;
+
+export const adminUpdateActualiteBodyTitreArMax = 200;
+
+export const adminUpdateActualiteBodyTitreEnMax = 200;
+
 export const adminUpdateActualiteBodySlugMax = 200;
 
 export const adminUpdateActualiteBodyCategorieMax = 100;
 
 export const AdminUpdateActualiteBody = zod.object({
   titre: zod.string().max(adminUpdateActualiteBodyTitreMax),
-  titre_fr: zod.string().max(adminUpdateActualiteBodyTitreMax).nullish(),
-  titre_ar: zod.string().max(adminUpdateActualiteBodyTitreMax).nullish(),
+  titre_fr: zod.string().max(adminUpdateActualiteBodyTitreFrMax).nullish(),
+  titre_ar: zod.string().max(adminUpdateActualiteBodyTitreArMax).nullish(),
+  titre_en: zod.string().max(adminUpdateActualiteBodyTitreEnMax).nullish(),
   slug: zod.string().max(adminUpdateActualiteBodySlugMax),
   contenu: zod.string(),
   contenu_fr: zod.string().nullish(),
   contenu_ar: zod.string().nullish(),
+  contenu_en: zod.string().nullish(),
   image: zod.string().nullish(),
   categorie: zod.string().max(adminUpdateActualiteBodyCategorieMax).nullish(),
   datePublication: zod.coerce.date().nullish(),
@@ -445,10 +511,12 @@ export const AdminListOffresResponseItem = zod.object({
   titre: zod.string(),
   titre_fr: zod.string().nullish(),
   titre_ar: zod.string().nullish(),
+  titre_en: zod.string().nullish(),
   slug: zod.string(),
   description: zod.string().nullish(),
   description_fr: zod.string().nullish(),
   description_ar: zod.string().nullish(),
+  description_en: zod.string().nullish(),
   image: zod.string().nullish(),
   icone: zod.string().nullish(),
   clickByBnm: zod.boolean().default(adminListOffresResponseClickByBnmDefault),
@@ -467,6 +535,12 @@ export const AdminListOffresResponse = zod.array(AdminListOffresResponseItem);
  */
 export const adminCreateOffreBodyTitreMax = 200;
 
+export const adminCreateOffreBodyTitreFrMax = 200;
+
+export const adminCreateOffreBodyTitreArMax = 200;
+
+export const adminCreateOffreBodyTitreEnMax = 200;
+
 export const adminCreateOffreBodySlugMax = 200;
 
 export const adminCreateOffreBodyIconeMax = 100;
@@ -476,12 +550,14 @@ export const adminCreateOffreBodyOrdreDefault = 0;
 
 export const AdminCreateOffreBody = zod.object({
   titre: zod.string().max(adminCreateOffreBodyTitreMax),
-  titre_fr: zod.string().max(adminCreateOffreBodyTitreMax).nullish(),
-  titre_ar: zod.string().max(adminCreateOffreBodyTitreMax).nullish(),
+  titre_fr: zod.string().max(adminCreateOffreBodyTitreFrMax).nullish(),
+  titre_ar: zod.string().max(adminCreateOffreBodyTitreArMax).nullish(),
+  titre_en: zod.string().max(adminCreateOffreBodyTitreEnMax).nullish(),
   slug: zod.string().max(adminCreateOffreBodySlugMax),
   description: zod.string().nullish(),
   description_fr: zod.string().nullish(),
   description_ar: zod.string().nullish(),
+  description_en: zod.string().nullish(),
   image: zod.string().nullish(),
   icone: zod.string().max(adminCreateOffreBodyIconeMax).nullish(),
   clickByBnm: zod.boolean().default(adminCreateOffreBodyClickByBnmDefault),
@@ -508,10 +584,12 @@ export const AdminGetOffreResponse = zod.object({
   titre: zod.string(),
   titre_fr: zod.string().nullish(),
   titre_ar: zod.string().nullish(),
+  titre_en: zod.string().nullish(),
   slug: zod.string(),
   description: zod.string().nullish(),
   description_fr: zod.string().nullish(),
   description_ar: zod.string().nullish(),
+  description_en: zod.string().nullish(),
   image: zod.string().nullish(),
   icone: zod.string().nullish(),
   clickByBnm: zod.boolean().default(adminGetOffreResponseClickByBnmDefault),
@@ -533,18 +611,26 @@ export const AdminUpdateOffreParams = zod.object({
 
 export const adminUpdateOffreBodyTitreMax = 200;
 
+export const adminUpdateOffreBodyTitreFrMax = 200;
+
+export const adminUpdateOffreBodyTitreArMax = 200;
+
+export const adminUpdateOffreBodyTitreEnMax = 200;
+
 export const adminUpdateOffreBodySlugMax = 200;
 
 export const adminUpdateOffreBodyIconeMax = 100;
 
 export const AdminUpdateOffreBody = zod.object({
   titre: zod.string().max(adminUpdateOffreBodyTitreMax).optional(),
-  titre_fr: zod.string().max(adminUpdateOffreBodyTitreMax).nullish(),
-  titre_ar: zod.string().max(adminUpdateOffreBodyTitreMax).nullish(),
+  titre_fr: zod.string().max(adminUpdateOffreBodyTitreFrMax).nullish(),
+  titre_ar: zod.string().max(adminUpdateOffreBodyTitreArMax).nullish(),
+  titre_en: zod.string().max(adminUpdateOffreBodyTitreEnMax).nullish(),
   slug: zod.string().max(adminUpdateOffreBodySlugMax).optional(),
   description: zod.string().nullish(),
   description_fr: zod.string().nullish(),
   description_ar: zod.string().nullish(),
+  description_en: zod.string().nullish(),
   image: zod.string().nullish(),
   icone: zod.string().max(adminUpdateOffreBodyIconeMax).nullish(),
   clickByBnm: zod.boolean().optional(),

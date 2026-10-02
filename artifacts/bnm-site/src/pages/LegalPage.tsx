@@ -2,24 +2,28 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Link } from "wouter";
 import { useTranslation } from "react-i18next";
+import { dynamicKey } from "@/i18n";
 
 type LegalPageKind = "mentions" | "privacy" | "pricing";
 
-const legalCopy: Record<LegalPageKind, { titleKey: string; descriptionKey: string; bodyKey: string }> = {
+const legalCopy: Record<
+  LegalPageKind,
+  { titleKey: ReturnType<typeof dynamicKey>; descriptionKey: ReturnType<typeof dynamicKey>; bodyKey: ReturnType<typeof dynamicKey> }
+> = {
   mentions: {
-    titleKey: "footer.legalNotice",
-    descriptionKey: "common.pageNotFoundDescription",
-    bodyKey: "footer.legalNotice",
+    titleKey: dynamicKey("footer.legalNotice"),
+    descriptionKey: dynamicKey("common.pageNotFoundDescription"),
+    bodyKey: dynamicKey("footer.legalNotice"),
   },
   privacy: {
-    titleKey: "footer.privacy",
-    descriptionKey: "footer.privacy",
-    bodyKey: "footer.privacy",
+    titleKey: dynamicKey("footer.privacy"),
+    descriptionKey: dynamicKey("footer.privacy"),
+    bodyKey: dynamicKey("footer.privacy"),
   },
   pricing: {
-    titleKey: "footer.pricing",
-    descriptionKey: "footer.pricing",
-    bodyKey: "footer.pricing",
+    titleKey: dynamicKey("footer.pricing"),
+    descriptionKey: dynamicKey("footer.pricing"),
+    bodyKey: dynamicKey("footer.pricing"),
   },
 };
 

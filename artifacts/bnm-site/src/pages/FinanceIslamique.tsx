@@ -4,11 +4,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Moon, Landmark, Star, HandCoins } from "lucide-react";
 import { Link } from "wouter";
+import { toLangCode } from "@/i18n";
 import { useTranslation } from "react-i18next";
 
 export default function FinanceIslamique() {
   const { t, i18n } = useTranslation();
-  const { data: offres, isLoading } = useListOffres({ categorie: "islamique", lang: i18n.language });
+  const { data: offres, isLoading } = useListOffres({ categorie: "islamique", lang: toLangCode(i18n.language) });
   const offresArray = Array.isArray(offres) ? offres : [];
   const heroImage = "/assets/images/Islamique.jpg.jpeg";
 

@@ -10,6 +10,7 @@ import { Alert } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, CheckCircle2, FileText, Upload } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { dynamicKey } from "@/i18n";
 
 const SECTORS = [
   "Commerce",
@@ -123,7 +124,7 @@ export default function DevenirClient() {
 
       if (!response.ok) {
         const text = await response.text();
-        let message = t("becomeClient.uploadError");
+        let message: string = t("becomeClient.uploadError");
         try {
           const parsed = JSON.parse(text);
           message = parsed.error || parsed.message || message;
@@ -261,7 +262,7 @@ export default function DevenirClient() {
                         <SelectContent>
                           {SECTORS.map((sector, index) => (
                             <SelectItem key={sector} value={sector}>
-                              {["commerce", "construction", "transport", "agriculture", "industry", "services", "public", "other"].map((key) => t(`becomeClient.sectors.${key}`))[index]}
+                              {["commerce", "construction", "transport", "agriculture", "industry", "services", "public", "other"].map((key) => t(dynamicKey(`becomeClient.sectors.${key}`)))[index]}
                             </SelectItem>
                           ))}
                         </SelectContent>

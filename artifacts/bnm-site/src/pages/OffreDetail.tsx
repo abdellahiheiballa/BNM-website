@@ -4,15 +4,16 @@ import { Button } from "@/components/ui/button";
 import { Link, useParams } from "wouter";
 import { ArrowLeft } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { toLangCode } from "@/i18n";
 import { useTranslation } from "react-i18next";
 
 export default function OffreDetail() {
   const { t, i18n } = useTranslation();
   const params = useParams();
   const slug = params.slug || "";
-  const currentLang = i18n.language;
+  const currentLang = toLangCode(i18n.language);
 
-  const { data: offre, isLoading, error } = useGetOffre(slug, currentLang, {
+  const { data: offre, isLoading, error } = useGetOffre(slug, { lang: currentLang }, {
     query: {
       enabled: !!slug,
       queryKey: ["/api/offres", slug, currentLang],
@@ -38,10 +39,10 @@ export default function OffreDetail() {
   if (error || !offre) {
     return (
       <div className="container mx-auto px-4 py-32 text-center">
-        <h2 className="text-2xl font-bold text-primary mb-4">{t("offreNotFoundTitle")}</h2>
-        <p className="text-muted-foreground mb-8">{t("offreNotFoundDescription")}</p>
+        <h2 className="text-2xl font-bold text-primary mb-4">{t("admin.offreNotFoundTitle")}</h2>
+        <p className="text-muted-foreground mb-8">{t("admin.offreNotFoundDescription")}</p>
         <Link href="/particuliers">
-          <Button className="bg-primary text-white rounded-none">{t("offreBackToOffers")}</Button>
+          <Button className="bg-primary text-white rounded-none">{t("admin.offreBackToOffers")}</Button>
         </Link>
       </div>
     );
@@ -54,7 +55,7 @@ export default function OffreDetail() {
       <div className="w-full bg-muted/30 pt-12 pb-8 border-b">
         <div className="container mx-auto px-4 max-w-4xl">
           <Link href="/particuliers" className="inline-flex items-center text-sm font-medium text-muted-foreground hover:text-primary mb-8 transition-colors">
-            <ArrowLeft className="w-4 h-4 mr-2" /> {t("offreBackToOffers")}
+            <ArrowLeft className="w-4 h-4 mr-2" /> {t("admin.offreBackToOffers")}
           </Link>
 
           <div className="flex items-center gap-4 mb-6">
@@ -85,7 +86,7 @@ export default function OffreDetail() {
             ? offre.description.split("\n\n").map((paragraph, i) => (
                 <p key={i} className="text-foreground/90">{paragraph}</p>
               ))
-            : <p className="text-muted-foreground">{t("offreNoDescription")}</p>}
+            : <p className="text-muted-foreground">{t("admin.offreNoDescription")}</p>}
         </div>
       </div>
     </article>

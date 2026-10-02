@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { useState } from "react";
+import { toLangCode, dynamicKey, translateList, translateStats } from "@/i18n";
 import { useTranslation } from "react-i18next";
 
 type SubOffre = {
@@ -420,7 +421,7 @@ function OffreContent({ offre }: { offre: SubOffre }) {
 
 export default function Professionnels() {
   const { t, i18n } = useTranslation();
-  const { data: offres, isLoading } = useListOffres({ categorie: "professionnels", lang: i18n.language });
+  const { data: offres, isLoading } = useListOffres({ categorie: "professionnels", lang: toLangCode(i18n.language) });
   const offresArray = Array.isArray(offres) ? offres : [];
   const [activeSection, setActiveSection] = useState<string>(sections[0].id);
   const [activeSubOffre, setActiveSubOffre] = useState<string>(sections[0].subOffres[0].id);
@@ -444,8 +445,8 @@ export default function Professionnels() {
           subtitle: t("products.professionnels.compte.subtitle", { defaultValue: "Premier pas vers l'autonomie financière" }),
           description: t("products.professionnels.compte.description", { defaultValue: "Ouvrir un compte à la BNM, c'est bien plus que des moyens de paiements." }),
           cta: t("products.professionnels.compte.cta", { defaultValue: "Demander l'ouverture" }),
-          avantages: t<string[]>("products.professionnels.compte.advantages", { returnObjects: true, defaultValue: [] }),
-          stats: t<{ label: string; value: string }[]>("products.professionnels.compte.stats", { returnObjects: true, defaultValue: [] }),
+          avantages: t("products.professionnels.compte.advantages", { returnObjects: true, defaultValue: [] }),
+          stats: t("products.professionnels.compte.stats", { returnObjects: true, defaultValue: [] }),
         };
       }
       if (offre.id === "nos-cartes") {
@@ -455,9 +456,9 @@ export default function Professionnels() {
           subtitle: t("products.professionnels.cartes.subtitle", { defaultValue: "5 cartes, 5 univers, vos besoins" }),
           description: t("products.professionnels.cartes.description", { defaultValue: offre.description }),
           cta: t("products.professionnels.cartes.cta", { defaultValue: offre.cta }),
-          avantages: t<string[]>("products.professionnels.cartes.advantages", { returnObjects: true, defaultValue: offre.avantages }),
-          documents: t<string[]>("products.professionnels.cartes.documents", { returnObjects: true, defaultValue: offre.documents }),
-          stats: t<{ label: string; value: string }[]>("products.professionnels.cartes.stats", { returnObjects: true, defaultValue: offre.stats ?? [] }),
+          avantages: t("products.professionnels.cartes.advantages", { returnObjects: true, defaultValue: offre.avantages }),
+          documents: t("products.professionnels.cartes.documents", { returnObjects: true, defaultValue: offre.documents }),
+          stats: t("products.professionnels.cartes.stats", { returnObjects: true, defaultValue: offre.stats ?? [] }),
         };
       }
       if (offre.id === "carnet-cheque") {
@@ -467,9 +468,9 @@ export default function Professionnels() {
           subtitle: t("products.professionnels.chequier.subtitle", { defaultValue: "Le chèque, mais en mieux" }),
           description: t("products.professionnels.chequier.description", { defaultValue: offre.description }),
           cta: t("products.professionnels.chequier.cta", { defaultValue: offre.cta }),
-          avantages: t<string[]>("products.professionnels.chequier.advantages", { returnObjects: true, defaultValue: offre.avantages }),
-          documents: t<string[]>("products.professionnels.chequier.documents", { returnObjects: true, defaultValue: offre.documents }),
-          stats: t<{ label: string; value: string }[]>("products.professionnels.chequier.stats", { returnObjects: true, defaultValue: offre.stats ?? [] }),
+          avantages: t("products.professionnels.chequier.advantages", { returnObjects: true, defaultValue: offre.avantages }),
+          documents: t("products.professionnels.chequier.documents", { returnObjects: true, defaultValue: offre.documents }),
+          stats: t("products.professionnels.chequier.stats", { returnObjects: true, defaultValue: offre.stats ?? [] }),
         };
       }
       const offerKeyById: Record<string, string> = {
@@ -481,16 +482,16 @@ export default function Professionnels() {
       };
       const offerKey = offerKeyById[offre.id];
       if (offerKey) {
-        const key = (field: string) => `products.professionnels.${offerKey}.${field}`;
+        const key = (field: string) => dynamicKey(`products.professionnels.${offerKey}.${field}`);
         return {
           ...offre,
           title: t(key("title"), { defaultValue: offre.title }),
           subtitle: t(key("subtitle"), { defaultValue: offre.subtitle }),
           description: t(key("description"), { defaultValue: offre.description }),
           cta: t(key("cta"), { defaultValue: offre.cta }),
-          avantages: t<string[]>(key("advantages"), { returnObjects: true, defaultValue: offre.avantages }),
-          documents: t<string[]>(key("documents"), { returnObjects: true, defaultValue: offre.documents }),
-          stats: t<{ label: string; value: string }[]>(key("stats"), { returnObjects: true, defaultValue: offre.stats ?? [] }),
+          avantages: translateList(t, key("advantages"), offre.avantages),
+          documents: translateList(t, key("documents"), offre.documents),
+          stats: translateStats(t, key("stats"), offre.stats ?? []),
         };
       }
       return offre;

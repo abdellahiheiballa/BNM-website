@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { useState, useMemo } from "react";
+import { toLangCode } from "@/i18n";
 import { useTranslation } from "react-i18next";
 
 const iconMap = {
@@ -190,7 +191,7 @@ function OffreContent({ offre }: { offre: SubOffre }) {
 
 export default function Particuliers() {
   const { t, i18n } = useTranslation();
-  const { data: offres, isLoading } = useListOffres({ categorie: "particuliers", lang: i18n.language });
+  const { data: offres, isLoading } = useListOffres({ categorie: "particuliers", lang: toLangCode(i18n.language) });
   const offresArray = Array.isArray(offres) ? offres : [];
 
   const sections: Section[] = useMemo(() => [

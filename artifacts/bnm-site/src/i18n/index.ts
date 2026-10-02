@@ -7,6 +7,62 @@ import fr, { products as productsFr, admin as adminFr } from "./locales/fr";
 export const supportedLanguages = ["fr", "ar", "en"] as const;
 export type SupportedLanguage = (typeof supportedLanguages)[number];
 
+export type LangCode = "fr" | "ar" | "en";
+
+export const toLangCode = (value: string | undefined | null): LangCode =>
+  value === "ar" || value === "en" ? value : "fr";
+
+/**
+ * i18next can only infer return/default types for statically known keys.
+ * Use this for keys assembled at runtime so `returnObjects` still typechecks.
+ */
+type DottedKeys<T> = T extends string
+  ? never
+  : {
+      [K in keyof T & string]: T[K] extends string ? K : `${K}.${DottedKeys<T[K]>}`;
+    }[keyof T & string];
+
+export type TranslationKey = DottedKeys<(typeof resources)["fr"]["translation"]>;
+
+export const dynamicKey = (key: string) => key as TranslationKey;
+
+/**
+ * Same as {@link dynamicKey} but keeps the array shape that `returnObjects`
+ * relies on, so translated string lists stay typed as `string[]`.
+ */
+export const dynamicListKey = (key: string) => key as TranslationKey & string[];
+
+/**
+ * Reads a translated string list. `returnObjects` cannot be inferred through a
+ * runtime key, so the result is asserted here once instead of at each call site.
+ */
+type LooseTranslate = (key: never, options?: never) => unknown;
+
+export const translateList = (
+  t: LooseTranslate,
+  key: string,
+  fallback: string[],
+): string[] => {
+  const value = (t as (k: string, o?: Record<string, unknown>) => unknown)(key, {
+    returnObjects: true,
+    defaultValue: fallback,
+  });
+  return Array.isArray(value) ? (value as string[]) : fallback;
+};
+
+/** Same as {@link translateList} but for lists of `{ label, value }` objects. */
+export const translateStats = (
+  t: LooseTranslate,
+  key: string,
+  fallback: { label: string; value: string }[],
+): { label: string; value: string }[] => {
+  const value = (t as (k: string, o?: Record<string, unknown>) => unknown)(key, {
+    returnObjects: true,
+    defaultValue: fallback,
+  });
+  return Array.isArray(value) ? (value as { label: string; value: string }[]) : fallback;
+};
+
 export const languageStorageKey = "bnm-language-v1";
 
 export const resources = {

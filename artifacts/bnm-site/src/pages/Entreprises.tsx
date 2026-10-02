@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import { useState } from "react";
+import { toLangCode, dynamicKey, translateList } from "@/i18n";
 import { useTranslation } from "react-i18next";
 
 const sections = [
@@ -221,7 +222,9 @@ const sections = [
   }
 ];
 
-function OffreDetail({ offre }: { offre: typeof sections[0]['subOffres'][0] }) {
+type SubOffre = (typeof sections)[number]["subOffres"][number];
+
+function OffreDetail({ offre }: { offre: SubOffre }) {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState<"avantages" | "documents">("avantages");
 
@@ -289,7 +292,7 @@ function OffreDetail({ offre }: { offre: typeof sections[0]['subOffres'][0] }) {
 
 export default function Entreprises() {
   const { t, i18n } = useTranslation();
-  const { data: offres, isLoading } = useListOffres({ categorie: "entreprises", lang: i18n.language });
+  const { data: offres, isLoading } = useListOffres({ categorie: "entreprises", lang: toLangCode(i18n.language) });
   const offresArray = Array.isArray(offres) ? offres : [];
   const [activeSection, setActiveSection] = useState<string>(sections[0].id);
   const [activeSubOffre, setActiveSubOffre] = useState<string>(sections[0].subOffres[0].id);
@@ -335,20 +338,20 @@ export default function Entreprises() {
           title: t("products.entreprises.ebnm.title", { defaultValue: "e-BNM" }),
           description: t("products.entreprises.ebnm.description", { defaultValue: offre.description }),
           cta: t("products.entreprises.ebnm.cta", { defaultValue: "Contactez un conseiller clientèle" }),
-          avantages: t<string[]>("products.entreprises.ebnm.advantages", { returnObjects: true, defaultValue: offre.avantages }),
-          documents: t<string[]>("products.entreprises.ebnm.documents", { returnObjects: true, defaultValue: offre.documents }),
+          avantages: t("products.entreprises.ebnm.advantages", { returnObjects: true, defaultValue: offre.avantages }),
+          documents: t("products.entreprises.ebnm.documents", { returnObjects: true, defaultValue: offre.documents }),
         };
       }
       const offerKey = offerKeys[offre.id];
       if (offerKey) {
-        const key = (field: string) => `products.entreprises.offers.${offerKey}.${field}`;
+        const key = (field: string) => dynamicKey(`products.entreprises.offers.${offerKey}.${field}`);
         return {
           ...offre,
           title: t(key("title"), { defaultValue: offre.title }),
           description: t(key("description"), { defaultValue: offre.description }),
           cta: t("products.entreprises.contactCta", { defaultValue: offre.cta }),
-          avantages: t<string[]>(key("advantages"), { returnObjects: true, defaultValue: offre.avantages }),
-          documents: t<string[]>(key("documents"), { returnObjects: true, defaultValue: offre.documents }),
+          avantages: translateList(t, key("advantages"), offre.avantages),
+          documents: translateList(t, key("documents"), offre.documents),
         };
       }
       return offre;

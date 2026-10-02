@@ -5,6 +5,17 @@
  * BNM - Banque Nationale de Mauritanie API
  * OpenAPI spec version: 0.1.0
  */
+/**
+ * Language for content localization
+ */
+export type LangCode = (typeof LangCode)[keyof typeof LangCode];
+
+export const LangCode = {
+  fr: "fr",
+  ar: "ar",
+  en: "en",
+} as const;
+
 export interface HealthStatus {
   status: string;
 }
@@ -14,10 +25,12 @@ export interface Actualite {
   titre: string;
   titre_fr?: string | null;
   titre_ar?: string | null;
+  titre_en?: string | null;
   slug: string;
   contenu: string;
   contenu_fr?: string | null;
   contenu_ar?: string | null;
+  contenu_en?: string | null;
   image?: string | null;
   categorie?: string | null;
   datePublication: string;
@@ -32,10 +45,13 @@ export interface CreateActualiteInput {
   /** @maxLength 200 */
   titre_ar?: string | null;
   /** @maxLength 200 */
+  titre_en?: string | null;
+  /** @maxLength 200 */
   slug: string;
   contenu: string;
   contenu_fr?: string | null;
   contenu_ar?: string | null;
+  contenu_en?: string | null;
   image?: string | null;
   /** @maxLength 100 */
   categorie?: string | null;
@@ -57,10 +73,12 @@ export interface Offre {
   titre: string;
   titre_fr?: string | null;
   titre_ar?: string | null;
+  titre_en?: string | null;
   slug: string;
   description?: string | null;
   description_fr?: string | null;
   description_ar?: string | null;
+  description_en?: string | null;
   image?: string | null;
   icone?: string | null;
   clickByBnm: boolean;
@@ -86,10 +104,13 @@ export interface CreateOffreInput {
   /** @maxLength 200 */
   titre_ar?: string | null;
   /** @maxLength 200 */
+  titre_en?: string | null;
+  /** @maxLength 200 */
   slug: string;
   description?: string | null;
   description_fr?: string | null;
   description_ar?: string | null;
+  description_en?: string | null;
   image?: string | null;
   /** @maxLength 100 */
   icone?: string | null;
@@ -116,10 +137,13 @@ export interface UpdateOffreInput {
   /** @maxLength 200 */
   titre_ar?: string | null;
   /** @maxLength 200 */
+  titre_en?: string | null;
+  /** @maxLength 200 */
   slug?: string;
   description?: string | null;
   description_fr?: string | null;
   description_ar?: string | null;
+  description_en?: string | null;
   image?: string | null;
   /** @maxLength 100 */
   icone?: string | null;
@@ -254,6 +278,7 @@ export interface Agence {
   adresse?: string | null;
   ville?: string | null;
   telephone?: string | null;
+  email?: string | null;
   latitude?: number | null;
   longitude?: number | null;
   horaires?: string | null;
@@ -276,8 +301,17 @@ export interface UpdateActualiteInput {
   /** @maxLength 200 */
   titre: string;
   /** @maxLength 200 */
+  titre_fr?: string | null;
+  /** @maxLength 200 */
+  titre_ar?: string | null;
+  /** @maxLength 200 */
+  titre_en?: string | null;
+  /** @maxLength 200 */
   slug: string;
   contenu: string;
+  contenu_fr?: string | null;
+  contenu_ar?: string | null;
+  contenu_en?: string | null;
   image?: string | null;
   /** @maxLength 100 */
   categorie?: string | null;
@@ -290,8 +324,8 @@ export interface SuccessResponse {
 }
 
 export type ListActualitesParams = {
+  lang?: LangCode;
   categorie?: string;
-  lang?: string;
   limit?: number;
   offset?: number;
 };
@@ -301,25 +335,13 @@ export type ListActualites200 = {
   total: number;
 };
 
-export type ListOffresParams = {
-  categorie?: ListOffresCategorie;
-  lang?: string;
+export type GetActualiteParams = {
+  lang?: LangCode;
 };
 
-export type GetOffreResponse = {
-  id: number;
-  titre: string;
-  titre_fr?: string | null;
-  titre_ar?: string | null;
-  slug: string;
-  description?: string | null;
-  description_fr?: string | null;
-  description_ar?: string | null;
-  image?: string | null;
-  icone?: string | null;
-  clickByBnm: boolean;
-  categorie: OffreCategorie;
-  ordre: number;
+export type ListOffresParams = {
+  lang?: LangCode;
+  categorie?: ListOffresCategorie;
 };
 
 export type ListOffresCategorie =
@@ -331,6 +353,10 @@ export const ListOffresCategorie = {
   entreprises: "entreprises",
   islamique: "islamique",
 } as const;
+
+export type GetOffreParams = {
+  lang?: LangCode;
+};
 
 export type AdminUploadFile200 = {
   url: string;

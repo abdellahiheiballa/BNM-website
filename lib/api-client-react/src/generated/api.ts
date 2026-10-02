@@ -24,6 +24,8 @@ import type {
   ContactInput,
   CreateActualiteInput,
   CreateOffreInput,
+  GetActualiteParams,
+  GetOffreParams,
   HealthStatus,
   ListActualites200,
   ListActualitesParams,
@@ -31,7 +33,6 @@ import type {
   MurabahaResult,
   NewsletterInput,
   Offre,
-  OffreCategorie,
   SimulateClassicInput,
   SimulateMurabahaInput,
   SimulationResult,
@@ -308,26 +309,38 @@ export const useCreateActualite = <
 /**
  * @summary Get a single news article
  */
-export const getGetActualiteUrl = (id: number, lang?: string) => {
-  const params = new URLSearchParams();
-  if (lang) params.set("lang", lang);
-  const qs = params.toString();
-  return `/api/actualites/${id}${qs ? `?${qs}` : ""}`;
+export const getGetActualiteUrl = (id: number, params?: GetActualiteParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/actualites/${id}?${stringifiedParams}`
+    : `/api/actualites/${id}`;
 };
 
 export const getActualite = async (
   id: number,
+  params?: GetActualiteParams,
   options?: RequestInit,
-  lang?: string,
 ): Promise<Actualite> => {
-  return customFetch<Actualite>(getGetActualiteUrl(id, lang), {
+  return customFetch<Actualite>(getGetActualiteUrl(id, params), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetActualiteQueryKey = (id: number, lang?: string) => {
-  return [`/api/actualites/${id}`, lang] as const;
+export const getGetActualiteQueryKey = (
+  id: number,
+  params?: GetActualiteParams,
+) => {
+  return [`/api/actualites/${id}`, ...(params ? [params] : [])] as const;
 };
 
 export const getGetActualiteQueryOptions = <
@@ -335,7 +348,7 @@ export const getGetActualiteQueryOptions = <
   TError = ErrorType<void>,
 >(
   id: number,
-  lang?: string,
+  params?: GetActualiteParams,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getActualite>>,
@@ -347,11 +360,12 @@ export const getGetActualiteQueryOptions = <
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetActualiteQueryKey(id, lang);
+  const queryKey =
+    queryOptions?.queryKey ?? getGetActualiteQueryKey(id, params);
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getActualite>>> = ({
     signal,
-  }) => getActualite(id, { signal, ...requestOptions }, lang);
+  }) => getActualite(id, params, { signal, ...requestOptions });
 
   return {
     queryKey,
@@ -379,7 +393,7 @@ export function useGetActualite<
   TError = ErrorType<void>,
 >(
   id: number,
-  lang?: string,
+  params?: GetActualiteParams,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getActualite>>,
@@ -389,7 +403,7 @@ export function useGetActualite<
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetActualiteQueryOptions(id, lang, options);
+  const queryOptions = getGetActualiteQueryOptions(id, params, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
@@ -493,37 +507,45 @@ export function useListOffres<
 }
 
 /**
- * @summary Get a single offer by its slug
- *
+ * @summary Get a single offer by slug
  */
-export const getGetOffreUrl = (slug: string, lang?: string) => {
-  const params = new URLSearchParams();
-  if (lang) params.set("lang", lang);
-  const qs = params.toString();
-  return `/api/offres/${slug}${qs ? `?${qs}` : ""}`;
+export const getGetOffreUrl = (slug: string, params?: GetOffreParams) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? "null" : value.toString());
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0
+    ? `/api/offres/${slug}?${stringifiedParams}`
+    : `/api/offres/${slug}`;
 };
 
 export const getOffre = async (
   slug: string,
+  params?: GetOffreParams,
   options?: RequestInit,
-  lang?: string,
 ): Promise<Offre> => {
-  return customFetch<Offre>(getGetOffreUrl(slug, lang), {
+  return customFetch<Offre>(getGetOffreUrl(slug, params), {
     ...options,
     method: "GET",
   });
 };
 
-export const getGetOffreQueryKey = (slug: string, lang?: string) => {
-  return [`/api/offres/${slug}`, lang] as const;
+export const getGetOffreQueryKey = (slug: string, params?: GetOffreParams) => {
+  return [`/api/offres/${slug}`, ...(params ? [params] : [])] as const;
 };
 
 export const getGetOffreQueryOptions = <
   TData = Awaited<ReturnType<typeof getOffre>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<void>,
 >(
   slug: string,
-  lang?: string,
+  params?: GetOffreParams,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getOffre>>,
@@ -535,40 +557,37 @@ export const getGetOffreQueryOptions = <
 ) => {
   const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetOffreQueryKey(slug, lang);
+  const queryKey = queryOptions?.queryKey ?? getGetOffreQueryKey(slug, params);
 
   const queryFn: QueryFunction<Awaited<ReturnType<typeof getOffre>>> = ({
     signal,
-  }) => getOffre(slug, { signal, ...requestOptions }, lang);
+  }) => getOffre(slug, params, { signal, ...requestOptions });
 
   return {
     queryKey,
     queryFn,
     enabled: !!slug,
     ...queryOptions,
-  } as UseQueryOptions<
-    Awaited<ReturnType<typeof getOffre>>,
-    TError,
-    TData
-  > & { queryKey: QueryKey };
+  } as UseQueryOptions<Awaited<ReturnType<typeof getOffre>>, TError, TData> & {
+    queryKey: QueryKey;
+  };
 };
 
 export type GetOffreQueryResult = NonNullable<
   Awaited<ReturnType<typeof getOffre>>
 >;
-export type GetOffreQueryError = ErrorType<unknown>;
+export type GetOffreQueryError = ErrorType<void>;
 
 /**
- * @summary Get a single offer by its slug
- *
+ * @summary Get a single offer by slug
  */
 
 export function useGetOffre<
   TData = Awaited<ReturnType<typeof getOffre>>,
-  TError = ErrorType<unknown>,
+  TError = ErrorType<void>,
 >(
   slug: string,
-  lang?: string,
+  params?: GetOffreParams,
   options?: {
     query?: UseQueryOptions<
       Awaited<ReturnType<typeof getOffre>>,
@@ -578,7 +597,7 @@ export function useGetOffre<
     request?: SecondParameter<typeof customFetch>;
   },
 ): UseQueryResult<TData, TError> & { queryKey: QueryKey } {
-  const queryOptions = getGetOffreQueryOptions(slug, lang, options);
+  const queryOptions = getGetOffreQueryOptions(slug, params, options);
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;

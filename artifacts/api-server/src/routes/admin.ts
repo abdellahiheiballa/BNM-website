@@ -96,10 +96,12 @@ router.post("/actualites", async (req, res) => {
       titre: body.titre,
       titre_fr: body.titre_fr ?? null,
       titre_ar: body.titre_ar ?? null,
+      titre_en: body.titre_en ?? null,
       slug: body.slug,
       contenu: body.contenu,
       contenu_fr: body.contenu_fr ?? null,
       contenu_ar: body.contenu_ar ?? null,
+      contenu_en: body.contenu_en ?? null,
       image: body.image ?? null,
       categorie: body.categorie ?? null,
       datePublication: body.datePublication instanceof Date ? body.datePublication : new Date(body.datePublication ?? new Date()),
@@ -119,7 +121,7 @@ router.put("/actualites/:id", async (req, res) => {
     return res.status(400).json({ error: "Invalid id" });
   }
 
-  const { titre, titre_fr, titre_ar, slug, contenu, contenu_fr, contenu_ar, image, categorie, datePublication } = req.body;
+  const { titre, titre_fr, titre_ar, titre_en, slug, contenu, contenu_fr, contenu_ar, contenu_en, image, categorie, datePublication } = req.body;
 
   const updateFields: Record<string, unknown> = {
     titre,
@@ -130,8 +132,10 @@ router.put("/actualites/:id", async (req, res) => {
   };
   if (titre_fr !== undefined) updateFields.titre_fr = titre_fr;
   if (titre_ar !== undefined) updateFields.titre_ar = titre_ar;
+  if (titre_en !== undefined) updateFields.titre_en = titre_en;
   if (contenu_fr !== undefined) updateFields.contenu_fr = contenu_fr;
   if (contenu_ar !== undefined) updateFields.contenu_ar = contenu_ar;
+  if (contenu_en !== undefined) updateFields.contenu_en = contenu_en;
   if (datePublication) updateFields.datePublication = new Date(datePublication);
 
   try {
@@ -164,10 +168,12 @@ function mapOffre(r: typeof offresTable.$inferSelect) {
     titre: r.titre,
     titre_fr: r.titre_fr ?? null,
     titre_ar: r.titre_ar ?? null,
+    titre_en: r.titre_en ?? null,
     slug: r.slug,
     description: r.description ?? null,
     description_fr: r.description_fr ?? null,
     description_ar: r.description_ar ?? null,
+    description_en: r.description_en ?? null,
     image: r.image ?? null,
     icone: r.icone ?? null,
     clickByBnm: r.clickByBnm,
@@ -193,10 +199,12 @@ router.post("/offres", async (req, res) => {
       titre: body.titre,
       titre_fr: body.titre_fr ?? null,
       titre_ar: body.titre_ar ?? null,
+      titre_en: body.titre_en ?? null,
       slug: body.slug,
       description: body.description ?? null,
       description_fr: body.description_fr ?? null,
       description_ar: body.description_ar ?? null,
+      description_en: body.description_en ?? null,
       image: body.image ?? null,
       icone: body.icone ?? null,
       clickByBnm: body.clickByBnm,
@@ -243,10 +251,12 @@ router.put("/offres/:id", async (req, res) => {
   if ("titre" in body) update.titre = body.titre;
   if ("titre_fr" in body) update.titre_fr = body.titre_fr ?? null;
   if ("titre_ar" in body) update.titre_ar = body.titre_ar ?? null;
+  if ("titre_en" in body) update.titre_en = body.titre_en ?? null;
   if ("slug" in body) update.slug = body.slug;
   if ("description" in body) update.description = body.description;
   if ("description_fr" in body) update.description_fr = body.description_fr;
   if ("description_ar" in body) update.description_ar = body.description_ar;
+  if ("description_en" in body) update.description_en = body.description_en;
   if ("image" in body) update.image = body.image;
   if ("icone" in body) update.icone = body.icone;
   if ("clickByBnm" in body) update.clickByBnm = body.clickByBnm;

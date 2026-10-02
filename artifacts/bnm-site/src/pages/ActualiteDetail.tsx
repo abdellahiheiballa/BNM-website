@@ -4,14 +4,15 @@ import { Button } from "@/components/ui/button";
 import { Link, useParams } from "wouter";
 import { Calendar, ArrowLeft, Share2, Facebook, Twitter, Linkedin } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
+import { toLangCode } from "@/i18n";
 import { useTranslation } from "react-i18next";
 
 export default function ActualiteDetail() {
   const { t, i18n } = useTranslation();
   const params = useParams();
   const id = parseInt(params.id || "0", 10);
-  const currentLang = i18n.language;
-  const { data: actu, isLoading, error } = useGetActualite(id, currentLang, {
+  const currentLang = toLangCode(i18n.language);
+  const { data: actu, isLoading, error } = useGetActualite(id, { lang: currentLang }, {
     query: {
       enabled: !!id,
       queryKey: ["/api/actualites", id, currentLang],

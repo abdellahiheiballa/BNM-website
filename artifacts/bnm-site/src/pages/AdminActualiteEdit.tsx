@@ -21,11 +21,13 @@ type FormState = {
   titre: string;
   titre_fr: string;
   titre_ar: string;
+  titre_en: string;
   slug: string;
   categorie: (typeof CATEGORIES)[number] | "";
   contenu: string;
   contenu_fr: string;
   contenu_ar: string;
+  contenu_en: string;
   image: string;
   datePublication: string;
 };
@@ -58,11 +60,13 @@ export default function AdminActualiteEdit() {
     titre: "",
     titre_fr: "",
     titre_ar: "",
+  titre_en: "",
     slug: "",
     categorie: "",
     contenu: "",
     contenu_fr: "",
     contenu_ar: "",
+  contenu_en: "",
     image: "",
     datePublication: "",
   });
@@ -101,11 +105,13 @@ export default function AdminActualiteEdit() {
         titre: existingActu.titre,
         titre_fr: existingActu.titre_fr || "",
         titre_ar: existingActu.titre_ar || "",
+    titre_en: existingActu.titre_en || "",
         slug: existingActu.slug,
         categorie: (existingActu.categorie as (typeof CATEGORIES)[number]) || "",
         contenu: existingActu.contenu,
         contenu_fr: existingActu.contenu_fr || "",
         contenu_ar: existingActu.contenu_ar || "",
+    contenu_en: existingActu.contenu_en || "",
         image: existingActu.image || "",
         datePublication: existingActu.datePublication ? existingActu.datePublication.split("T")[0] : "",
       });
@@ -141,10 +147,12 @@ export default function AdminActualiteEdit() {
       titre: form.titre.trim(),
       titre_fr: form.titre_fr.trim() || null,
       titre_ar: form.titre_ar.trim() || null,
+    titre_en: form.titre_en.trim() || null,
       slug: form.slug.trim(),
       contenu: form.contenu.trim(),
       contenu_fr: form.contenu_fr.trim() || null,
       contenu_ar: form.contenu_ar.trim() || null,
+    contenu_en: form.contenu_en.trim() || null,
       image: form.image.trim() ? form.image.trim() : null,
       categorie: form.categorie ? form.categorie : null,
       datePublication: form.datePublication
@@ -223,7 +231,7 @@ export default function AdminActualiteEdit() {
               <ArrowLeft className="w-4 h-4" /> {t("admin.backToDashboard")}
             </Link>
             <h1 className="text-3xl font-serif font-bold">
-              {isEdit ? t("admin.editActualite") : t("admin.newActualite")}
+              {isEdit ? t("admin.actualitesEdited") : t("admin.actualitesNew")}
             </h1>
           </div>
         </section>
@@ -278,6 +286,16 @@ export default function AdminActualiteEdit() {
                     className="rounded-none mt-2"
                     value={form.titre_ar}
                     onChange={(e) => setForm((s) => ({ ...s, titre_ar: e.target.value }))}
+                    placeholder={t("admin.optional")}
+                  />
+                </div>
+
+                <div>
+                  <Label className="font-semibold">{t("admin.actualiteTitreEn")}</Label>
+                  <Input
+                    className="rounded-none mt-2"
+                    value={form.titre_en}
+                    onChange={(e) => setForm((s) => ({ ...s, titre_en: e.target.value }))}
                     placeholder={t("admin.optional")}
                   />
                 </div>
@@ -344,6 +362,16 @@ export default function AdminActualiteEdit() {
                 </div>
 
                 <div className="md:col-span-2">
+                  <Label className="font-semibold">{t("admin.actualiteContenuEn")}</Label>
+                  <Textarea
+                    className="rounded-none mt-2"
+                    value={form.contenu_en}
+                    onChange={(e) => setForm((s) => ({ ...s, contenu_en: e.target.value }))}
+                    placeholder={t("admin.writeContentEn")}
+                  />
+                </div>
+
+                <div className="md:col-span-2">
                   <ImageUploadField
                     value={form.image}
                     onChange={(image) => setForm((s) => ({ ...s, image }))}
@@ -368,7 +396,7 @@ export default function AdminActualiteEdit() {
                     {t("admin.cancel")}
                   </Button>
                   <Button type="submit" className="rounded-none" disabled={createMutation.isPending || updateMutation.isPending}>
-                    {isEdit ? t("admin.update") : t("admin.create")} <ArrowRight className="ml-2 w-4 h-4" />
+                    {isEdit ? t("admin.edit") : t("admin.create")} <ArrowRight className="ml-2 w-4 h-4" />
                   </Button>
                 </div>
               </form>

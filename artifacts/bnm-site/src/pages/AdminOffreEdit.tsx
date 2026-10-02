@@ -28,11 +28,13 @@ type FormState = {
   titre: string;
   titre_fr: string;
   titre_ar: string;
+  titre_en: string;
   slug: string;
   categorie: (typeof OffreCategorie)[keyof typeof OffreCategorie];
   description: string;
   description_fr: string;
   description_ar: string;
+  description_en: string;
   image: string;
   icone: string;
   clickByBnm: boolean;
@@ -65,11 +67,13 @@ export default function AdminOffreEdit() {
     titre: "",
     titre_fr: "",
     titre_ar: "",
+  titre_en: "",
     slug: "",
     categorie: "particuliers",
     description: "",
     description_fr: "",
     description_ar: "",
+  description_en: "",
     image: "",
     icone: "",
     clickByBnm: false,
@@ -113,11 +117,13 @@ export default function AdminOffreEdit() {
         titre: existingOffre.titre,
         titre_fr: existingOffre.titre_fr || "",
         titre_ar: existingOffre.titre_ar || "",
+    titre_en: existingOffre.titre_en || "",
         slug: existingOffre.slug,
         categorie: existingOffre.categorie,
         description: existingOffre.description || "",
         description_fr: existingOffre.description_fr || "",
         description_ar: existingOffre.description_ar || "",
+    description_en: existingOffre.description_en || "",
         image: existingOffre.image || "",
         icone: existingOffre.icone || "",
         clickByBnm: existingOffre.clickByBnm,
@@ -151,10 +157,12 @@ export default function AdminOffreEdit() {
       titre: form.titre.trim(),
       titre_fr: form.titre_fr.trim() || null,
       titre_ar: form.titre_ar.trim() || null,
+    titre_en: form.titre_en.trim() || null,
       slug: form.slug.trim(),
       description: form.description.trim(),
       description_fr: form.description_fr.trim() || null,
       description_ar: form.description_ar.trim() || null,
+    description_en: form.description_en.trim() || null,
       image: form.image.trim() ? form.image.trim() : null,
       icone: form.icone.trim() ? form.icone.trim() : null,
       clickByBnm: form.clickByBnm,
@@ -266,6 +274,16 @@ export default function AdminOffreEdit() {
                 </div>
 
                 <div>
+                  <Label className="font-semibold">{t("admin.offerTitreEn")}</Label>
+                  <Input
+                    className="rounded-none mt-2"
+                    value={form.titre_en}
+                    onChange={(e) => setForm((s) => ({ ...s, titre_en: e.target.value }))}
+                    placeholder={t("admin.optional")}
+                  />
+                </div>
+
+                <div>
                   <Label className="font-semibold">{t("admin.offerSlug")}</Label>
                   <Input
                     className="rounded-none mt-2"
@@ -339,6 +357,15 @@ export default function AdminOffreEdit() {
                     className="rounded-none mt-2 min-h-32"
                     value={form.description_ar}
                     onChange={(e) => setForm((s) => ({ ...s, description_ar: e.target.value }))}
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <Label className="font-semibold">{t("admin.offerDescriptionEn")}</Label>
+                  <Textarea
+                    className="rounded-none mt-2 min-h-32"
+                    value={form.description_en}
+                    onChange={(e) => setForm((s) => ({ ...s, description_en: e.target.value }))}
                   />
                 </div>
 

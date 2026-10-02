@@ -50,10 +50,7 @@ paths:
         - name: lang
           in: query
           schema:
-            type: string
-            enum: [fr, ar]
-            default: fr
-          description: Language for content localization
+            $ref: "#/components/schemas/LangCode"
         - name: categorie
           in: query
           schema:
@@ -119,10 +116,7 @@ paths:
         - name: lang
           in: query
           schema:
-            type: string
-            enum: [fr, ar]
-            default: fr
-          description: Language for content localization
+            $ref: "#/components/schemas/LangCode"
         - name: id
           in: path
           required: true
@@ -147,10 +141,7 @@ paths:
         - name: lang
           in: query
           schema:
-            type: string
-            enum: [fr, ar]
-            default: fr
-          description: Language for content localization
+            $ref: "#/components/schemas/LangCode"
         - name: categorie
           in: query
           schema:
@@ -180,10 +171,7 @@ paths:
         - name: lang
           in: query
           schema:
-            type: string
-            enum: [fr, ar]
-            default: fr
-          description: Language for content localization
+            $ref: "#/components/schemas/LangCode"
       responses:
         "200":
           description: Offer
@@ -619,6 +607,12 @@ paths:
 
 components:
   schemas:
+    LangCode:
+      type: string
+      description: Language for content localization
+      enum: [fr, ar, en]
+      default: fr
+
     HealthStatus:
       type: object
       properties:
@@ -640,6 +634,9 @@ components:
         titre_ar:
           type: string
           nullable: true
+        titre_en:
+          type: string
+          nullable: true
         slug:
           type: string
         contenu:
@@ -648,6 +645,9 @@ components:
           type: string
           nullable: true
         contenu_ar:
+          type: string
+          nullable: true
+        contenu_en:
           type: string
           nullable: true
         image:
@@ -684,6 +684,10 @@ components:
           type: string
           maxLength: 200
           nullable: true
+        titre_en:
+          type: string
+          maxLength: 200
+          nullable: true
         slug:
           type: string
           maxLength: 200
@@ -693,6 +697,9 @@ components:
           type: string
           nullable: true
         contenu_ar:
+          type: string
+          nullable: true
+        contenu_en:
           type: string
           nullable: true
         image:
@@ -725,6 +732,9 @@ components:
         titre_ar:
           type: string
           nullable: true
+        titre_en:
+          type: string
+          nullable: true
         slug:
           type: string
         description:
@@ -734,6 +744,9 @@ components:
           type: string
           nullable: true
         description_ar:
+          type: string
+          nullable: true
+        description_en:
           type: string
           nullable: true
         image:
@@ -772,6 +785,10 @@ components:
           type: string
           maxLength: 200
           nullable: true
+        titre_en:
+          type: string
+          maxLength: 200
+          nullable: true
         slug:
           type: string
           maxLength: 200
@@ -782,6 +799,9 @@ components:
           type: string
           nullable: true
         description_ar:
+          type: string
+          nullable: true
+        description_en:
           type: string
           nullable: true
         image:
@@ -819,6 +839,10 @@ components:
           type: string
           maxLength: 200
           nullable: true
+        titre_en:
+          type: string
+          maxLength: 200
+          nullable: true
         slug:
           type: string
           maxLength: 200
@@ -829,6 +853,9 @@ components:
           type: string
           nullable: true
         description_ar:
+          type: string
+          nullable: true
+        description_en:
           type: string
           nullable: true
         image:
@@ -1086,6 +1113,9 @@ components:
         telephone:
           type: string
           nullable: true
+        email:
+          type: string
+          nullable: true
         latitude:
           type: number
           nullable: true
@@ -1144,6 +1174,10 @@ components:
           type: string
           maxLength: 200
           nullable: true
+        titre_en:
+          type: string
+          maxLength: 200
+          nullable: true
         slug:
           type: string
           maxLength: 200
@@ -1153,6 +1187,9 @@ components:
           type: string
           nullable: true
         contenu_ar:
+          type: string
+          nullable: true
+        contenu_en:
           type: string
           nullable: true
         image:
