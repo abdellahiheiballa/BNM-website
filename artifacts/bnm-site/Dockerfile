@@ -4,6 +4,11 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml tsconfig.base.json ./
 COPY lib/ ./lib/
 COPY artifacts/bnm-site/ ./artifacts/bnm-site/
+# The lockfile records every workspace importer, so pnpm needs each
+# package.json present even when only one artifact is built here.
+COPY artifacts/api-server/package.json ./artifacts/api-server/package.json
+COPY artifacts/mockup-sandbox/package.json ./artifacts/mockup-sandbox/package.json
+COPY scripts/package.json ./scripts/package.json
 
 RUN npm install -g corepack \
 	&& corepack enable \
